@@ -32,11 +32,11 @@
             swal("Login", "Password Field should not be Empty", "error");
         }
         else {
-            debugger
+            
             var clsCustomer = {};
             clsCustomer.CustomerId = $("#txtCustomerId").val().trim();
             clsCustomer.CustPassword = $("#txtPassword").val().trim();
-            //debugger
+            
             $.ajax({
                 type: "POST",
                 url: "/Home/Fn_LogIn_Customer",
@@ -45,20 +45,16 @@
                 data: JSON.stringify(clsCustomer),
                 success: function (data) {
                     var obj = JSON.parse(data.message);
-                    //debugger
                     if (obj.ErrorMsg == "Success") {
-                        debugger
                         sessionStorage.setItem("CustId", obj.CustomerId);
                         sessionStorage.setItem("EmailId", obj.CustEmailId);
                         sessionStorage.setItem("CompanyName", obj.CustCompanyName);
                         sessionStorage.setItem("Mobile", obj.CustMobile);
                         sessionStorage.setItem("CustName", obj.CustName);
-                        //window.location.href = '/Home/DashBoard';
                         window.location.href = "@Url.Action("DashBoard", "Home")";
                     }
                     else {
                         swal("Login", obj.ErrorMsg, "error");
-                        //swal("Login", "Please Enter Correct Credentials", "error");
                     }
                 },
                 error: function (err) {
