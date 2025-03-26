@@ -15,7 +15,6 @@
         function Fn_Get_Yarn_GDType() {
 
             var clsYarn = {};
-            debugger;
 
             $.ajax({
                 type: "POST",
@@ -26,7 +25,7 @@
                 success: function (data) {
                     $("#dvYarnProduct").html('');
                     var obj = JSON.parse(data.message);
-                    debugger;
+
                     if (obj[0].vErrorMsg == 'Success') {
 
                         var div3Content = '';
@@ -38,17 +37,15 @@
                             div3Content = div3Content + "<div class='image'>";
                             div3Content = div3Content + "<img src='" + obj[i].GDType + ".jpg' alt='" + obj[i].GDType + "'>";
                             div3Content = div3Content + "<div class='add-cart'>";
-                            div3Content = div3Content + "<ul>";
-                            div3Content = div3Content + "<li><a href='#'><i class='fa fa-shopping-cart'></i></a></li>";
-                            div3Content = div3Content + "<li><a href='#'><i class='fa fa-heart-o'></i></a></li>";
-                            div3Content = div3Content + " </ul>";
+                           // div3Content = div3Content + "<ul>";
+                            //div3Content = div3Content + "<li><a href='#'><i class='fa fa-shopping-cart'></i></a></li>";
+                            //div3Content = div3Content + "<li><a href='#'><i class='fa fa-heart-o'></i></a></li>";
+                           // div3Content = div3Content + " </ul>";
                             div3Content = div3Content + " </div>";
                             div3Content = div3Content + " </div>";
                          
                             div3Content = div3Content + "<div class='name'>";
-                            div3Content = div3Content + "<a href='shop-singel.html'><h6>GD Type: " + obj[i].GDType + "</h6></a>";
-                            div3Content = div3Content + "<span>$50.00</span>";
-                          
+                            div3Content = div3Content + "<p class='text-center pt-2' style='font-size: 12px;'>GD Type: " + obj[i].GDType + "</p>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + " </div>";
@@ -60,7 +57,7 @@
                     }
                     $("#dvYarnProduct").append(div3Content);
                     $("img").on("error", function () {
-                        $(this).attr("src", "/Web/Images/placeholder.jpg");
+                        $(this).attr("src", "/Images/placeholder.jpg");
                     });
                 },
                 error: function (err) {
