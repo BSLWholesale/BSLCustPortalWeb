@@ -31,6 +31,13 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
+        public ActionResult DashBoard()
+        {
+            ViewBag.Message = "Your DashBoard page.";
+
+            return View();
+        }
+
 
         [HttpPost]
         public JsonResult Fn_LogIn_Customer(clsCustomer objReq)
