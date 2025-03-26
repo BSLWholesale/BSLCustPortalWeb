@@ -26,5 +26,12 @@ namespace BSLCustomerPortalWeb.Controllers
 
             return View();
         }
+
+        public ActionResult DashBoard()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }
