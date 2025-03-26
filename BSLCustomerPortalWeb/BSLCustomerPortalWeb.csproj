@@ -124,6 +124,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\clsCustomer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +136,33 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\birthday.gif" />
+    <Content Include="Images\birthday.jpg" />
+    <Content Include="Images\birthday2.gif" />
+    <Content Include="Images\cart.png" />
+    <Content Include="Images\del.png" />
+    <Content Include="Images\delete-181.png" />
+    <Content Include="Images\delete.png" />
+    <Content Include="Images\eye.svg" />
+    <Content Include="Images\facebook.svg" />
+    <Content Include="Images\github.svg" />
+    <Content Include="Images\loading.gif" />
+    <Content Include="Images\login.svg" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\placeholder.jpg" />
+    <Content Include="Images\placeholder1.jpg" />
+    <Content Include="Images\remove.png" />
+    <Content Include="Images\search.svg" />
+    <Content Include="Images\SingleLogoHighnoBG.png" />
+    <Content Include="Images\UploadImage.png" />
+    <Content Include="Images\URL_QRCode.jpg" />
+    <Content Include="JS\sweetalert.min.js" />
+    <Content Include="JS\sweetalert2.all.js" />
+    <Content Include="JS\sweetalert2.all.min.js" />
+    <Content Include="JS\sweetalert2.css" />
+    <Content Include="JS\sweetalert2.js" />
+    <Content Include="JS\sweetalert2.min.css" />
+    <Content Include="JS\sweetalert2.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Web\about.html" />
@@ -312,7 +340,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
