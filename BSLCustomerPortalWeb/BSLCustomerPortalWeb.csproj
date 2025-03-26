@@ -121,10 +121,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\clsCustomer.cs" />
+    <Compile Include="Models\clsProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +339,7 @@
     <Content Include="Web\fonts\fontawesome-webfont3e6e.woff2" />
     <Content Include="Web\fonts\fontawesome-webfontd41d.eot" />
     <Content Include="Views\Home\DashBoard.cshtml" />
+    <Content Include="Views\Product\Yarn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
