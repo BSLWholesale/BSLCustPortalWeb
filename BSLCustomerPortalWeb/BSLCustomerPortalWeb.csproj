@@ -401,6 +401,10 @@
     <Content Include="Views\Home\DashBoard.cshtml" />
     <Content Include="Views\Product\Yarn.cshtml" />
     <Content Include="Views\Product\YarnList.cshtml" />
+    <Content Include="Views\Product\YarnDetail.cshtml" />
+    <Content Include="Views\Product\Fabric.cshtml" />
+    <Content Include="Views\Product\FabricList.cshtml" />
+    <Content Include="Views\Product\FabricDetail.cshtml" />
     <Content Include="Views\Product\YarnCatalogue.cshtml" />
   </ItemGroup>
   <ItemGroup>

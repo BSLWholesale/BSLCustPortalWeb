@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Yarn";
+    ViewBag.Title = "Fabric";
 }
 
 @{
@@ -8,27 +8,27 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            Fn_Get_Yarn_GDType();
+            Fn_Get_Fabric_Blend();
 
         });
 
-        function Fn_Get_Yarn_GDType() {
+        function Fn_Get_Fabric_Blend() {
 
-            var clsYarn = {};
+            var clsFabric = {};
 
             $.ajax({
                 type: "POST",
-                url: '/Product/Fn_Get_Yarn_GDType',
+                url: '/Product/Fn_Get_Fabric_Blend',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: JSON.stringify(clsYarn),
+                data: JSON.stringify(clsFabric),
                 success: function (data) {
-                    $("#dvYarnProduct").html('');
+                    $("#dvFabricProduct").html('');
                     var obj = JSON.parse(data.message);
-                    var rowCount = 0;
+
                     if (obj[0].vErrorMsg == 'Success') {
 
-                        var div3Content = '';
+                        var div3Content = ''; var rowCount = 0;
                         for (var i = 0; i < obj.length; i++) {
 
 
@@ -36,25 +36,24 @@
                             div3Content = div3Content + "<div class='singel-publication mt-30'>";
                             div3Content = div3Content + "<div class='image'>";
 
-                            div3Content = div3Content + "<img src='/Images/Yarn/" + obj[i].GDType + ".jpg?t=" + new Date().getTime() + "' width='230px' height='230px' alt='" + obj[i].GDType + "'>";
+                            div3Content = div3Content + "<img src='/Images/Yarn/" + obj[i].BlendDescription + ".jpg?t=" + new Date().getTime() + "' width='230px' height='230px' alt='" + obj[i].BlendDescription + "'>";
                             div3Content = div3Content + "<div class='add-cart'>";
                             div3Content = div3Content + " </div>";
                             div3Content = div3Content + " </div>";
 
                             div3Content = div3Content + "<div class='name'>";
-                            div3Content = div3Content + "<a href='@Url.Action("YarnList", "Product")?gd=" + obj[i].GDType + "'>";
-                            div3Content = div3Content + "<p class='pt-2' style='font-size: 12px;'>GD Type: " + obj[i].GDType + "</p></a>";
+                            div3Content = div3Content + "<a href='@Url.Action("FabricList", "Product")?blend=" + obj[i].BlendDescription + "'>";
+                            div3Content = div3Content + "<p class='pt-2' style='font-size: 12px;'>Blend: " + obj[i].BlendDescription + "</p></a>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + " </div>";
-
                             rowCount++;
                         }
                     }
                     else {
                         rowCount = 0;
                     }
-                    $("#dvYarnProduct").append(div3Content);
+                    $("#dvFabricProduct").append(div3Content);
                     $('#liItem').html("Showing " + rowCount + " Items");
                     $("img").on("error", function () {
                         $(this).attr("src", "/Images/placeholder.jpg");
@@ -84,26 +83,27 @@
                                 <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a>/
                             </li>
                             <li class="nav-item">
-                                 New Arrivals /
+                                New Arrivals /
                             </li>
                             <li class="nav-item">
-                                Yarn /
+                                Fabirc /
                             </li>
                             <li class="nav-item" id="liItem"></li>
                         </ul> <!-- nav -->
-                    </div><!-- shop bar -->
+                    </div><!-- shop bar -->                   
                 </div> <!-- shop top search -->
             </div>
         </div> <!-- row -->
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
-                <div class="row" id="dvYarnProduct">
+                <div class="row" id="dvFabricProduct">
 
                 </div> <!-- row -->
             </div>
-
-        </div> <!-- tab content -->
-    </div> <!-- container -->
+           
+        </div> 
+        
+    </div> 
 </section>
 
 <!--====== COURSES PART ENDS ======-->

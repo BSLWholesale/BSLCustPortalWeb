@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "FabricDetail";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            Fn_Get_Search_Yarn();
+
+        });
+
+        function Fn_Get_Search_Fabric() {
+
+            var imgPathCRM = '@System.Configuration.ConfigurationManager.AppSettings["imgPathCRM"]';
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCode = urlParams.get('code');
+            $('#liPRM').html(prmCode + " >");
+
+            var clsFabric = {};
+            clsFabric.MaterialCode = prmCode;
+
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Search_Fabric',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsFabric),
+                success: function (data) {
+
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vErrorMsg == 'Success') {
+
+                        var imgPath = imgPathCRM + "/web/Images/Fabric/" + obj[0].MaterialCode + ".jpeg?t = " + new Date().getTime();
+
+                        $('#imgMaim').attr('src', imgPath);
+                        $('a.aMain').attr('href', imgPath);
+                        $('#MaterialCode').html(obj[0].MaterialCode);
+                        $('#spnQuality').html(obj[0].Quality);
+                        $('#spnBlendDescription').html(obj[0].BlendDescription);
+                        $('#spnBlendValue').html(obj[0].BlendValue);
+                        $('#spnWeaveType').html(obj[0].WeaveType);
+                        $('#spnGSM').html(obj[0].GSM);
+                        $('#spnStrechType').html(obj[0].StrechType);
+                        $('#spnFinishFabric').html(obj[0].SLUB);
+                        $('#spnspnQuality').html(obj[0].MaterialDescription);
+                        $('#spnShadeName').html(obj[0].ShadeName);
+                        $('#spnSpecialFeature').html(obj[0].SpecialFeature);
+                    }
+                    else {
+
+                    }
+                    $("img").on("error", function () {
+                        $(this).attr("src", "/Images/placeholder.jpg");
+                    });
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+    </script>
+}
+
+<!--====== SHOP PART START ======-->
+
+<section id="shop-singel" class="pt-10 pb-10 gray-bg">
+    <div class="container-fluid">
+        <div class="shop-destails">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="shop-left pt-30">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-image-1" role="tabpanel" aria-labelledby="pills-image-1-tab">
+                                <div class="shop-image">
+
+                                    <a href="" name="aMain" class="shop-items aMain"><img src="" id="imgMaim" alt="Shop"></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div> <!-- shop left -->
+                </div>
+                <div class="col-lg-6">
+                    <div class="shop-right pt-30" style="padding-bottom: 5px">
+                        <h6 id="MaterialCode"></h6>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Material Description: <span id="spnMaterialDescription"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Quality: <span id="spnQuality"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>BlendDescription: <span id="spnBlendDescription"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>BlendValue: <span id="spnBlendValue"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>WeaveType: <span id="spnWeaveType"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>GSM: <span id="spnGSM"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>sStrechType: <span id="spnStrechType"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Finish Fabric: <span id="spnFinishFabric"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Shade: <span id="spnShadeName"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>SpecialFeature: <span id="spnSpecialFeature"></span></p>
+                        @*<div class="nice-number pt-15">
+                                <input type="number" value="1">
+                            </div>
+                            <div class="add-btn pt-15">
+                                <button type="button" class="main-btn">Add to Cart</button>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!--====== COURSES PART ENDS ======-->

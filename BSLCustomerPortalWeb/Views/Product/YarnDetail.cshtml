@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "YarnDetail";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            Fn_Get_Search_Yarn();
+
+        });
+
+        function Fn_Get_Search_Yarn() {
+
+            var imgPathCRM = '@System.Configuration.ConfigurationManager.AppSettings["imgPathCRM"]';
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCode = urlParams.get('code');
+            $('#liPRM').html(prmCode + " >");
+
+            var clsYarn = {};
+            clsYarn.MaterialCode = prmCode;
+
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Search_Yarn',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsYarn),
+                success: function (data) {
+                    $("#dvYarnProduct").html('');
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vErrorMsg == 'Success') {
+
+                        var imgPath = imgPathCRM + "/web/Images/Yarn/" + obj[0].MaterialCode + ".jpeg?t = " + new Date().getTime();
+
+                        $('#imgMaim').attr('src', imgPath);
+                        $('a.aMain').attr('href', imgPath);
+                        $('#MaterialCode').html(obj[0].MaterialCode);
+                        $('#spnMaterialDescription').html(obj[0].MaterialDescription);
+                        $('#spnGDType').html(obj[0].GDType);
+                        $('#spnPly').html(obj[0].Ply);
+                        $('#spnCount').html(obj[0].Count);
+                        $('#spnCountType').html(obj[0].CountType);
+                        $('#spnBlendDescription').html(obj[0].BlendDescription);
+                        $('#spnSLUB').html(obj[0].SLUB);
+                        $('#spnTechnique').html(obj[0].Technique);
+                        $('#spnQuality').html(obj[0].Quality);
+                        $('#spnSpecialFeature').html(obj[0].SpecialFeature);
+                    }
+                    else {
+
+                    }
+                
+                    $("img").on("error", function () {
+                        $(this).attr("src", "/Images/placeholder.jpg");
+                    });
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+    </script>
+}
+
+<!--====== SHOP PART START ======-->
+
+<section id="shop-singel" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="shop-destails">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="shop-left pt-30">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-image-1" role="tabpanel" aria-labelledby="pills-image-1-tab">
+                                <div class="shop-image">
+                                  
+                                    <a href="" name="aMain" class="shop-items aMain"><img src="" id="imgMaim" alt="Shop"></a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                      
+                    </div> <!-- shop left -->
+                </div>
+                <div class="col-lg-6">
+                    <div class="shop-right pt-30" style="padding-bottom: 5px">
+                        <h6 id="MaterialCode"></h6>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Material Description: <span id="spnMaterialDescription"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>GDType: <span id="spnGDType"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Ply: <span id="spnPly"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Count: <span id="spnCount"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>CountType: <span id="spnCountType"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Blend Description: <span id="spnBlendDescription"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>SLUB: <span id="spnSLUB"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Technique: <span id="spnTechnique"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Quality: <span id="spnQuality"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>SpecialFeature: <span id="spnSpecialFeature"></span></p>
+                        @*<div class="nice-number pt-15">
+                            <input type="number" value="1">
+                        </div>
+                        <div class="add-btn pt-15">
+                            <button type="button" class="main-btn">Add to Cart</button>
+                        </div>*@
+                    </div>
+                </div>
+            </div>  
+           
+        </div> 
+       
+    </div> 
+</section>
+
+<!--====== COURSES PART ENDS ======-->

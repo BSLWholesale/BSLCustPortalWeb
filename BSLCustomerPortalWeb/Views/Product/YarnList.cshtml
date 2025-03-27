@@ -17,7 +17,7 @@
             var imgPathCRM = '@System.Configuration.ConfigurationManager.AppSettings["imgPathCRM"]';
             const urlParams = new URLSearchParams(window.location.search);
             const prmGDType = urlParams.get('gd');
-            $('#liPRM').html(prmGDType + " >");
+            $('#liPRM').html(prmGDType + " /");
 
             var clsYarn = {};
             clsYarn.GDType = prmGDType;
@@ -39,13 +39,14 @@
 
                             div3Content = div3Content + "<div class='col-lg-3 col-md-6 col-sm-8'>";
                             div3Content = div3Content + "<div class='singel-publication mt-30'>";
+                            div3Content = div3Content + "<a href='@Url.Action("YarnDetail", "Product")?code=" + obj[i].MaterialCode + "'>";
                             div3Content = div3Content + "<div class='image'>";
                             div3Content = div3Content + "<img src='" + imPath + obj[i].MaterialCode + ".jpeg?t = " + new Date().getTime() + "'  alt='" + obj[i].MaterialCode + "'>";
-                            div3Content = div3Content + " </div>";
+                            div3Content = div3Content + "</div></a>";
                             div3Content = div3Content + "<div class='name'>";
-                            div3Content = div3Content + "<p style='font-size: 10px; line-height: 20px;'>MaterialCode: " + obj[i].MaterialCode + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 10px; line-height: 20px;'>BlendDescription: " + obj[i].BlendDescription + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 10px; line-height: 20px;'>Count: " + obj[i].Count + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>MaterialCode: " + obj[i].MaterialCode + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>BlendDescription: " + obj[i].BlendDescription + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>GDType: " + obj[i].GDType + "</p>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + " </div>";
@@ -53,7 +54,7 @@
                         }
                     }
                     else {
-
+                        rowCount = 0;
                     }
                     $('#dvYarnProduct').append(div3Content);
                     $('#liCountItem').html("Showing " + rowCount + " Items");
@@ -75,13 +76,19 @@
 <!--====== SHOP PART START ======-->
 
 <section id="shop-page" class="pt-10 pb-10 gray-bg">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="shop-top-search">
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
-                            <li class="nav-item"><a href="@Url.Action("Yarn", "Product")">Yarn ></a></li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a>/
+                            </li>
+                            <li class="nav-item">
+                                New Arrivals /
+                            </li>
+                            <li class="nav-item"><a href="@Url.Action("Yarn", "Product")">Yarn /</a></li>
                             <li class="nav-item" id="liPRM"></li>
                             <li class="nav-item" id="liCountItem"></li>
                         </ul> 
@@ -92,162 +99,13 @@
         </div> <!-- row -->
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
-                <div class="row justify-content-center" id="dvYarnProduct">
+                <div class="row" id="dvYarnProduct">
 
                 </div> <!-- row -->
             </div>
-            <div class="tab-pane fade" id="shop-list" role="tabpanel" aria-labelledby="shop-list-tab">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="singel-publication mt-30">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="image">
-                                        <img src="images/publication/p-1.jpg" alt="Publication">
-                                        <div class="add-cart">
-                                            <ul>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="cont">
-                                        <div class="name">
-                                            <a href="shop-singel.html"><h6>Set for life </h6></a>
-                                            <span>$50.00</span>
-                                        </div>
-                                        <div class="description pt-10">
-                                            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>
-                                        </div>
-                                        <div class="button">
-                                            <a href="#" class="main-btn">Buy Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- row -->
-                        </div> <!-- singel publication -->
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="singel-publication mt-30">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="image">
-                                        <img src="images/publication/p-2.jpg" alt="Publication">
-                                        <div class="add-cart">
-                                            <ul>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="cont">
-                                        <div class="name">
-                                            <a href="shop-singel.html"><h6>Set for life </h6></a>
-                                            <span>$50.00</span>
-                                        </div>
-                                        <div class="description pt-10">
-                                            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>
-                                        </div>
-                                        <div class="button">
-                                            <a href="#" class="main-btn">Buy Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- row -->
-                        </div> <!-- singel publication -->
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="singel-publication mt-30">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="image">
-                                        <img src="images/publication/p-3.jpg" alt="Publication">
-                                        <div class="add-cart">
-                                            <ul>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="cont">
-                                        <div class="name">
-                                            <a href="shop-singel.html"><h6>Set for life </h6></a>
-                                            <span>$50.00</span>
-                                        </div>
-                                        <div class="description pt-10">
-                                            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>
-                                        </div>
-                                        <div class="button">
-                                            <a href="#" class="main-btn">Buy Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- row -->
-                        </div> <!-- singel publication -->
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="singel-publication mt-30">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="image">
-                                        <img src="images/publication/p-4.jpg" alt="Publication">
-                                        <div class="add-cart">
-                                            <ul>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="cont">
-                                        <div class="name">
-                                            <a href="shop-singel.html"><h6>Set for life </h6></a>
-                                            <span>$50.00</span>
-                                        </div>
-                                        <div class="description pt-10">
-                                            <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>
-                                        </div>
-                                        <div class="button">
-                                            <a href="#" class="main-btn">Buy Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!-- row -->
-                        </div> <!-- singel publication -->
-                    </div>
-                </div> <!-- row -->
-            </div>
+         
         </div> <!-- tab content -->
-        <!--<div class="row">
-            <div class="col-lg-12">
-                <nav class="courses-pagination mt-50">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a href="#" aria-label="Previous">
-                                <i class="fa fa-angle-left"></i>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="active" href="#">1</a></li>
-                        <li class="page-item"><a href="#">2</a></li>
-                        <li class="page-item"><a href="#">3</a></li>
-                        <li class="page-item">
-                            <a href="#" aria-label="Next">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>-->
-        <!-- courses pagination -->
-        <!--</div>
-        </div>-->
-        <!-- row -->
+        
     </div> <!-- container -->
 </section>
 
