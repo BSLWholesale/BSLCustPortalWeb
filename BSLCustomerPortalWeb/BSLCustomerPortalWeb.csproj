@@ -144,13 +144,17 @@
     <Content Include="Images\cart.png" />
     <Content Include="Images\del.png" />
     <Content Include="Images\delete-181.png" />
+    <Content Include="Images\delete-icon.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\eye.svg" />
     <Content Include="Images\facebook.svg" />
+    <Content Include="Images\favicon.ico" />
     <Content Include="Images\github.svg" />
     <Content Include="Images\loading.gif" />
     <Content Include="Images\login.svg" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\logo1.png" />
+    <Content Include="Images\NewLogo.jpg" />
     <Content Include="Images\placeholder.jpg" />
     <Content Include="Images\placeholder1.jpg" />
     <Content Include="Images\remove.png" />

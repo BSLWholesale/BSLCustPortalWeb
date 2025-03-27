@@ -9,7 +9,10 @@
         @Scripts.Render("~/bundles/modernizr")*@
 
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="/Web/images/favicon.png" type="image/png">
+    @*<link rel="shortcut icon" href="/Web/images/favicon.png" type="image/png">*@
+    <link rel="shortcut icon" href="~/Images/favicon.ico" />
+    <link rel="shortcut icon" href="~/Images/favicon.ico" type="image/x-icon" />
+
     <link rel="stylesheet" href="/Web/css/slick.css">
     <link rel="stylesheet" href="/Web/css/animate.css">
     <link rel="stylesheet" href="/Web/css/nice-select.css">
@@ -83,38 +86,79 @@
                 <!--</div>--> <!-- container -->
             <!--</div>--> <!-- header top -->
 
-            <div class="header-logo-support pt-30 pb-30">
+            <div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4">
-                            <div class="logo">
+                        <div class="col-lg-2 col-md-2" style="margin-left:1px;">
+                            <div>
                                 <a href="@Url.Action("DashBoard", "Home")">
                                     <img src="~/Web/images/logo.png" alt="Logo">
                                 </a>
                             </div>
                         </div>
-                        <div class="col-lg-8 col-md-8">
-                            <div class="support-button float-right d-none d-md-block">
-                                <div class="support float-left">
-                                    <div class="icon">
-                                        <img src="/Web/images/all-icon/support.png" alt="icon">
-                                    </div>
-                                    <div class="cont">
-                                        <p>Customer Account: </p>
-                                        <p>Customer Contat</p>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div> <!-- row -->
-                </div> <!-- container -->
-            </div> <!-- header logo support -->
 
-            <div class="navigation">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-lg-6  col-md-6 col-sm-6">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 navigation">
+                                <nav class="navbar navbar-expand-lg">
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+
+                                    <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                        <ul class="navbar-nav mr-auto">
+                                            <li class="nav-item">
+                                                <a class="active" href="@Url.Action("DashBoard", "Home")">Home</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="@Url.Action("About", "Home")">About us</a>
+                                            </li>
+                                            @*<li class="nav-item">
+                            <a href="courses.html">Courses</a>
+                            <ul class="sub-menu">
+                                <li><a href="courses.html">Courses</a></li>
+                                <li><a href="courses-singel.html">Course Singel</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="events.html">Events</a>
+                            <ul class="sub-menu">
+                                <li><a href="events.html">Events</a></li>
+                                <li><a href="events-singel.html">Event Singel</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="teachers.html">Our teachers</a>
+                            <ul class="sub-menu">
+                                <li><a href="teachers.html">teachers</a></li>
+                                <li><a href="teachers-singel.html">teacher Singel</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="blog.html">Blog</a>
+                            <ul class="sub-menu">
+                                <li><a href="blog.html">Blog</a></li>
+                                <li><a href="blog-singel.html">Blog Singel</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="shop.html">Shop</a>
+                            <ul class="sub-menu">
+                                <li><a href="shop.html">Shop</a></li>
+                                <li><a href="shop-singel.html">Shop Singel</a></li>
+                            </ul>
+                        </li>*@
+                                            <li class="nav-item">
+                                                <a href="@Url.Action("Contact", "Home")">Contact</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav> <!-- nav -->
+                            </div>
+
+                        </div>
+                        <!--<div class="col-lg-6 col-md-6 col-sm-6 col-6 navigation">
                             <nav class="navbar navbar-expand-lg">
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="icon-bar"></span>
@@ -129,7 +173,7 @@
                                         </li>
                                         <li class="nav-item">
                                             <a href="@Url.Action("About", "Home")">About us</a>
-                                        </li>
+                                        </li>-->
                                         @*<li class="nav-item">
                                             <a href="courses.html">Courses</a>
                                             <ul class="sub-menu">
@@ -165,15 +209,157 @@
                                                 <li><a href="shop-singel.html">Shop Singel</a></li>
                                             </ul>
                                         </li>*@
-                                        <li class="nav-item">
+                                        <!--<li class="nav-item">
                                             <a href="@Url.Action("Contact", "Home")">Contact</a>
                                         </li>
                                     </ul>
                                 </div>
-                            </nav> <!-- nav -->
+                            </nav>--> <!-- nav -->
+                        <!--</div>-->
+
+
+                        <div class="col-lg-3 col-md-3">
+                            <div class="support-button float-right d-none d-md-block">
+                                <div class="support float-left">
+                                    <div class="icon">
+                                        <img src="/Web/images/all-icon/support.png" alt="icon">
+                                    </div>
+                                    <div class="cont">
+                                        <p>Customer Account </p>
+                                        <p>Customer Contact</p>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        
                     </div> <!-- row -->
+                    <!--<div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <nav class="navbar navbar-expand-lg">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+
+                                <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                    <ul class="navbar-nav mr-auto">
+                                        <li class="nav-item">
+                                            <a class="active" href="@Url.Action("DashBoard", "Home")">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("About", "Home")">About us</a>
+                                        </li>-->
+                                        @*<li class="nav-item">
+                                <a href="courses.html">Courses</a>
+                                <ul class="sub-menu">
+                                    <li><a href="courses.html">Courses</a></li>
+                                    <li><a href="courses-singel.html">Course Singel</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="events.html">Events</a>
+                                <ul class="sub-menu">
+                                    <li><a href="events.html">Events</a></li>
+                                    <li><a href="events-singel.html">Event Singel</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="teachers.html">Our teachers</a>
+                                <ul class="sub-menu">
+                                    <li><a href="teachers.html">teachers</a></li>
+                                    <li><a href="teachers-singel.html">teacher Singel</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="blog.html">Blog</a>
+                                <ul class="sub-menu">
+                                    <li><a href="blog.html">Blog</a></li>
+                                    <li><a href="blog-singel.html">Blog Singel</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="shop.html">Shop</a>
+                                <ul class="sub-menu">
+                                    <li><a href="shop.html">Shop</a></li>
+                                    <li><a href="shop-singel.html">Shop Singel</a></li>
+                                </ul>
+                            </li>*@
+                                        <!--<li class="nav-item">
+                                            <a href="@Url.Action("Contact", "Home")">Contact</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>--> <!-- nav -->
+                        <!--</div>
+
+                    </div>--> <!-- row -->
+                </div> <!-- container -->
+            </div> <!-- header logo support -->
+
+            <div class="navigation">
+                <div class="container">
+                    <!--<div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <nav class="navbar navbar-expand-lg">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+
+                                <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                    <ul class="navbar-nav mr-auto">
+                                        <li class="nav-item">
+                                            <a class="active" href="@Url.Action("DashBoard", "Home")">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("About", "Home")">About us</a>
+                                        </li>-->
+                                        @*<li class="nav-item">
+                                            <a href="courses.html">Courses</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="courses.html">Courses</a></li>
+                                                <li><a href="courses-singel.html">Course Singel</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="events.html">Events</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="events.html">Events</a></li>
+                                                <li><a href="events-singel.html">Event Singel</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="teachers.html">Our teachers</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="teachers.html">teachers</a></li>
+                                                <li><a href="teachers-singel.html">teacher Singel</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="blog.html">Blog</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="blog.html">Blog</a></li>
+                                                <li><a href="blog-singel.html">Blog Singel</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="shop.html">Shop</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="shop.html">Shop</a></li>
+                                                <li><a href="shop-singel.html">Shop Singel</a></li>
+                                            </ul>
+                                        </li>*@
+                                        <!--<li class="nav-item">
+                                            <a href="@Url.Action("Contact", "Home")">Contact</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>--> <!-- nav -->
+                        <!--</div>
+                        
+                    </div>--> <!-- row -->
                 </div> <!-- container -->
             </div>
 
@@ -195,7 +381,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="copyright text-md-left text-center pt-10">
-                                <p>© 2016, Banswara Syntex Limited, INDIA. All Rights Reserved. </p>
+                                <p>© 2025, Banswara Syntex Limited, INDIA. All Rights Reserved. </p>
                             </div>
                         </div>
                         <div class="col-md-6">

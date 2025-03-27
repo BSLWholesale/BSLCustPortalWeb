@@ -82,44 +82,47 @@
     }
 
 </script>
-
-<div class="container" style="margin-top:8%;">
-    <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-6">
-            <div class="card mb-0 h-auto">
-                <div class="card-body">
-                    <div class="text-center mb-2">
-                        @*<h5>BSL Customer Portal</h5>*@
-                        <img src="~/Images/SingleLogoHighnoBG.png" width="35%" height="5%" />
-                    </div><br />
-                    <h4 class="text-center mb-4" style="color:black;">Customer Login</h4>
-                    <div>
-                        <div class="form-group">
-                            <label class="form-label" for="username">Customer ID</label>
-                            <input type="text" id="txtCustomerId" name="txtCustomerId" class="form-control" placeholder="Enter Your Customer ID">
-                        </div>
-                        <div class="mb-4 position-relative">
-                            <label class="form-label" for="dlabPassword">Password</label>
-                            <input type="password" id="txtPassword" name="txtPassword" class="form-control" value="" placeholder="Enter Your Password">
-                            <span class="show-pass eye" onclick="Fn_ShowPassword();">
-                                <i class="fa fa-eye-slash"></i>
-                                <i class="fa fa-eye"></i>
-                            </span>
-                        </div>
-                        <div class="form-row d-flex flex-wrap justify-content-between mt-4 mb-2">
-                            <div class="form-group ms-2" style="display:none;">
-                                <a class="btn-link" href="@Url.Action("", "")">Forgot Password?</a>
+<main>
+    <section style="background-color: edf0f2;">
+        <div class="container" style="margin-top: 8%;">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-6">
+                    <div class="card mb-0 h-auto">
+                        <div class="card-body">
+                            <div class="text-center mb-2">
+                                @*<h5>BSL Customer Portal</h5>*@
+                                <img src="~/Images/SingleLogoHighnoBG.png" width="35%" height="5%" />
+                            </div><br />
+                            <h4 class="text-center mb-4" style="color:black;">Customer Login</h4>
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label" for="username">Customer ID</label>
+                                    <input type="text" id="txtCustomerId" name="txtCustomerId" class="form-control" placeholder="Enter Your Customer ID">
+                                </div>
+                                <div class="mb-4 position-relative">
+                                    <label class="form-label" for="dlabPassword">Password</label>
+                                    <input type="password" id="txtPassword" name="txtPassword" class="form-control" value="" placeholder="Enter Your Password">
+                                    <span class="show-pass eye" onclick="Fn_ShowPassword();">
+                                        <i class="fa fa-eye-slash"></i>
+                                        <i class="fa fa-eye"></i>
+                                    </span>
+                                </div>
+                                <div class="form-row d-flex flex-wrap justify-content-between mt-4 mb-2">
+                                    <div class="form-group ms-2" style="display:none;">
+                                        <a class="btn-link" href="@Url.Action("", "")">Forgot Password?</a>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-warning btn-block" onclick="Fn_LogIn_Customer();" style="background-color: #ffc600; color: black;"><b>Log In</b></button>
+                                </div>
+                                <div class="new-account mt-3">
+                                    <p style="display:none;">New Customer <a class="text-primary" href="">Sign up</a></p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-warning btn-block" onclick="Fn_LogIn_Customer();" style="background-color: #ffc600; color: black;"><b>Log In</b></button>
-                        </div>
-                        <div class="new-account mt-3">
-                            <p style="display:none;">New Customer <a class="text-primary" href="">Sign up</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+</main>
