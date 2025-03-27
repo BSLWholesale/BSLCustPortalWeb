@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Yarn";
+    ViewBag.Title = "FabricList";
 }
 
 @{
@@ -8,54 +8,56 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            Fn_Get_Yarn_GDType();
+            Fn_Get_Search_Fabric();
 
         });
 
-        function Fn_Get_Yarn_GDType() {
+        function Fn_Get_Search_Fabric() {
 
-            var clsYarn = {};
+            var imgPathCRM = '@System.Configuration.ConfigurationManager.AppSettings["imgPathCRM"]';
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmblend = urlParams.get('blend');
+            $('#liPRM').html(prmblend + " /");
+
+            var clsFabric = {};
+            clsFabric.BlendDescription = prmblend;
 
             $.ajax({
                 type: "POST",
-                url: '/Product/Fn_Get_Yarn_GDType',
+                url: '/Product/Fn_Get_Search_Fabric',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: JSON.stringify(clsYarn),
+                data: JSON.stringify(clsFabric),
                 success: function (data) {
-                    $("#dvYarnProduct").html('');
+                    $("#dvFabricProduct").html('');
                     var obj = JSON.parse(data.message);
-                    var rowCount = 0;
                     if (obj[0].vErrorMsg == 'Success') {
 
-                        var div3Content = '';
+                        var div3Content = ''; var imPath = imgPathCRM + "/web/Images/Fabric_Icon/";
+                        var rowCount = 0;
                         for (var i = 0; i < obj.length; i++) {
-
 
                             div3Content = div3Content + "<div class='col-lg-3 col-md-6 col-sm-8'>";
                             div3Content = div3Content + "<div class='singel-publication mt-30'>";
+                            div3Content = div3Content + "<a href='@Url.Action("FabricDetail", "Product")?code=" + obj[i].MaterialCode + "'>";
                             div3Content = div3Content + "<div class='image'>";
-
-                            div3Content = div3Content + "<img src='/Images/Yarn/" + obj[i].GDType + ".jpg?t=" + new Date().getTime() + "' width='230px' height='230px' alt='" + obj[i].GDType + "'>";
-                            div3Content = div3Content + "<div class='add-cart'>";
-                            div3Content = div3Content + " </div>";
-                            div3Content = div3Content + " </div>";
-
+                            div3Content = div3Content + "<img src='" + imPath + obj[i].MaterialCode + ".jpeg?t = " + new Date().getTime() + "'  alt='" + obj[i].MaterialCode + "'>";
+                            div3Content = div3Content + "</div></a>";
                             div3Content = div3Content + "<div class='name'>";
-                            div3Content = div3Content + "<a href='@Url.Action("YarnList", "Product")?gd=" + obj[i].GDType + "'>";
-                            div3Content = div3Content + "<p class='pt-2' style='font-size: 12px;'>GD Type: " + obj[i].GDType + "</p></a>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>MaterialCode: " + obj[i].MaterialCode + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>BlendDescription: " + obj[i].BlendDescription + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Count: " + obj[i].Count + "</p>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + " </div>";
-
                             rowCount++;
                         }
                     }
                     else {
                         rowCount = 0;
                     }
-                    $("#dvYarnProduct").append(div3Content);
-                    $('#liItem').html("Showing " + rowCount + " Items");
+                    $('#dvFabricProduct').append(div3Content);
+                    $('#liCountItem').html("Showing " + rowCount + " Items");
                     $("img").on("error", function () {
                         $(this).attr("src", "/Images/placeholder.jpg");
                     });
@@ -81,29 +83,28 @@
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a>/
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
                             </li>
                             <li class="nav-item">
-                                 New Arrivals /
+                                New Arrivals /
                             </li>
-                            <li class="nav-item">
-                                Yarn /
-                            </li>
-                            <li class="nav-item" id="liItem"></li>
-                        </ul> <!-- nav -->
-                    </div><!-- shop bar -->
-                </div> <!-- shop top search -->
+                            <li class="nav-item"><a href="@Url.Action("Fabric", "Product")">Fabric </a>/</li>
+                            <li class="nav-item" id="liPRM"></li>
+                            <li class="nav-item" id="liCountItem"></li>
+                        </ul>
+                    </div>
+
+                </div>
             </div>
         </div> <!-- row -->
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
-                <div class="row" id="dvYarnProduct">
+                <div class="row" id="dvFabricProduct">
 
-                </div> <!-- row -->
+                </div>
             </div>
-
-        </div> <!-- tab content -->
-    </div> <!-- container -->
+        </div>
+    </div> 
 </section>
 
 <!--====== COURSES PART ENDS ======-->
