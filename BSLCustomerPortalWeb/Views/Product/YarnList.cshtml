@@ -39,13 +39,14 @@
 
                             div3Content = div3Content + "<div class='col-lg-3 col-md-6 col-sm-8'>";
                             div3Content = div3Content + "<div class='singel-publication mt-30'>";
+                            div3Content = div3Content + "<a href='@Url.Action("YarnDetail", "Product")?code=" + obj[i].MaterialCode + "'>";
                             div3Content = div3Content + "<div class='image'>";
                             div3Content = div3Content + "<img src='" + imPath + obj[i].MaterialCode + ".jpeg?t = " + new Date().getTime() + "'  alt='" + obj[i].MaterialCode + "'>";
-                            div3Content = div3Content + " </div>";
+                            div3Content = div3Content + "</div></a>";
                             div3Content = div3Content + "<div class='name'>";
-                            div3Content = div3Content + "<p style='font-size: 10px; line-height: 20px;'>MaterialCode: " + obj[i].MaterialCode + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 10px; line-height: 20px;'>BlendDescription: " + obj[i].BlendDescription + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 10px; line-height: 20px;'>Count: " + obj[i].Count + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>MaterialCode: " + obj[i].MaterialCode + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>BlendDescription: " + obj[i].BlendDescription + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Count: " + obj[i].Count + "</p>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + " </div>";

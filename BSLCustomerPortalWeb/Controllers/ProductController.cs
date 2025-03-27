@@ -37,6 +37,11 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
+        public ActionResult YarnDetail()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult Fn_Get_Yarn_GDType(clsYarn obj)
         {

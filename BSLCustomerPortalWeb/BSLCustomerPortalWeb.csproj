@@ -350,6 +350,7 @@
     <Content Include="Views\Home\DashBoard.cshtml" />
     <Content Include="Views\Product\Yarn.cshtml" />
     <Content Include="Views\Product\YarnList.cshtml" />
+    <Content Include="Views\Product\YarnDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
