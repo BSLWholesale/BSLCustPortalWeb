@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Garments";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            Fn_Get_Garments_Category();
+
+        });
+
+        function Fn_Get_Garments_Category() {
+
+            var clsGarments = {};
+
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Garments_Category',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsGarments),
+                success: function (data) {
+                    $("#dvFabricProduct").html('');
+                    var obj = JSON.parse(data.message);
+
+                    if (obj[0].vErrorMsg == 'Success') {
+
+                        var div3Content = ''; var rowCount = 0;
+                        for (var i = 0; i < obj.length; i++) {
+
+
+                            div3Content = div3Content + "<div class='col-lg-3 col-md-6 col-sm-8'>";
+                            div3Content = div3Content + "<div class='singel-publication mt-30'>";
+                            div3Content = div3Content + "<div class='image'>";
+
+                            div3Content = div3Content + "<img src='/Images/Garments/" + obj[i].Category + ".jpg?t=" + new Date().getTime() + "' width='230px' height='230px' alt='" + obj[i].Category + "'>";
+                            div3Content = div3Content + "<div class='add-cart'>";
+                            div3Content = div3Content + " </div>";
+                            div3Content = div3Content + " </div>";
+
+                            div3Content = div3Content + "<div class='name'>";
+                            div3Content = div3Content + "<a href='@Url.Action("FabricList", "Product")?category=" + obj[i].Category + "'>";
+                            div3Content = div3Content + "<p class='pt-2' style='font-size: 12px;'>Blend: " + obj[i].Category + "</p></a>";
+                            div3Content = div3Content + "</div>";
+                            div3Content = div3Content + "</div>";
+                            div3Content = div3Content + " </div>";
+                            rowCount++;
+                        }
+                    }
+                    else {
+                        rowCount = 0;
+                    }
+                    $("#dvFabricProduct").append(div3Content);
+                    $('#liItem').html("Showing " + rowCount + " Items");
+                    $("img").on("error", function () {
+                        $(this).attr("src", "/Images/placeholder.jpg");
+                    });
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+    </script>
+}
+
+
+<!--====== SHOP PART START ======-->
+
+<section id="shop-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a>/
+                            </li>
+                            <li class="nav-item">
+                                New Arrivals /
+                            </li>
+                            <li class="nav-item">
+                                Fabirc /
+                            </li>
+                            <li class="nav-item" id="liItem"></li>
+                        </ul> <!-- nav -->
+                    </div><!-- shop bar -->
+                </div> <!-- shop top search -->
+            </div>
+        </div> <!-- row -->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
+                <div class="row" id="dvFabricProduct">
+
+                </div> <!-- row -->
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!--====== COURSES PART ENDS ======-->
