@@ -406,9 +406,13 @@
     <Content Include="Views\Product\FabricList.cshtml" />
     <Content Include="Views\Product\FabricDetail.cshtml" />
     <Content Include="Views\Product\YarnCatalogue.cshtml" />
+    <Content Include="Views\Product\FabricCatalogue.cshtml" />
+    <Content Include="Views\Product\GarmentsCatalogue.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\Fabriccatalogue\" />
+    <Folder Include="Images\Garmentscatalogue\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
