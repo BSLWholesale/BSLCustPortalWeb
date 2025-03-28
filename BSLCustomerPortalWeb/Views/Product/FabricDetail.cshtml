@@ -8,7 +8,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            Fn_Get_Search_Yarn();
+            Fn_Get_Search_Fabric();
 
         });
 
@@ -39,13 +39,12 @@
                         $('a.aMain').attr('href', imgPath);
                         $('#MaterialCode').html(obj[0].MaterialCode);
                         $('#spnQuality').html(obj[0].Quality);
-                        $('#spnBlendDescription').html(obj[0].BlendDescription);
-                        $('#spnBlendValue').html(obj[0].BlendValue);
+                        $('#spnBlend').html(obj[0].BlendDescription + " " + obj[0].BlendValue);
                         $('#spnWeaveType').html(obj[0].WeaveType);
                         $('#spnGSM').html(obj[0].GSM);
                         $('#spnStrechType').html(obj[0].StrechType);
                         $('#spnFinishFabric').html(obj[0].SLUB);
-                        $('#spnspnQuality').html(obj[0].MaterialDescription);
+                        $('#spnMaterialDescription').html(obj[0].MaterialDescription);
                         $('#spnShadeName').html(obj[0].ShadeName);
                         $('#spnSpecialFeature').html(obj[0].SpecialFeature);
                     }
@@ -91,11 +90,10 @@
                         <h6 id="MaterialCode"></h6>
                         <p style='line-height: 20px; padding-bottom: 8px'>Material Description: <span id="spnMaterialDescription"></span></p>
                         <p style='line-height: 20px; padding-bottom: 8px'>Quality: <span id="spnQuality"></span></p>
-                        <p style='line-height: 20px; padding-bottom: 8px'>BlendDescription: <span id="spnBlendDescription"></span></p>
-                        <p style='line-height: 20px; padding-bottom: 8px'>BlendValue: <span id="spnBlendValue"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>Blend: <span id="spnBlend"></span></p>
                         <p style='line-height: 20px; padding-bottom: 8px'>WeaveType: <span id="spnWeaveType"></span></p>
                         <p style='line-height: 20px; padding-bottom: 8px'>GSM: <span id="spnGSM"></span></p>
-                        <p style='line-height: 20px; padding-bottom: 8px'>sStrechType: <span id="spnStrechType"></span></p>
+                        <p style='line-height: 20px; padding-bottom: 8px'>StrechType: <span id="spnStrechType"></span></p>
                         <p style='line-height: 20px; padding-bottom: 8px'>Finish Fabric: <span id="spnFinishFabric"></span></p>
                         <p style='line-height: 20px; padding-bottom: 8px'>Shade: <span id="spnShadeName"></span></p>
                         <p style='line-height: 20px; padding-bottom: 8px'>SpecialFeature: <span id="spnSpecialFeature"></span></p>

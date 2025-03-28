@@ -44,9 +44,11 @@
                             div3Content = div3Content + "<img src='" + imPath + obj[i].MaterialCode + ".jpeg?t = " + new Date().getTime() + "'  alt='" + obj[i].MaterialCode + "'>";
                             div3Content = div3Content + "</div></a>";
                             div3Content = div3Content + "<div class='name'>";
-                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>MaterialCode: " + obj[i].MaterialCode + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>BlendDescription: " + obj[i].BlendDescription + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Count: " + obj[i].Count + "</p>";
+              
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Blend: " + obj[i].BlendDescription + " " + obj[i].BlendValue + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Weave Type: " + obj[i].WeaveType + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Strech Type: " + obj[i].StrechType + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Design Pattern: " + obj[i].DesignPattern + "</p>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + " </div>";
