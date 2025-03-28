@@ -3,5 +3,115 @@
     ViewBag.Title = "GarmentsList";
 }
 
-<h2>GarmentsList</h2>
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
 
+            Fn_Get_Search_Garments();
+
+        });
+
+        function Fn_Get_Search_Garments() {
+
+            var imgPathCRM = '@System.Configuration.ConfigurationManager.AppSettings["imgPathCRM"]';
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCategory = urlParams.get('category');
+            $('#liPRM').html(prmCategory + " /");
+
+            var clsGarments = {};
+            clsGarments.Category = prmCategory;
+
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Search_Garments',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsGarments),
+                success: function (data) {
+                    $("#dvGarmentsProduct").html('');
+                    var obj = JSON.parse(data.message);
+
+                    if (obj[0].vErrorMsg == 'Success') {
+
+                        var div3Content = ''; var rowCount = 0;
+                        var imgPath = imgPathCRM + "/web/Images/Garments_Icon/";
+                        for (var i = 0; i < obj.length; i++) {
+
+
+                            div3Content = div3Content + "<div class='col-lg-3 col-md-6 col-sm-8'>";
+                            div3Content = div3Content + "<div class='singel-publication mt-30'>";
+                            div3Content = div3Content + "<a href='@Url.Action("GarmentsDetail", "Product")?code=" + obj[i].MaterialCode + "'>";
+                            div3Content = div3Content + "<div class='image'>";
+                            div3Content = div3Content + "<img src='" + imgPath + obj[i].MaterialCode + ".jpeg?t = " + new Date().getTime() + "'  alt='" + obj[i].MaterialCode + "'>";
+                            div3Content = div3Content + "</div></a>";
+                            div3Content = div3Content + "<div class='name'>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Categoy: " + obj[i].Category + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Products: " + obj[i].Products + "</p>";        
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Fabric Blends: " + obj[i].Fabricblends + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Fabric Type: " + obj[i].Fabrictype + "</p>";
+                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Season: " + obj[i].Season + "</p>";
+                            div3Content = div3Content + "</div>";
+                            div3Content = div3Content + "</div>";
+                            div3Content = div3Content + " </div>";
+                            rowCount++;
+                        }
+                    }
+                    else {
+                        rowCount = 0;
+                    }
+                    $("#dvGarmentsProduct").append(div3Content);
+                    $('#liItem').html("Showing " + rowCount + " Items");
+                    $("img").on("error", function () {
+                        $(this).attr("src", "/Images/placeholder.jpg");
+                    });
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+    </script>
+}
+
+
+<!--====== SHOP PART START ======-->
+
+<section id="shop-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a>/
+                            </li>
+                            <li class="nav-item">
+                                New Arrivals /
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Garments", "Product")">Garments</a>/
+                            </li>
+                            <li class="nav-item" id="liPRM"></li>
+                            <li class="nav-item" id="liItem"></li>
+                        </ul> <!-- nav -->
+                    </div><!-- shop bar -->
+                </div> <!-- shop top search -->
+            </div>
+        </div> <!-- row -->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
+                <div class="row" id="dvGarmentsProduct">
+
+                </div> <!-- row -->
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!--====== COURSES PART ENDS ======-->
