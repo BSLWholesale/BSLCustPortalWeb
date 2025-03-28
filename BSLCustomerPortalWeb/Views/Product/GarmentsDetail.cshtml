@@ -3,5 +3,139 @@
     ViewBag.Title = "GarmentsDetail";
 }
 
-<h2>GarmentsDetail</h2>
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
 
+            Fn_Get_Search_Garments();
+
+        });
+
+        function Fn_Get_Search_Garments() {
+
+            var imgPathCRM = '@System.Configuration.ConfigurationManager.AppSettings["imgPathCRM"]';
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCode = urlParams.get('code');
+            $('#liPRM').html(prmCode);
+
+            var clsGarments = {};
+            clsGarments.MaterialCode = prmCode;
+
+            $.ajax({
+                type: "POST",
+                url: '/Product/Fn_Get_Search_Garments',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsGarments),
+                success: function (data) {
+
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vErrorMsg == 'Success') {
+
+                        var imgPath = imgPathCRM + "/web/Images/Garments/" + obj[0].MaterialCode + ".jpeg?t = " + new Date().getTime();
+
+                        $('#imgMaim').attr('src', imgPath);
+                        $('a.aMain').attr('href', imgPath);
+                        $('#MaterialCode').html(obj[0].MaterialCode);
+                        $('#spnMaterialDescription').html(obj[0].MaterialDescription);
+                        $('#spnCategory').html(obj[0].Category);
+                        $('#spnProducts').html(obj[0].Products);
+                        $('#spnRanges').html(obj[0].Ranges);
+                        $('#spnFabricblends').html(obj[0].Fabricblends);
+                        $('#spnFabrictype').html(obj[0].Fabrictype);
+                        $('#spnSeason').html(obj[0].Season);
+                        $('#spnFabricquality').html(obj[0].Fabricquality);
+                        $('#spnFabricgsm').html(obj[0].Fabricgsm);
+                        $('#spnFabricshade').html(obj[0].Fabricshade);
+                        $('#spnStyle').html(obj[0].Style);
+                        $('#spnSpecialFeature').html(obj[0].SpecialFeature);
+
+                        var html = "<a href='@Url.Action("GarmentsList", "Product")?category=" + obj[0].Category + "'>" + obj[0].Category + "</a>/";
+                        $('#lMenu').append(html);
+                    }
+                    else {
+
+                    }
+                    $("img").on("error", function () {
+                        $(this).attr("src", "/Images/placeholder.jpg");
+                    });
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+    </script>
+}
+
+<section id="shop-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row pb-3">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a>/
+                            </li>
+                            <li class="nav-item">
+                                New Arrivals /
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Garments", "Product")">Garments</a>/
+                            </li>
+                            <li class="nav-item" id="lMenu"></li>
+                            <li class="nav-item" id="liPRM"></li>
+                            <li class="nav-item" id="liItem"></li>
+                        </ul> <!-- nav -->
+                    </div><!-- shop bar -->
+                </div> <!-- shop top search -->
+            </div>
+        </div> <!-- row -->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
+                <div class="shop-destails">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="shop-left pt-30">
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-image-1" role="tabpanel" aria-labelledby="pills-image-1-tab">
+                                        <div class="shop-image">
+
+                                            <a href="" name="aMain" class="shop-items aMain"><img src="" id="imgMaim" alt="Shop"></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div> <!-- shop left -->
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="shop-right pt-30" style="padding-bottom: 5px">
+                                <h6 id="MaterialCode"></h6>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Material Description: <span id="spnMaterialDescription"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Category: <span id="spnCategory"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Products: <span id="spnProducts"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Ranges: <span id="spnRanges"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Fabricblends: <span id="spnFabricblends"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Fabrictype: <span id="spnFabrictype"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Fabricquality: <span id="spnFabricquality"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Fabricgsm: <span id="spnFabricgsm"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Fabricshade: <span id="spnFabricshade"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>Style<span id="spnStyle"></span></p>
+                                <p style='line-height: 20px; padding-bottom: 8px'>SpecialFeature<span id="spnSpecialFeature"></span></p>
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
