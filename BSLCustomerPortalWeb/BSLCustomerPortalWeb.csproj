@@ -537,6 +537,9 @@
     <Content Include="Views\Product\YarnCatalogue.cshtml" />
     <Content Include="Views\Product\FabricCatalogue.cshtml" />
     <Content Include="Views\Product\GarmentsCatalogue.cshtml" />
+    <Content Include="Views\Product\Garments.cshtml" />
+    <Content Include="Views\Product\GarmentsList.cshtml" />
+    <Content Include="Views\Product\GarmentsDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

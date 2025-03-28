@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "FabricList";
+    ViewBag.Title = "Garments";
 }
 
 @{
@@ -8,47 +8,42 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            Fn_Get_Search_Fabric();
+            Fn_Get_Garments_Category();
 
         });
 
-        function Fn_Get_Search_Fabric() {
+        function Fn_Get_Garments_Category() {
 
-            var imgPathCRM = '@System.Configuration.ConfigurationManager.AppSettings["imgPathCRM"]';
-            const urlParams = new URLSearchParams(window.location.search);
-            const prmblend = urlParams.get('blend');
-            $('#liPRM').html(prmblend + " /");
-
-            var clsFabric = {};
-            clsFabric.BlendDescription = prmblend;
+            var clsGarments = {};
 
             $.ajax({
                 type: "POST",
-                url: '/Product/Fn_Get_Search_Fabric',
+                url: '/Product/Fn_Get_Garments_Category',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: JSON.stringify(clsFabric),
+                data: JSON.stringify(clsGarments),
                 success: function (data) {
                     $("#dvFabricProduct").html('');
                     var obj = JSON.parse(data.message);
+
                     if (obj[0].vErrorMsg == 'Success') {
 
-                        var div3Content = ''; var imPath = imgPathCRM + "/web/Images/Fabric_Icon/";
-                        var rowCount = 0;
+                        var div3Content = ''; var rowCount = 0;
                         for (var i = 0; i < obj.length; i++) {
+
 
                             div3Content = div3Content + "<div class='col-lg-3 col-md-6 col-sm-8'>";
                             div3Content = div3Content + "<div class='singel-publication mt-30'>";
-                            div3Content = div3Content + "<a href='@Url.Action("FabricDetail", "Product")?code=" + obj[i].MaterialCode + "'>";
                             div3Content = div3Content + "<div class='image'>";
-                            div3Content = div3Content + "<img src='" + imPath + obj[i].MaterialCode + ".jpeg?t = " + new Date().getTime() + "'  alt='" + obj[i].MaterialCode + "'>";
-                            div3Content = div3Content + "</div></a>";
+
+                            div3Content = div3Content + "<img src='/Images/Garments/" + obj[i].Category + ".jpg?t=" + new Date().getTime() + "' width='230px' height='230px' alt='" + obj[i].Category + "'>";
+                            div3Content = div3Content + "<div class='add-cart'>";
+                            div3Content = div3Content + " </div>";
+                            div3Content = div3Content + " </div>";
+
                             div3Content = div3Content + "<div class='name'>";
-              
-                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Blend: " + obj[i].BlendDescription + " " + obj[i].BlendValue + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Weave Type: " + obj[i].WeaveType + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Strech Type: " + obj[i].StrechType + "</p>";
-                            div3Content = div3Content + "<p style='font-size: 12px; line-height: 20px;'>Design Pattern: " + obj[i].DesignPattern + "</p>";
+                            div3Content = div3Content + "<a href='@Url.Action("FabricList", "Product")?category=" + obj[i].Category + "'>";
+                            div3Content = div3Content + "<p class='pt-2' style='font-size: 12px;'>Blend: " + obj[i].Category + "</p></a>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + " </div>";
@@ -58,8 +53,8 @@
                     else {
                         rowCount = 0;
                     }
-                    $('#dvFabricProduct').append(div3Content);
-                    $('#liCountItem').html("Showing " + rowCount + " Items");
+                    $("#dvFabricProduct").append(div3Content);
+                    $('#liItem').html("Showing " + rowCount + " Items");
                     $("img").on("error", function () {
                         $(this).attr("src", "/Images/placeholder.jpg");
                     });
@@ -85,28 +80,30 @@
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a>/
                             </li>
                             <li class="nav-item">
                                 New Arrivals /
                             </li>
-                            <li class="nav-item"><a href="@Url.Action("Fabric", "Product")">Fabric </a>/</li>
-                            <li class="nav-item" id="liPRM"></li>
-                            <li class="nav-item" id="liCountItem"></li>
-                        </ul>
-                    </div>
-
-                </div>
+                            <li class="nav-item">
+                                Fabirc /
+                            </li>
+                            <li class="nav-item" id="liItem"></li>
+                        </ul> <!-- nav -->
+                    </div><!-- shop bar -->
+                </div> <!-- shop top search -->
             </div>
         </div> <!-- row -->
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
                 <div class="row" id="dvFabricProduct">
 
-                </div>
+                </div> <!-- row -->
             </div>
+
         </div>
-    </div> 
+
+    </div>
 </section>
 
 <!--====== COURSES PART ENDS ======-->
