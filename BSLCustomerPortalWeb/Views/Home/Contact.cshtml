@@ -1,17 +1,201 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-@*<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/JS/sweetalert.min.js"></script>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>*@
+<script type="text/javascript">
+
+    function Fn_Insert_CustomerContactMessage() {
+        debugger
+        if ($("#txtName").val() == "") {
+            swal("Contact Us", "Please Enter Your Name", "error");
+        }
+        else if ($("#txtEmail").val() == "") {
+            swal("Contact Us", "Please Enter Your Email ID", "error");
+        }
+        else if ($("#txtMobile").val() == "") {
+            swal("Contact Us", "Please Enter Your Mobile Number", "error");
+        }
+        else if ($("#txtAddress").val() == "") {
+            swal("Contact Us", "Please Enter Your Address", "error");
+        }
+        else if ($("#txtMessage").val() == "") {
+            swal("Contact Us", "Please Enter Your Message", "error");
+        }
+        else {
+            debugger
+            var clsCustomerContactMessages = {};
+
+            clsCustomerContactMessages.CustId = sessionStorage.getItem("CustId");
+            clsCustomerContactMessages.Name = $("#txtName").val().trim();
+            clsCustomerContactMessages.Email = $("#txtEmail").val().trim();
+            clsCustomerContactMessages.Mobile = $("#txtMobile").val().trim();
+            clsCustomerContactMessages.Address = $("#txtAddress").val().trim();
+            clsCustomerContactMessages.Message = $("#txtMessage").val().trim();
+            debugger
+            $.ajax({
+                type: "POST",
+                url: "/Home/Fn_Insert_CustomerContactMessage",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsCustomerContactMessages),
+                success: function (data) {
+                    var obj = JSON.parse(data.message);
+                    if (obj.ErrorMsg == "Success") {
+                        swal("", "Your Query Added", "success");
+                    }
+                    else {
+                        swal("", obj.ErrorMsg, "error");
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+    }
+
+</script>
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i></a> Home /
+                            </li>
+                            <li class="nav-item">
+                                Contact Us/
+                            </li>
+                            @*<li class="nav-item" id="liprm"> </li>*@
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- row -->
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="contact-from mt-15">
+                    <div class="section-title">
+                        <h5>Contact Us</h5>
+                        <h3>Keep in touch</h3>
+                    </div> <!-- section title -->
+                    <div class="main-form pt-8">
+                        <form id="contact-form" action="#" method="post" data-toggle="validator">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="singel-form form-group">
+                                        <input type="text" id="txtName" name="txtName" placeholder="Enter Your Name">
+                                        @*<input type="text" id="txtName" name="txtName" placeholder="Enter Your Name" data-error="Name is required." required="required">*@
+                                        @*<div class="help-block with-errors"></div>*@
+                                    </div> <!-- singel form -->
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="singel-form form-group">
+                                        <input type="text" id="txtEmail" name="txtEmail" placeholder="Enter Your Email ID">
+                                        @*<input type="text" id="txtEmail" name="txtEmail" placeholder="Enter Your Email ID" data-error="Valid email is required." required="required">*@
+                                        @*<div class="help-block with-errors"></div>*@
+                                    </div> <!-- singel form -->
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="singel-form form-group">
+                                        <input type="text" id="txtMobile" name="txtMobile" placeholder="Enter Your Mobile No">
+                                        @*<input type="text" id="txtMobile" name="txtMobile" placeholder="Enter Your Mobile No" data-error="Phone is required." required="required">*@
+                                        @*<div class="help-block with-errors"></div>*@
+                                    </div> <!-- singel form -->
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="singel-form form-group">
+                                        <input type="text" id="txtAddress" name="txtAddress" placeholder="Enter Your Address">
+                                        @*<input type="text" id="txtAddress" name="txtAddress" placeholder="Enter Your Address" data-error="Please,leave us a message." required="required">*@
+                                        @*<div class="help-block with-errors"></div>*@
+                                    </div> <!-- singel form -->
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="singel-form form-group">
+                                        <textarea id="txtMessage" name="txtMessage" placeholder="Enter Your Messege"></textarea>
+                                        @*<textarea id="txtMessage" name="txtMessage" placeholder="Enter Your Messege" data-error="Please,leave us a message." required="required"></textarea>*@
+                                        @*<div class="help-block with-errors"></div>*@
+                                    </div> <!-- singel form -->
+                                </div>
+                                <p class="form-message"></p>
+                                <div class="col-md-12">
+                                    <div class="singel-form">
+                                        <button type="submit" class="main-btn" onclick="Fn_Insert_CustomerContactMessage();">Send</button>
+                                    </div> <!-- singel form -->
+                                </div>
+                            </div> <!-- row -->
+                        </form>
+                    </div> <!-- main form -->
+                </div> <!--  contact from -->
+            </div>
+            <div class="col-lg-5">
+                <div class="contact-address mt-15">
+                    <ul>
+                        <li>
+                            <div class="singel-address">
+                                @*<div class="icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>*@
+                                <div class="cont">
+                                    <h5>CORPORATE OFFICE</h5>
+                                    <p>Banswara Syntex Limited, </p>
+                                    <p>4th & 5th Floor, Gopal Bhavan,</p>
+                                    <p>199, Princess Street</p>
+                                    <p>Mumbai - 400 002</p>
+                                    <p>Maharashtra, INDIA</p>
+                                    <p><i class="fa fa-phone"></i> +91 022 66336571-76</p>
+                                    <p><i class="fa fa-envelope-o"></i> info@banswarasyntex.com</p>
+                                </div>
+                            </div> <!-- singel address -->
+                        </li>
+                        <li>
+                            <div class="singel-address">
+                                @*<div class="icon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>*@
+                                <div class="cont">
+                                    <h5>REGISTERED OFFICE</h5>
+                                    <p>Banswara Syntex Limited, </p>
+                                    <p>Industrial Area, Dahod Road,</p>
+                                    <p>Banswara-327 001</p>
+                                    <p>Rajasthan, INDIA</p>
+                                    <p><i class="fa fa-phone"></i>  +91-02962-257676,257679-681</p>                                    </p>
+                                    <p><i class="fa fa-envelope-o"></i> info@banswarasyntex.com</p>
+                                </div>
+                            </div> <!-- singel address -->
+                        </li>
+                        <li>
+                            <div class="singel-address">
+                                @*<div class="icon">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </div>*@
+                                <div class="cont">
+                                    <h5>GARMENT - SURAT</h5>
+                                    <p>Banswara Syntex Limited, </p>
+                                    <p>Industrial Area, Dahod Road,</p>
+                                    <p>Banswara-327 001</p>
+                                    <p>Rajasthan, INDIA</p>
+                                    <p><i class="fa fa-phone"></i>  +91-02962-257676,257679-681</p>                                    </p>
+                                    <p><i class="fa fa-envelope-o"></i> info@banswarasyntex.com</p>
+                                </div>
+                            </div> <!-- singel address -->
+                        </li>
+                    </ul>
+                </div> <!-- contact address -->
+                <!--<div class="map mt-30">
+                    <div id="contact-map"></div>
+                </div>-->
+                <!-- map -->
+            </div>
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
