@@ -38,6 +38,11 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
+        public ActionResult Feedback()
+        {           
+            return View();
+        }
+
 
         [HttpPost]
         public JsonResult Fn_LogIn_Customer(clsCustomer objReq)
@@ -63,6 +68,92 @@ namespace BSLCustomerPortalWeb.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult Fn_Add_Feedback(clsFeedback obj)
+        {
 
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Convert.ToString(ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                string DATA = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+
+                HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
+                HttpResponseMessage responsePost = client.PostAsync("api/CustomerAPI/Fn_Add_Feedback", content).Result;
+                if (responsePost.IsSuccessStatusCode)
+                {
+
+                    return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "No data found." }, JsonRequestBehavior.AllowGet);
+
+                }
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult Fn_Get_Feedback(clsFeedback obj)
+        {
+
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Convert.ToString(ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                string DATA = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+
+                HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
+                HttpResponseMessage responsePost = client.PostAsync("api/CustomerAPI/Fn_Get_Feedback", content).Result;
+                if (responsePost.IsSuccessStatusCode)
+                {
+
+                    return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "No data found." }, JsonRequestBehavior.AllowGet);
+
+                }
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Fn_Delete_Feedback(clsFeedback obj)
+        {
+
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri(Convert.ToString(ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                string DATA = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+
+                HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
+                HttpResponseMessage responsePost = client.PostAsync("api/CustomerAPI/Fn_Delete_Feedback", content).Result;
+                if (responsePost.IsSuccessStatusCode)
+                {
+
+                    return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "No data found." }, JsonRequestBehavior.AllowGet);
+
+                }
+            }
+        }
     }
 }

@@ -27,10 +27,10 @@
                                 <p class="text-center" style="color: #ffffff;">Feedback</p>
                             </div>
                             <div class="name mt-3">
-                                <p class="text-center">Positive</p>
-                                <p class="text-center">Negative</p>
-                                <p class="text-center">Neutral</p>
-                                <p class="text-center mb-4"></p>                                    
+                                <p class="text-center"><a href="@Url.Action("Feedback", "Home")?vstatus=Positive" style="color: #505050;">Positive</a></p>
+                                <p class="text-center"><a href="@Url.Action("Feedback", "Home")?vstatus=Negative" style="color: #505050;">Negative</a></p>
+                                <p class="text-center"><a href="@Url.Action("Feedback", "Home")?vstatus=Neutral" style="color: #505050;">Neutral</a></p>
+                                <p class="text-center mb-4"></p>
                             </div>
                         </div> <!-- singel publication -->
                     </div>
@@ -94,8 +94,10 @@
                           
                             <div class="name mt-3">
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("YarnCatalogue", "Product")" style="color: #505050;">Yarn</a></p>
-                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("FabricCatalogue", "Product")" style="color: #505050;">Fabric</a></p>
-                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("GarmentsCatalogue", "Product")" style="color: #505050;">Garments</a></p>
+
+                                @*<p class="text-center">Yarn</p>*@
+                                <p class="text-center">Fabric</p>
+                                <p class="text-center">Garments</p>
                                 <p></p>
                             </div>
 
