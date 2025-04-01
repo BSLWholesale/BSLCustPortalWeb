@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewBag.Title = "SalesOrderDetail";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            Fn_GET_Sales_Order();
+            Fn_GET_Sales_OrderDetail();
+
+        });
+
+        function Fn_GET_Sales_Order() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCode = urlParams.get('code');
+            var result = prmCode.slice(1, -1);
+
+            var clsSalesOrder = {};
+            clsSalesOrder.UserId = 1;
+            clsSalesOrder.CSAPId = 1100009112;
+            clsSalesOrder.SO = result;
+
+            $.ajax({
+                type: "POST",
+                url: '/SaleOrder/Fn_GET_Sales_Order',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsSalesOrder),
+                success: function (data) {
+                    $("#tbody").html('');
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vERRORMSG == "Success") {
+                        $('#spnSO').html(obj[0].SO);
+                        $('#OrderDate').html(obj[0].Inv_Date);
+                        $('#spnBilledTo').html(obj[0].BILL_PTY);
+                        $('#spnBuyerName').html(obj[0].BILL_TO_PARTY_NAME);
+                        $('#spnContactNo').html(obj[0].Mobile)
+                        $('#spnShippedto').html(obj[0].SOLD_TO_PARTY_NAME);
+                        $('#spnAddress').html(obj[0].CITY + " " + obj[0].COUNTRY)
+
+
+                        $('#spnCustomerRefNo').html(obj[0].BILL_TO_PARTY_NAME);
+                        $('#spnCustomerRefDate').html();
+                        $('#spnSalesOffice').html(obj[0].SLOFFICE);
+                        $('#spnShipmentType').html();
+                        $('#spnShipmentMode').html();
+                        $('#spnDestination').html(obj[0].COUNTRY);
+                        $('#spnSalesmanName').html(obj[0].SALES_GROUP_DESC);
+                        $('#spnAgentCommission').html(obj[0].COMMISSION);
+                        $('#spnAgent').html(obj[0].AGENT_NAME)
+                        // $('#spnAgentReference').val(obj[i].COUNTRY);
+                        $('#spnFinalBuyer').html(obj[0].BILL_TO_PARTY_NAME);
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        function Fn_GET_Sales_OrderDetail() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCode = urlParams.get('code');
+            var result = prmCode.slice(1, -1);
+            var clsSalesOrder = {};
+             clsSalesOrder.CSAPId = 1100009112;
+            clsSalesOrder.SO = result;
+
+            $.ajax({
+                type: "POST",
+                url: '/SaleOrder/Fn_GET_Sales_OrderDetail',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsSalesOrder),
+                success: function (data) {
+                    $("#tbodyDetail").html('');
+                    var obj = JSON.parse(data.message);
+                    var html = ''; var rowCount = 1;
+                    if (obj[0].vERRORMSG == "Success") {
+                        for (var i = 0; i < obj.length; i++) {
+
+                            var amount = parseFloat(obj[i].QTY) * parseFloat(obj[i].BASIC_RATE)
+                            html += "<tr style='padding: 10px;'>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + rowCount + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material + " " + obj[i].Material_Description + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material_Description + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].UOM + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].QTY + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].BASIC_RATE + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + amount + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Inv_Date + "</td>";
+                            html += "</td>";
+                            rowCount++;
+                        }
+
+                    }
+                    else {
+
+                        html += "<tr><td style='font-size: 12px;' colspan='9' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                    }
+                    $("#tbodyDetail").append(html);
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        function Fn_Print_Quotation(divId) {
+            var printContents = document.getElementById(divId).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+
+
+    </script>
+}
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("SalesOrder", "Order")">Sales Order</a> /
+                            </li>
+                            <li class="nav-item" id="liItemCount">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact-from" style="padding: 25px">
+                    <div class="main-form">
+                        <div class="row">
+                            <div class="col-lg-12 mb-3">
+                                <div class="card" id="printableArea">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3"><img src="/Web/NewLogo.jpg" width="90px" height="72px"></div>
+                                            <div class="col-sm-6 text-center">
+                                                <h5 class="mb-3" style="font-weight:900; text-align:center;">BANSWARA SYNTEX LIMITED</h5><br />
+                                                <span>Registered Office & Mills:</span><br />
+                                                <span>Industrial Area, Dahanu Road, Post Box No.21, BANSWARA- 327001</span><br />
+                                                <span>Ph No. : +91 2962 240690-91, 93, 257679 - 681 Fax: (02962)240692</span><br />
+                                                <span>Web site: www.banswarasyntex.com</span><br />
+                                                <span>Email id - salesbtm@banswarasyntex.com</span><br />
+                                                <span><b>GSTIN:08AAACB8403F1Z0</b></span><br />
+                                            </div>
+                                            <div class="col-sm-3"></div>
+                                        </div>
+                                        <hr />
+                                        <p class="text-center"><strong style="color: #000000;">Sales Order</strong></p>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-4 table-bordered">
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Buyer(Billed to): <span id="spnBilledTo"></span> </p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Buyer Name      : <span id="spnBuyerName"></span> </p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Addredd         : <span id="spnAddress"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Contact No.     : <span id="spnContactNo"></span> </p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">GSTIN           : <span id="spnGSTIN"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">PAN No.         : <span id="spnPanNo"></span></p>
+
+                                            </div>
+                                            <div class="col-sm-4 table-bordered">
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Consignee (Shipped to):<span id="spnShippedto"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Address: <span id="spnShippedAddress"></span></p>
+
+                                            </div>
+                                            <div class="col-sm-4 table-bordered">
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Sales order no: <span id="spnSO"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Order Date: <span id="OrderDate"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Customer ref No: <span id="spnCustomerRefNo"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Customer ref Date: <span id="spnCustomerRefDate"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Sales Office: <span id="spnSalesOffice"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Shipment Type: <span id="spnShipmentType"></span></p>
+
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Shipment Mode: <span id="spnShipmentMode"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Destination: <span id="spnDestination"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Salesman Name: <span id="spnSalesmanName"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Agent <span id="spnAgent"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Agent Commission% <span id="spnAgentCommission"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Agent Reference: <span id="spnAgentReference"></span></p>
+                                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Final Buyer: <span id="spnFinalBuyer"></span></p>
+
+
+                                            </div>
+
+
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-responsive table-striped table-bordered text-nowrap" id="tblDetail" style='padding: 0px 10px;'>
+                                                    <thead style='padding: 0px 10px;'>
+                                                        <tr style='padding: 0px 10px;'>
+                                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Item</th>
+                                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Material Description</th>
+                                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Finish Type</th>
+                                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Quality Details</th>
+                                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Qty</th>
+                                                            <th style="padding: 4px; text-align: right; font-size: 12px;">Rate</th>
+                                                            <th style="padding: 4px; text-align: right; font-size: 12px;">Amount</th>
+                                                            <th style="padding: 4px; text-align: right; font-size: 12px;">Delivey Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbodyDetail">
+                                                    </tbody>
+                                                </table>
+                                                <span style="color: #000000;">Corporate office : 4-5th floor, Gopal Bhawan, 199, Princess Street, MUMBAI- 4000020 PH: +91226633 6571-76 Fax : 022-22064486 / 6633 6586</span><br />
+                                                <span style="color: #000000;">Marketing office : Flat No 204, E-2, A.R.A Centre Jhandewalan Ext. New Delhi - 110055 PH : +91 11 23676124 Fax : 011-23676948</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-right">
+                                <button onclick="Fn_Print_Quotation('printableArea')" class="btn btn-light" type="button"> <i class="fa fa-print"></i> Print </button>
+                            </div>
+                        </div>
+                    </div> <!-- main form -->
+                </div> <!--  contact from -->
+            </div>
+
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+

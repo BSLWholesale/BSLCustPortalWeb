@@ -28,6 +28,15 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
+        public ActionResult SalesOrder()
+        {
+            return View();
+        }
+        public ActionResult SalesOrderDetail()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult Fn_Send_Sample_Request(clsSamplRequest objReq)
         {
@@ -92,6 +101,52 @@ namespace BSLCustomerPortalWeb.Controllers
 
                 HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
                 HttpResponseMessage responsePost = client.PostAsync("api/OrderAPI/Fn_Get_Sample_Request_Detail", content).Result;
+                if (responsePost.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Product inserting faild." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Fn_GET_Sales_Order(clsSalesOrder objReq)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Convert.ToString(ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                string DATA = Newtonsoft.Json.JsonConvert.SerializeObject(objReq);
+                HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
+                HttpResponseMessage responsePost = client.PostAsync("api/OrderAPI/Fn_GET_Sales_Order", content).Result;
+                if (responsePost.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Product inserting faild." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Fn_GET_Sales_OrderDetail(clsSalesOrder objReq)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Convert.ToString(ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                string DATA = Newtonsoft.Json.JsonConvert.SerializeObject(objReq);
+                HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
+                HttpResponseMessage responsePost = client.PostAsync("api/OrderAPI/Fn_GET_Sales_OrderDetail", content).Result;
                 if (responsePost.IsSuccessStatusCode)
                 {
                     return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
