@@ -23,7 +23,7 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
-        public ActionResult DsiplayRequest()
+        public ActionResult DisplayRequest()
         {
             return View();
         }
