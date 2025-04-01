@@ -19,6 +19,8 @@
             const prmCode = urlParams.get('code');
             var result = prmCode.slice(1, -1);
 
+            $('#liMenu').html(result);
+
             var clsSalesOrder = {};
             clsSalesOrder.UserId = 1;
             clsSalesOrder.CSAPId = 1100009112;
@@ -26,7 +28,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '/SaleOrder/Fn_GET_Sales_Order',
+                url: '/Order/Fn_GET_Sales_Order',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 data: JSON.stringify(clsSalesOrder),
@@ -77,7 +79,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '/SaleOrder/Fn_GET_Sales_OrderDetail',
+                url: '/Order/Fn_GET_Sales_OrderDetail',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 data: JSON.stringify(clsSalesOrder),
@@ -142,7 +144,7 @@
                             <li class="nav-item">
                                 <a href="@Url.Action("SalesOrder", "Order")">Sales Order</a> /
                             </li>
-                            <li class="nav-item" id="liItemCount">
+                            <li class="nav-item" id="liMenu">
                             </li>
                         </ul>
                     </div>
@@ -163,7 +165,7 @@
                                 <div class="card" id="printableArea">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-sm-3"><img src="/Web/NewLogo.jpg" width="90px" height="72px"></div>
+                                            <div class="col-sm-3"><img src="~/Images/NewLogo.jpg" width="90px" height="72px"></div>
                                             <div class="col-sm-6 text-center">
                                                 <h5 class="mb-3" style="font-weight:900; text-align:center;">BANSWARA SYNTEX LIMITED</h5><br />
                                                 <span>Registered Office & Mills:</span><br />

@@ -21,14 +21,14 @@
 
         $.ajax({
             type: "POST",
-            url: '/SaleOrder/Fn_GET_Sales_Order',
+            url: '/Order/Fn_GET_Sales_Order',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify(clsSalesOrder),
             success: function (data) {
                 $("#tbody").html('');
                 var obj = JSON.parse(data.message);
-                var html = '';
+                var html = ''; var rowCount = 0;
                 if (obj[0].vERRORMSG == "Success") {
                     for (var i = 0; i < obj.length; i++) {
 
@@ -40,13 +40,14 @@
                         html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].CITY + "</td>";
                         html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].COUNTRY + "</td>";
                         html += "</tr>";
-
+                        rowCount++;
                     }
                 }
                 else {
                     html += "<tr style='padding: 10px;'><td style='font-size: 12px;' colspan='6'class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
                 }
                 $("#tbody").append(html);
+                $('#liItemCount').html(rowCount + ' Results')
             },
             error: function (err) {
                 alert(err);
@@ -93,42 +94,33 @@
                 <div class="contact-from" style="padding: 25px">
                     <div class="main-form">
                         <div class="row">
-                            <div class="col-6">
-                                <table class="table table-striped table-hover">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label> SO</label>
+                                    <input type="text" id="txtSO" name="txtSO" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <input type="submit" id="btnSearch" name="btnSearch" value="Search" onclick="Fn_GET_Sales_Order();" class="btn btn-success" style="margin-top: 30px;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <table class="table table-striped table-hover" style="max-height: 350px; overflow: auto;">
                                     <thead style="background-color: #08417B; color: white;">
                                         <tr>
-                                            <th style="padding: 5px;">ID</th>
-                                            @*<th style="padding: 5px;">Name</th>*@
-                                            <th style="padding: 5px;">Date</th>
-                                            <th style="padding: 5px;">Division</th>
-                                            <th style="padding: 5px;">Status</th>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">SO</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">SO Date</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Sold Party Name</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Bill Party Name</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">City</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Country</td>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody">
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-6">
-                                <table class="table table-striped table-hover">
-                                    <thead style="background-color: #08417B; color: white;">
-                                        <tr>
-                                            <th style="padding: 5px;">Product</th>
-                                            <th style="padding: 5px;" class='dvF'>Color</th>
-                                            <th style="padding: 5px;" class='dvF'>ShadeCard</th>
-                                            <th style="padding: 5px;" class='dvF'>Yardage</th>
-
-                                            <th style="padding: 5px;" class='dvG'>Style</th>
-                                            <th style="padding: 5px;" class='dvG'>Style No</th>
-                                            <th style="padding: 5px;" class='dvG'>Fabric Quality</th>
-
-                                            <th style="padding: 5px;" class='dvY'>Count</th>
-                                            <th style="padding: 5px;" class='dvY'>Blend Description</th>
-                                            <th style="padding: 5px;" class='dvY'>Blend Percentage</th>
-                                            <th style="padding: 5px;" class='dvY'>EndUse</th>
-                                            <th style="padding: 5px;" class='dvY'>Dye</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbodyDetail">
                                     </tbody>
                                 </table>
                             </div>

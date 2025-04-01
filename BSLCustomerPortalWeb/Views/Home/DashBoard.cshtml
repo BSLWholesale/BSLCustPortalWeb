@@ -11,6 +11,68 @@
                 <div class="shop-top-search" style="padding: 10px 30px;">
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">Transactions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- row -->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+
+                        <div class="singel-publication mt-10">
+                            <div style="background-color: #15c5eb; box-shadow: 2px 8px 19px -9px #15c5eb; margin-top: -2%; ">
+                                <p class="text-center" style="color: #ffffff; ">Order</p>
+                            </div>
+                            <div class="name mt-3">
+                                <p class="text-center"><a href="@Url.Action("SalesOrder", "Order")" style="color: #505050;">Pending</a></p>
+                                <p class="text-center"><a href="@Url.Action("SalesOrder", "Order")" style="color: #505050;">In-Process</a></p>
+                                <p class="text-center"><a href="@Url.Action("SalesOrder", "Order")" style="color: #505050;">Completed</a></p>
+                                <p class="text-center mb-4"></p>
+                            </div>
+                        </div> <!-- singel publication -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="singel-publication mt-10">
+                            <div style="background-color: #9A7B4F; box-shadow: 2px 8px 19px -9px #9A7B4F; margin-top: -2%; ">
+                                <p class="text-center" style="color: #ffffff;">Delivery</p>
+                            </div>
+                            <div class="name mt-3">
+                                <p class="text-center" style="color: #505050;">Delivered</p>
+                                <p class="text-center" style="color: #505050;">In-Process</p>
+                                <p class="text-center" style="color: #505050;">Not Delivered</p>
+                                <p class="text-center mb-4" style="color: #505050;"></p>
+                            </div>
+                        </div> <!-- singel publication -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="singel-publication mt-10">
+                            <div style="background-color: #db20d7; box-shadow: 2px 8px 19px -9px #db20d7; margin-top: -2%;">
+                                <p class="text-center" style="color: #ffffff;">Invoice</p>
+                            </div>
+                            <div class="name mt-3">
+                                <p class="text-center">Pending</p>
+                                <p class="text-center">In-Process</p>
+                                <p class="text-center">Completed</p>
+                                <p class="text-center mb-4"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--  End -->
+    <div class="container mt-10">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search" style="padding: 10px 30px;">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
                             <li class="nav-item">Services</li>
                         </ul>
                     </div>
@@ -39,12 +101,12 @@
                             <div style="background-color: #45d009; box-shadow: 2px 8px 19px -9px #45d009; margin-top:-2%;">
                                 <p class="text-center" style="color: #ffffff;">New Arrivals</p>
                             </div>
-                                <div class="name mt-3">
-                                    <p class="text-center" style="color: #505050;"><a href="@Url.Action("Yarn", "Product")" style="color: #505050;">Yarn</a></p>
-                                    <p class="text-center" style="color: #505050;"><a href="@Url.Action("Fabric", "Product")" style="color: #505050;">Fabric</a></p>
-                                    <p class="text-center" style="color: #505050;"><a href="@Url.Action("Garments", "Product")" style="color: #505050;">Garments</a></p>
-                                    <p class="text-center" style="color: #505050; margin-bottom:-2%;"><a href="@Url.Action("New Products", "Product")" style="color: #505050;">New Products</a></p>
-                                </div>
+                            <div class="name mt-3">
+                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Yarn", "Product")" style="color: #505050;">Yarn</a></p>
+                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Fabric", "Product")" style="color: #505050;">Fabric</a></p>
+                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Garments", "Product")" style="color: #505050;">Garments</a></p>
+                                <p class="text-center" style="color: #505050; margin-bottom:-2%;"><a href="@Url.Action("New Products", "Product")" style="color: #505050;">New Products</a></p>
+                            </div>
                         </div> <!-- singel publication -->
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-8">
@@ -91,7 +153,7 @@
                             <div style="background-color: #da17f1; box-shadow: 2px 8px 19px -9px #da17f1; margin-top:-2%;">
                                 <p class="text-center" style="color: #ffffff;">Catalogue</p>
                             </div>
-                          
+
                             <div class="name mt-3">
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("YarnCatalogue", "Product")" style="color: #505050;">Yarn</a></p>
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("FabricCatalogue", "Product")" style="color: #505050;">Fabric</a></p>
@@ -99,7 +161,7 @@
                                 <p></p>
                             </div>
 
-                          
+
                         </div> <!-- singel publication -->
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-8">
@@ -107,12 +169,12 @@
                             <div style="background-color: #fea11d; box-shadow: 2px 8px 19px -9px #fea11d; margin-top:-2%;">
                                 <p class="text-center" style="color: #ffffff;">Sample Order</p>
                             </div>
-                                <div class="name mt-3">
-                                    <p class="text-center"><a href="@Url.Action("SampleRequest", "Order")" style="color: #505050;">Sample Request</a></p>
-                                    <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=P" style="color: #505050;">In-Process</a></p>
-                                    <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=N" style="color: #505050;">Not Ready</a></p>
-                                    <p></p>
-                                </div>
+                            <div class="name mt-3">
+                                <p class="text-center"><a href="@Url.Action("SampleRequest", "Order")" style="color: #505050;">Sample Request</a></p>
+                                <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=P" style="color: #505050;">In-Process</a></p>
+                                <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=N" style="color: #505050;">Not Ready</a></p>
+                                <p></p>
+                            </div>
                         </div> <!-- singel publication -->
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-8">
