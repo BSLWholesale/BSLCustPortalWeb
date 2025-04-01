@@ -50,16 +50,15 @@ namespace BSLCustomerPortalWeb.Models
         public string FinishFabric { get; set; }
         public string AddType { get; set; }
         public string SpecialFeature { get; set; }
-
         public string OldMaterialCode { get; set; }
         public string MaterialDescription { get; set; }
         public string Base { get; set; }
         public string TypeofDesign { get; set; }
         public string FabricCategory { get; set; }
         public string ShadeName { get; set; }
-
         public string QueryType { get; set; }
         public string vQuery { get; set; }
+        public string vTBLName { get; set; }
         public string vErrorMsg { get; set; }
     }
 
@@ -82,9 +81,9 @@ namespace BSLCustomerPortalWeb.Models
         public string SpecialFeature { get; set; }
         public string OldMaterialCode { get; set; }
         public string Style { get; set; }
-        
         public string QueryType { get; set; }
         public string vQuery { get; set; }
+        public string vTBLName { get; set; }
         public string vErrorMsg { get; set; }
     }
 }
