@@ -25,6 +25,23 @@
     <link rel="stylesheet" href="/Web/css/responsive.css">
 
     <script src="~/JS/sweetalert.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var CustLoginId = sessionStorage.getItem("CustomerId");
+            var CustName = sessionStorage.getItem("CustName");
+            var CustEmailId = sessionStorage.getItem("CustEmailId");
+            var CustCompanyName = sessionStorage.getItem("CustCompanyName");
+            var CustMobileNo = sessionStorage.getItem("CustMobile");
+
+            if (CustLoginId == null || CustLoginId == 0) {
+                window.location.href = '/Home/Index';
+            }
+
+        })
+    </script>
 </head>
 <!--Kanchan T-->
 <body>

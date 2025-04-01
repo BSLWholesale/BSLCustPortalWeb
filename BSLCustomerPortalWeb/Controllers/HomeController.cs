@@ -44,6 +44,11 @@ namespace BSLCustomerPortalWeb.Controllers
         }
 
 
+        public ActionResult LogOut()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult Fn_LogIn_Customer(clsCustomer objReq)
         {
