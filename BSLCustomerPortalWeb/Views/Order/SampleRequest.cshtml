@@ -1,0 +1,443 @@
+﻿
+@{
+    ViewBag.Title = "SampleRequest";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $(".dvF").show();
+            $(".dvG").hide();
+            $(".dvY").hide();
+
+        });
+
+        function Fn_Send_Sample_Request() {
+            var clsSamplRequest = {};
+            clsSamplRequest.vErrorMsg = "";
+            clsSamplRequest.UserId = 1;
+            clsSamplRequest.vCategory = $('#ddlProductCategory').val();
+            clsSamplRequest.vRemark = $('#txtRemarkM').val();
+            debugger;
+            var clsSamplRequestList = [];
+            var arrays = [];
+            $('#tblList').eq(0).find('tr').each((r, row) => arrays.push($(row).find('td').map((c, cell) => $(cell).text()).toArray()))
+
+            for (var i = 1; i < arrays.length; i++) {
+                var _list =
+                {
+                    vProduct: arrays[i][0], Color: arrays[i][1], bShadeCard: arrays[i][2],
+                    bYardage: arrays[i][3], vStyle: arrays[i][4], vStyleNo: arrays[i][5], vFabricQuality: arrays[i][6], vCount: arrays[i][6],
+                    vBlendDescription: arrays[i][8], vBlendPercentage: arrays[i][9], vEndUse: arrays[i][10], vDye: arrays[i][11],
+                    vRemark: arrays[i][12]
+                }
+
+                clsSamplRequestList.push(_list);
+            }
+
+            if (clsSamplRequestList.length == 0) {
+                clsSamplRequest.vErrorMsg = "Product List is empty.";
+                swal("", clsSamplRequest.vErrorMsg, "error");
+                return;
+            }
+            clsSamplRequest._oList = clsSamplRequestList;
+
+
+            if (clsSamplRequest.vErrorMsg == "") {
+                $.ajax({
+                    type: "POST",
+                    url: '/Order/Fn_Send_Sample_Request',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsSamplRequest),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+
+                        if (obj.vErrorMsg == 'Success') {
+
+                            swal("", "Saved Request.", "success");
+                            Fn_Clear_Control();
+                        }
+                        else {
+                            swal("", obj.vErrorMsg, "error");
+                        }
+                    },
+                    error: function (err) {
+                        swal("", err, "error");
+                    }
+                });
+            }
+        }
+
+        function Fn_OnChangeDDL() {
+
+            var ddlVal = $("#ddlProductCategory").val();
+
+            if (ddlVal == "Fabric") {
+                $(".dvF").show();
+                $(".dvG").hide();
+                $(".dvY").hide();
+            }
+            else if (ddlVal == "Garments") {
+                $(".dvF").hide();
+                $(".dvG").show();
+                $(".dvY").hide();
+            }
+            else if (ddlVal == "Yarn") {
+                $(".dvF").hide();
+                $(".dvG").hide();
+                $(".dvY").show();
+            }
+            else {
+
+            }
+        }
+
+        function Fn_Clear_Control() {
+
+            $('#ddlProductCategory option:first').attr("selected", "selected");
+
+            $("#txtProduct").val("");
+            $("#txtQuality").val("");
+            $("#txtGSM").val("");
+            $("#txtColor").val("");
+
+            $('#chkShadeCard').attr('checked', false);
+            $('#chkYardage').attr('checked', false);
+
+            $("#txtStyle").val("");
+
+            $("#txtStyleNo").val("");
+            $("#txtFabricQuality").val("");
+
+            $("#txtCount").val("");
+            $("#txtBlendDescription").val("");
+            $("#txtBlendPercentage").val("");
+            $("#txtEndUse").val("");
+            $("#txtDye").val("");
+            $('#txtRemarkM').val("");
+            $('#txtRemark').val("");
+
+            $("#dvList").html('');
+        }
+    </script>
+}
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
+                            </li>
+                            <li class="nav-item">
+                                Sample Request
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div> <!-- row -->
+
+    </div> <!-- container -->
+
+</section>
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact-from" style="padding: 25px">
+                    <div class="main-form">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Division</label>
+                                    <select id="ddlProductCategory" class="form-control" onchange="Fn_OnChangeDDL();" style="font-size: 12px;">
+                                        <option value="0">--Select--</option>
+                                        <option value="Fabric">Fabric</option>
+                                        <option value="Garments">Garments</option>
+                                        <option value="Yarn">Yarn</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Product</label>
+                                    <input type="text" id="txtProduct" name="txtProduct" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <!--  Start Fabric Div -->
+
+                            <div class="col-2 dvF">
+                                <div class="form-group">
+                                    <label>Color</label>
+                                    <input type="text" id="txtColor" name="txtColor" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2 dvF">
+                                <div class="form-group">
+                                    <input type="checkbox" id="chkShadeCard" name="chkShadeCard" style="font-size: 12px; margin-top: 40px;" value="Yardage" /> ShadeCard
+                                </div>
+                            </div>
+                            <div class="col-2 dvF">
+                                <div class="form-group">
+                                    <input type="checkbox" id="chkYardage" name="chkYardage" style="font-size: 12px; margin-top: 40px;" value="Yardage" /> Yardage
+                                </div>
+                            </div>
+                            <!--  End Fabric Div -->
+                            <!--  Start Garments Div -->
+                            <div class="col-2 dvG">
+                                <div class="form-group">
+                                    <label>Style</label>
+                                    <input type="text" id="txtStyle" name="txtStyle" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2 dvG">
+                                <div class="form-group">
+                                    <label>Style No</label>
+                                    <input type="text" id="txtStyleNo" name="txtStyleNo" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2 dvG">
+                                <div class="form-group">
+                                    <label>Fabric Quality</label>
+                                    <input type="text" id="txtFabricQuality" name="txtFabricQuality" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <!--  End Garments Div -->
+                            <!--  Start Yarn Div -->
+                            <div class="col-2 dvY">
+                                <div class="form-group">
+                                    <label>Count</label>
+                                    <input type="text" id="txtCount" name="txtCount" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2 dvY">
+                                <div class="form-group">
+                                    <label>Blend Description</label>
+                                    <input type="text" id="txtBlendDescription" name="txtBlendDescription" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2 dvY">
+                                <div class="form-group">
+                                    <label>Blend Percentage</label>
+                                    <input type="text" id="txtBlendPercentage" name="txtBlendPercentage" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2 dvY">
+                                <div class="form-group">
+                                    <label>EndUse</label>
+                                    <input type="text" id="txtEndUse" name="txtEndUse" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+
+                            <div class="col-2 dvY">
+                                <div class="form-group">
+                                    <label>Dye</label>
+                                    <input type="text" id="txtDye" name="txtDye" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Remark</label>
+                                    <input type="text" id="txtRemark" name="txtRemark" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="submit" id="btnAdd" name="btnAdd" value="Add" onclick="Fn_Make_List();" class="btn btn-success mt-4" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pl-lg-3 pr-lg-3">
+                            <div style="overflow:auto; width: 100%;">
+                                <table id="tblList" class="table table-striped table-hover">
+                                    <thead style="background-color: #08417B; color: white;">
+                                        <tr>
+
+                                            <th style="color: white; padding: 10px; width: 20%">Product</th>
+                                            <th style="color: white; padding: 10px; width: 20%" class='dvF'>Color</th>
+                                            <th style="color: white; padding: 10px; width: 10%" class='dvF'>ShadeCard</th>
+                                            <th style="color: white; padding: 10px; width: 10%" class='dvF'>Yardage</th>
+
+                                            <th style="color: white; padding: 10px; width: 20%" class='dvG'>Style</th>
+                                            <th style="color: white; padding: 10px; width: 20%" class='dvG'>Style No</th>
+                                            <th style="color: white; padding: 10px; width: 20%" class='dvG'>Fabric Quality</th>
+
+                                            <th style="color: white; padding: 10px; width: 10%" class='dvY'>Count</th>
+                                            <th style="color: white; padding: 10px; width: 20%" class='dvY'>Blend Description</th>
+                                            <th style="color: white; padding: 10px; width: 10%" class='dvY'>Blend Percentage</th>
+                                            <th style="color: white; padding: 10px; width: 10%" class='dvY'>EndUse</th>
+                                            <th style="color: white; padding: 10px; width: 10%" class='dvY'>Dye</th>
+
+                                            <th style="color: white; padding: 10px; width: 10%">Remark</th>
+                                            <td style="color: white; padding: 10px; width: 10%">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dvList"></tbody>
+                                </table>
+                            </div>
+
+                            <script>
+                                $(document).on("click", '.delete', function () {
+                                    $(this).closest('tr').remove();
+                                });
+
+                                $("#txtGSM").keyup(function (e) {
+                                    if (e.which == 13) {
+                                        Fn_Make_List();
+                                    }
+                                    else {
+                                        //  Do whatever you like
+                                    }
+                                    e.preventDefault();
+                                });
+
+                                function Fn_Make_List() {
+                                    var html = '';
+                                    $("#txtProduct").focus();
+                                    var p = $('#txtProduct').val().trim();
+
+                                    var tds = $("#tblList").find(".scancode");
+                                    var isContains = false;
+                                    for (var i = 0; i < tds.length; i++) {
+                                        var td = tds[i];
+                                        if (td.innerText == p) {
+                                            isContains = true;
+                                            break;
+                                        }
+                                    }
+                                    if (isContains) {
+                                        swal("", "Already Exist", "error");
+                                        $('#txtProduct').val("");
+                                        p = '';
+                                        return;
+                                    }
+                                    else {
+                                        debugger;
+                                        var txtProduct = $('#txtProduct').val();
+
+                                        var txtColor = $('#txtColor').val();
+                                        var chkShadeCard = false;
+                                        if ($("#chkShadeCard").prop('checked') == true) {
+                                            chkShadeCard = true;
+                                        }
+                                        var chkYardage = false;
+                                        if ($("#chkYardage").prop('checked') == true) {
+                                            chkYardage = true;
+                                        }
+
+                                        var txtStyle = $('#txtStyle').val();
+                                        var txtStyleNo = $('#txtStyleNo').val();
+                                        var txtFabricQuality = $('#txtFabricQuality').val();
+
+                                        var txtCount = $('#txtCount').val();
+                                        var txtBlendDescription = $('#txtBlendDescription').val();
+                                        var txtBlendPercentage = $('#txtBlendPercentage').val();
+                                        var txtEndUse = $('#txtEndUse').val();
+                                        var txtDye = $('#txtDye').val();
+                                        var txtRemark = $('#txtRemark').val();
+
+                                        if (txtProduct == "" || $('#ddlProductCategory').val() == "0") {
+                                            swal("", "Please fill all fields", "error");
+                                        }
+                                        else {
+                                            html += "<tr>";
+                                            html += "<td style='width: 20%;' class='scancode'>" + txtProduct + "</th>";
+                                            html += "<td style='width: 30%;' class='dvF'>" + txtColor + "</td>";
+                                            html += "<td style='width: 20%;' class='dvF'>" + chkShadeCard + "</td>";
+                                            html += "<td style='width: 20%;' class='dvF'>" + chkYardage + "</td>";
+
+                                            html += "<td style='width: 30%;' class='dvG'>" + txtStyle + "</td>";
+                                            html += "<td style='width: 20%;' class='dvG'>" + txtStyleNo + "</td>";
+                                            html += "<td style='width: 20%;' class='dvG'>" + txtFabricQuality + "</td>";
+
+                                            html += "<td style='width: 10%;' class='dvY'>" + txtCount + "</td>";
+                                            html += "<td style='width: 20%;' class='dvY'>" + txtBlendDescription + "</td>";
+                                            html += "<td style='width: 20%;' class='dvY'>" + txtBlendPercentage + "</td>";
+                                            html += "<td style='width: 10%;' class='dvY'>" + txtEndUse + "</td>";
+                                            html += "<td style='width: 10%;' class='dvY'>" + txtDye + "</td>";
+                                            html += "<td style='width: 20%;'>" + txtRemark + "</td>";
+
+                                            html += "<td style='width: 10%;'><i class='fa fa-trash fa-2x text-danger delete' style='color:red; mrgin-left: 20px;'></i></td></tr>";
+
+                                            $("#txtProduct").val("");
+                                            $("#txtColor").val("");
+
+                                            $('#chkShadeCard').prop('checked', false);
+                                            $('#chkYardage').prop('checked', false);
+
+                                            $("#txtStyle").val("");
+                                            $("#txtStyleNo").val("");
+                                            $("#txtFabricQuality").val("");
+
+                                            $("#txtCount").val("");
+                                            $("#txtBlendDescription").val("");
+                                            $("#txtBlendPercentage").val("");
+                                            $("#txtEndUse").val("");
+                                            $("#txtDye").val("");
+                                            $('#txtRemark').val("");
+                                            $("#dvList").append(html);
+
+                                            var ddlVal = $("#ddlProductCategory").val();
+                                            if (ddlVal == "Fabric") {
+                                                $(".dvF").show();
+                                                $(".dvG").hide();
+                                                $(".dvY").hide();
+                                            }
+                                            else if (ddlVal == "Garments") {
+                                                $(".dvF").hide();
+                                                $(".dvG").show();
+                                                $(".dvY").hide();
+                                            }
+                                            else if (ddlVal == "Yarn") {
+                                                $(".dvF").hide();
+                                                $(".dvG").hide();
+                                                $(".dvY").show();
+                                            }
+                                            else {
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                            </script>
+
+                        </div>
+                        <div class="row pl-lg-3 pr-lg-3">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    <textarea type="text" id="txtRemarkM" name="txtRemarkM" cols="50" rows="3" class="form-control" style="font-size: 12px;" value=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group pull-right">
+                                    <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit" onclick="Fn_Send_Sample_Request();" class="btn btn-outline-danger mt-4" />
+                                    <a href="@Url.Action("DsiplayRequest", "Order")" class="btn btn-outline-success mt-4">Dsiplay</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- main form -->
+                </div> <!--  contact from -->
+            </div>
+
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+
