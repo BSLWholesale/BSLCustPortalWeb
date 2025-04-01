@@ -109,8 +109,8 @@
                             </div>
                                 <div class="name mt-3">
                                     <p class="text-center"><a href="@Url.Action("SampleRequest", "Order")" style="color: #505050;">Sample Request</a></p>
-                                    <p class="text-center">In-Process</p>
-                                    <p class="text-center">Not Ready</p>
+                                    <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=P" style="color: #505050;">In-Process</a></p>
+                                    <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=N" style="color: #505050;">Not Ready</a></p>
                                     <p></p>
                                 </div>
                         </div> <!-- singel publication -->

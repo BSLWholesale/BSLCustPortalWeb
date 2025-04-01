@@ -5,7 +5,7 @@
 
 @{
     <script src="~/Scripts/jquery-3.4.1.js"></script>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             Fn_Get_Sample_Request();
             var catId = 1;
@@ -31,8 +31,12 @@
 
         function Fn_Get_Sample_Request() {
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmvstatus = urlParams.get('vstatus');
+
             var clsSamplRequest = {};
             clsSamplRequest.UserId = 1;
+            clsSamplRequest.vStatus = prmvstatus;
 
             $.ajax({
                 type: "POST",
@@ -44,7 +48,7 @@
                     $("#tbody").html('');
 
                     var obj = JSON.parse(data.message);
-                    var html = '';
+                    var html = ''; var rowCount = 0
                     if (obj[0].vErrorMsg == "Success") {
                         for (var i = 0; i < obj.length; i++) {
 
@@ -59,18 +63,26 @@
                                 catId = 3;
                             }
                             html += "<tr>";
-                            html += "<td style='padding: 5px;'> <span onclick='Fn_Get_Sample_Request_Detail(" + obj[i].RequestId + ", " + catId + ");'>" + obj[i].RequestId + "</td>";
-                            html += "<td style='padding: 5px;'>" + obj[i].UserName + "</td>";
-                            html += "<td style='padding: 5px;'>" + obj[i].vRequestDate + "</td>";
-                            html += "<td style='padding: 5px;'>" + obj[i].vCategory + "</td>";
-                            html += "<td style='padding: 5px;'>" + obj[i].vStatus + "</td>";
+                            html += "<td style='padding: 5px; font-size: 12px;'> <span onclick='Fn_Get_Sample_Request_Detail(" + obj[i].RequestId + ", " + catId + ");'>" + obj[i].RequestId + "</td>";
+                           // html += "<td style='padding: 5px;'>" + obj[i].UserName + "</td>";
+                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].vRequestDate + "</td>";
+                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].vCategory + "</td>";
+                            if (obj[i].vStatus == "P") {
+                                html += "<td style='padding: 5px; font-size: 12px;'>In-Process</td>";
+                            }
+                            else {
+                                html += "<td style='padding: 5px; font-size: 12px;'>Not Ready</td>";
+                            }
+                            
                             html += "</td>";
+                            rowCount++;
                         }
                     }
                     else {
-                        html += "<tr><td colspan='5'><p class='text-center'>" + obj[0].vErrorMsg + "</p></td></tr>";
+                        html += "<tr><td style='padding: 5px; font-size: 10px;' colspan='4'><p class='text-center'>" + obj[0].vErrorMsg + "</p></td></tr>";
                     }
                     $("#tbody").append(html);
+                    $('#liItemCount').html(rowCount + ' Records')
                 },
                 error: function (err) {
                     alert(err);
@@ -80,7 +92,6 @@
 
         function Fn_Get_Sample_Request_Detail(id, catId) {
 
-            debugger;
             var clsSamplRequestList = {};
             clsSamplRequestList.RequestId = id;
 
@@ -98,44 +109,45 @@
                         for (var i = 0; i < obj.length; i++) {
 
                             html += "<tr>";
-                            html += "<td style='padding: 5px;'>" + obj[i].vProduct + "</td>";
-                            html += "<td style='padding: 5px;' class='dvF'>" + obj[i].Color + "</td>";
-                            html += "<td style='padding: 5px;' class='dvF'>" + obj[i].bShadeCard + "</td>";
-                            html += "<td style='padding: 5px;' class='dvF'>" + obj[i].bYardage + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;'>" + obj[i].vProduct + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvF'>" + obj[i].Color + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvF'>" + obj[i].bShadeCard + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvF'>" + obj[i].bYardage + "</td>";
 
-                            html += "<td style='padding: 5px;' class='dvY'>" + obj[i].vCount + "</td>";
-                            html += "<td style='padding: 5px;' class='dvY'>" + obj[i].vBlendDescription + "</td>";
-                            html += "<td style='padding: 5px;' class='dvY'>" + obj[i].vBlendPercentage + "</td>";
-                            html += "<td style='padding: 5px;' class='dvY'>" + obj[i].vEndUse + "</td>";
-                            html += "<td style='padding: 5px;' class='dvY'>" + obj[i].vDye + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvY'>" + obj[i].vCount + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvY'>" + obj[i].vBlendDescription + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvY'>" + obj[i].vBlendPercentage + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvY'>" + obj[i].vEndUse + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvY'>" + obj[i].vDye + "</td>";
 
-                            html += "<td style='padding: 5px;' class='dvG'>" + obj[i].vStyle + "</td>";
-                            html += "<td style='padding: 5px;' class='dvG'>" + obj[i].vStyleNo + "</td>";
-                            html += "<td style='padding: 5px;' class='dvG'>" + obj[i].vFabricQuality + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvG'>" + obj[i].vStyle + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvG'>" + obj[i].vStyleNo + "</td>";
+                            html += "<td style='padding: 5px; font-size: 10px;' class='dvG'>" + obj[i].vFabricQuality + "</td>";
                             html += "</td>";
                         }
 
+
                         if (catId == 1) {
-                            html2 += "<tr><td style='padding: 5px;' colspan='4' class='text-center'>" + id + "</td></tr>";
+                            html2 += "<tr><td style='padding: 5px; font-size: 10px;' colspan='4' class='text-center'>" + id + "</td></tr>";
                         }
                         else if (catId == 2) {
-                            html2 += "<tr><tdstyle='padding: 5px;' colspan='4' class='text-center'>" + id + "</td></tr>";
+                            html2 += "<tr><td style='padding: 5px; font-size: 10px;' colspan='4' class='text-center'>" + id + "</td></tr>";
                         }
                         else if (catId == 3) {
-                            html2 += "<tr><td style='padding: 5px;' colspan='6' class='text-center'>" + id + "</td></tr>";
+                            html2 += "<tr><td style='padding: 5px; font-size: 10px;' colspan='6' class='text-center'>" + id + "</td></tr>";
                         }
 
                         $("#tbodyDetail").append(html2);
                     }
                     else {
                         if (catId == 1) {
-                            html += "<tr><td style='padding: 5px;' colspan='4' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                            html += "<tr><td style='padding: 5px; font-size: 10px;' colspan='4' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
                         }
                         else if (catId == 2) {
-                            html += "<tr><td style='padding: 5px;' colspan='4' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                            html += "<tr><td style='padding: 5px; font-size: 10px;' colspan='4' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
                         }
                         else if (catId == 3) {
-                            html += "<tr><td style='padding: 5px;' colspan='6' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                            html += "<tr><td style='padding: 5px; font-size: 10px;' colspan='6' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
                         }
 
                     }
@@ -180,7 +192,9 @@
                                 <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
                             </li>
                             <li class="nav-item">
-                                Display Sample Request
+                                Display Sample Request /
+                            </li>
+                            <li class="nav-item" id="liItemCount">
                             </li>
 
                         </ul>
@@ -207,7 +221,7 @@
                                     <thead style="background-color: #08417B; color: white;">
                                         <tr>
                                             <th style="padding: 5px;">ID</th>
-                                            <th style="padding: 5px;">Name</th>
+                                            @*<th style="padding: 5px;">Name</th>*@
                                             <th style="padding: 5px;">Date</th>
                                             <th style="padding: 5px;">Division</th>
                                             <th style="padding: 5px;">Status</th>

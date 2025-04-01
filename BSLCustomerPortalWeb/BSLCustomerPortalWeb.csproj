@@ -606,8 +606,10 @@
     <Content Include="Views\Product\GarmentsDetail.cshtml" />
     <Content Include="Views\Home\Feedback.cshtml" />
     <Content Include="Views\Home\LogOut.cshtml" />
-    <Content Include="Views\Order\DsiplayRequest.cshtml" />
+    <Content Include="Views\Order\DisplayRequest.cshtml" />
     <Content Include="Views\Order\SampleRequest.cshtml" />
+    <Content Include="Views\Order\SalesOrder.cshtml" />
+    <Content Include="Views\Order\SalesOrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
