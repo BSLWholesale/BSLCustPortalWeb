@@ -31,16 +31,25 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
+            
             var CustLoginId = sessionStorage.getItem("CustId");
+            var CustEmailId = sessionStorage.getItem("EmailId");
+            var CustCompanyName = sessionStorage.getItem("CompanyName");
+            var CustMobileNo = sessionStorage.getItem("Mobile");
+            var CustCreatedDate = sessionStorage.getItem("CreateDate");
             var CustName = sessionStorage.getItem("CustName");
-            var CustEmailId = sessionStorage.getItem("CustEmailId");
-            var CustCompanyName = sessionStorage.getItem("CustCompanyName");
-            var CustMobileNo = sessionStorage.getItem("CustMobile");
+            var CurrentDate = new Date();
+            var CurrentYear = CurrentDate.getFullYear();
+            var CustTypeYears = CurrentYear - CustCreatedDate;
 
-            //if (CustLoginId == null || CustLoginId == 0) {
-            //    window.location.href = '/Home/Index';
-            //}
+            if (CustLoginId == null || CustLoginId == 0 || CustEmailId == null || CustEmailId == "") {
+                window.location.href = '/Home/Index';
+            }
+
+            $("#divCustCompanyName").html(CustCompanyName);
+            $("#divCustAccount").html(CustLoginId);
+            $("#divCustContact").html(CustMobileNo);
+            $("#divCustYears").html(CustTypeYears);
 
         });
 
@@ -108,9 +117,9 @@
             <!--</div>--> <!-- header top -->
 
             <div>
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-2 col-md-2" style="margin-left:1px;">
+                        <div class="col-lg-2 col-md-2">
                             <div>
                                 <a href="@Url.Action("DashBoard", "Home")">
                                     <img src="~/Web/images/logo.png" alt="Logo">
@@ -239,15 +248,17 @@
                         <!--</div>-->
 
 
-                        <div class="col-lg-3 col-md-3">
+                        <div class="col-lg-4 col-md-4">
                             <div class="support-button float-right d-none d-md-block">
                                 <div class="support float-left">
-                                    <div class="icon">
+                                    @*<div class="icon">
                                         <img src="/Web/images/all-icon/support.png" alt="icon">
-                                    </div>
+                                    </div>*@
                                     <div class="cont">
-                                        <p>Customer Account </p>
-                                        <p>Customer Contact</p>
+                                        <span style="font-size:12px;">You are our valued Customer since <span id="divCustYears" style="font-size:12px;"></span> years</span>
+                                        <p>Company Name : <span id="divCustCompanyName" style="font-size:12px;"></span></p>
+                                        <p>Customer Account : <span id="divCustAccount" style="font-size:12px;"></span></p>
+                                        <p>Customer Contact : <span id="divCustContact" style="font-size:12px;"></span></p>
                                     </div>
                                 </div>
 
