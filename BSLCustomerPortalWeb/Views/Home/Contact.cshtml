@@ -35,7 +35,7 @@
             swal("Contact Us", "Please Enter Your Message", "error");
         }
         else {
-            //debugger
+            
             var clsCustomerContactMessages = {};
 
             clsCustomerContactMessages.CustId = sessionStorage.getItem("CustId");
@@ -44,7 +44,7 @@
             clsCustomerContactMessages.Mobile = $("#txtMobile").val().trim();
             clsCustomerContactMessages.Address = $("#txtAddress").val().trim();
             clsCustomerContactMessages.Message = $("#txtMessage").val().trim();
-            //debugger
+            
             $.ajax({
                 type: "POST",
                 url: "/Home/Fn_Insert_CustomerContactMessage",
@@ -88,10 +88,13 @@
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i></a> Home /
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i> Home</a> 
                             </li>
-                            <li class="nav-item">
-                                Contact Us/
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Showcase
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Contact Us
                             </li>
                             @*<li class="nav-item" id="liprm"> </li>*@
                         </ul>
@@ -101,60 +104,6 @@
         </div>
         <!-- Breadcrumb End -->
         <div class="row">
-            <div class="col-lg-6">
-                <div class="contact-from mt-15">
-                    <div class="section-title" style="margin-top:-4%;">
-                        <h5>Contact Us</h5>
-                        <h3>Keep in touch</h3>
-                    </div> <!-- section title -->
-                    <div class="main-form pt-8">
-                        @*<form id="contact-form">*@
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="singel-form form-group">
-                                        <input type="text" id="txtName" name="txtName" class="form-control" placeholder="Enter Your Name">
-                                        @*<input type="text" id="txtName" name="txtName" placeholder="Enter Your Name" data-error="Name is required." required="required">*@
-                                        @*<div class="help-block with-errors"></div>*@
-                                    </div> <!-- singel form -->
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="singel-form form-group">
-                                        <input type="text" id="txtEmail" name="txtEmail" class="form-control" placeholder="Enter Your Email ID">
-                                        @*<input type="text" id="txtEmail" name="txtEmail" placeholder="Enter Your Email ID" data-error="Valid email is required." required="required">*@
-                                        @*<div class="help-block with-errors"></div>*@
-                                    </div> <!-- singel form -->
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="singel-form form-group">
-                                        <input type="text" id="txtMobile" name="txtMobile" class="form-control" placeholder="Enter Your Mobile No">
-                                        @*<input type="text" id="txtMobile" name="txtMobile" placeholder="Enter Your Mobile No" data-error="Phone is required." required="required">*@
-                                        @*<div class="help-block with-errors"></div>*@
-                                    </div> <!-- singel form -->
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="singel-form form-group">
-                                        <input type="text" id="txtAddress" name="txtAddress" class="form-control" placeholder="Enter Your Address">
-                                        @*<input type="text" id="txtAddress" name="txtAddress" placeholder="Enter Your Address" data-error="Please,leave us a message." required="required">*@
-                                        @*<div class="help-block with-errors"></div>*@
-                                    </div> <!-- singel form -->
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="singel-form form-group">
-                                        <textarea id="txtMessage" name="txtMessage" class="form-control" placeholder="Enter Your Messege"></textarea>
-                                        @*<textarea id="txtMessage" name="txtMessage" placeholder="Enter Your Messege" data-error="Please,leave us a message." required="required"></textarea>*@
-                                        @*<div class="help-block with-errors"></div>*@
-                                    </div> <!-- singel form -->
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="singel-form">
-                                        <button type="submit" class="main-btn" onclick="Fn_Insert_CustomerContactMessage();">Send</button>
-                                    </div> <!-- singel form -->
-                                </div>
-                            </div> <!-- row -->
-                        @*</form>*@
-                    </div> <!-- main form -->
-                </div> <!--  contact from -->
-            </div>
             <div class="col-lg-6">
                 <div class="contact-address mt-15">
                     <div class="row pb-40 mt-10">
@@ -216,6 +165,60 @@
                         </div>
                     </div>
                 </div> <!-- contact address -->
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-from mt-15">
+                    <div class="section-title" style="margin-top:-4%;">
+                        <h5>Contact Us</h5>
+                        <h3>Keep in touch</h3>
+                    </div> <!-- section title -->
+                    <div class="main-form pt-8">
+                        @*<form id="contact-form">*@
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="singel-form form-group">
+                                    <input type="text" id="txtName" name="txtName" class="form-control" placeholder="Enter Your Name">
+                                    @*<input type="text" id="txtName" name="txtName" placeholder="Enter Your Name" data-error="Name is required." required="required">*@
+                                    @*<div class="help-block with-errors"></div>*@
+                                </div> <!-- singel form -->
+                            </div>
+                            <div class="col-md-12">
+                                <div class="singel-form form-group">
+                                    <input type="text" id="txtEmail" name="txtEmail" class="form-control" placeholder="Enter Your Email ID">
+                                    @*<input type="text" id="txtEmail" name="txtEmail" placeholder="Enter Your Email ID" data-error="Valid email is required." required="required">*@
+                                    @*<div class="help-block with-errors"></div>*@
+                                </div> <!-- singel form -->
+                            </div>
+                            <div class="col-md-12">
+                                <div class="singel-form form-group">
+                                    <input type="text" id="txtMobile" name="txtMobile" class="form-control" placeholder="Enter Your Mobile No">
+                                    @*<input type="text" id="txtMobile" name="txtMobile" placeholder="Enter Your Mobile No" data-error="Phone is required." required="required">*@
+                                    @*<div class="help-block with-errors"></div>*@
+                                </div> <!-- singel form -->
+                            </div>
+                            <div class="col-md-12">
+                                <div class="singel-form form-group">
+                                    <input type="text" id="txtAddress" name="txtAddress" class="form-control" placeholder="Enter Your Address">
+                                    @*<input type="text" id="txtAddress" name="txtAddress" placeholder="Enter Your Address" data-error="Please,leave us a message." required="required">*@
+                                    @*<div class="help-block with-errors"></div>*@
+                                </div> <!-- singel form -->
+                            </div>
+                            <div class="col-md-12">
+                                <div class="singel-form form-group">
+                                    <textarea id="txtMessage" name="txtMessage" class="form-control" placeholder="Enter Your Messege"></textarea>
+                                    @*<textarea id="txtMessage" name="txtMessage" placeholder="Enter Your Messege" data-error="Please,leave us a message." required="required"></textarea>*@
+                                    @*<div class="help-block with-errors"></div>*@
+                                </div> <!-- singel form -->
+                            </div>
+                            <div class="col-md-12">
+                                <div class="singel-form">
+                                    <button type="submit" class="main-btn pull-right" onclick="Fn_Insert_CustomerContactMessage();">Send</button>
+                                </div> <!-- singel form -->
+                            </div>
+                        </div> <!-- row -->
+                        @*</form>*@
+                    </div> <!-- main form -->
+                </div> <!--  contact from -->
             </div>
         </div> <!-- row -->
     </div> <!-- container -->
