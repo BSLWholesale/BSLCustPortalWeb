@@ -33,12 +33,12 @@
                         div3Content = div3Content + "<a href='@Url.Action("FabriCatalogueDetail", "Product")?Code=" + obj[i].MaterialCode + "'><img class='image' src='/Images/Fabriccatalogue/" + obj[i].MaterialCode + ".jpeg?t=" + new Date().getTime() + "' width='227px' height='227px' /></a><br/>";
                         div3Content = div3Content + "</div>";
                         div3Content = div3Content + "<div class='name'>";
-                        div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Blend Value : " + obj[i].BlendValue + "</p>";
-                        div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Weave Type: " + obj[i].WeaveType + "</p>";
-                        div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Strech Type: " + obj[i].StrechType + "</p>";
-                        div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Design Pattern: " + obj[i].DesignPattern + "</p>";
-                        div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Shade: " + obj[i].Shade + "</p>";
-                        div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Usage: " + obj[i].Usage + "</p>";
+                        div3Content = div3Content + "<p class='text-left' style='font-size: 12px;line-height: 20px;'>Blend Value : " + obj[i].BlendValue + "</p>";
+                        div3Content = div3Content + "<p class='text-left' style='font-size: 12px;line-height: 20px;'>Weave Type: " + obj[i].WeaveType + "</p>";
+                        div3Content = div3Content + "<p class='text-left' style='font-size: 12px;line-height: 20px;'>Strech Type: " + obj[i].StrechType + "</p>";
+                        div3Content = div3Content + "<p class='text-left' style='font-size: 12px;line-height: 20px;'>Design Pattern: " + obj[i].DesignPattern + "</p>";
+                        div3Content = div3Content + "<p class='text-left' style='font-size: 12px;line-height: 20px;'>Shade: " + obj[i].Shade + "</p>";
+                        div3Content = div3Content + "<p class='text-left' style='font-size: 12px;line-height: 20px;'>Usage: " + obj[i].Usage + "</p>";
                         div3Content = div3Content + "</div>";
                         div3Content = div3Content + "</div>";
                         div3Content = div3Content + "</div>";
@@ -73,10 +73,13 @@
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i></a> Home /
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i> Home</a>
                             </li>
-                            <li class="nav-item">
-                                Fabric Catalogue
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Showcase
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Fabric Catalogue
                             </li>
                         </ul>
                     </div>

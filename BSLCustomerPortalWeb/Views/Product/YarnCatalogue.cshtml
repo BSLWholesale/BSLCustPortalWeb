@@ -39,14 +39,14 @@
                             div3Content = div3Content + " </div>";
                             div3Content = div3Content + "<div class='name'>";
                             @*div3Content = div3Content + "<a href='@Url.Action("YarnCatalogueDetail", "Product")?MaterialCode=" + obj[i].MaterialCode + "'>";*@
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px; '>Blend Description: " + obj[i].BlendDescription + "</p>";
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>GD Type: " + obj[i].GDType + "</p>";
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Ply: " + obj[i].Ply + "</p>";
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Count: " + obj[i].Count + "</p>";
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Count Type: " + obj[i].CountType + "</p>";
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>SLUB: " + obj[i].SLUB + "</p>";
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Technique: " + obj[i].Technique + "</p>";
-                            div3Content = div3Content + "<p class='text-left pt-0' style='font-size: 12px;'>Quality: " + obj[i].Quality + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>Blend Description: " + obj[i].BlendDescription + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>GD Type: " + obj[i].GDType + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>Ply: " + obj[i].Ply + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>Count: " + obj[i].Count + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>Count Type: " + obj[i].CountType + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>SLUB: " + obj[i].SLUB + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>Technique: " + obj[i].Technique + "</p>";
+                            div3Content = div3Content + "<p class='text-left' style='font-size: 12px; line-height: 20px;'>Quality: " + obj[i].Quality + "</p>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
                             div3Content = div3Content + "</div>";
@@ -81,10 +81,13 @@
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i></a> Home /
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i> Home</a>
                             </li>
-                            <li class="nav-item">
-                                Yarn Catalogue
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Showcase
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Yarn Catalogue
                             </li>
                         </ul>
                     </div>
