@@ -21,7 +21,7 @@
             clsSamplRequest.UserId = 1;
             clsSamplRequest.vCategory = $('#ddlProductCategory').val();
             clsSamplRequest.vRemark = $('#txtRemarkM').val();
-            debugger;
+
             var clsSamplRequestList = [];
             var arrays = [];
             $('#tblList').eq(0).find('tr').each((r, row) => arrays.push($(row).find('td').map((c, cell) => $(cell).text()).toArray()))

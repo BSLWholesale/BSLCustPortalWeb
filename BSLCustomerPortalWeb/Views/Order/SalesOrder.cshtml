@@ -39,6 +39,7 @@
                         html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].BILL_TO_PARTY_NAME + "</td>";
                         html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].CITY + "</td>";
                         html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].COUNTRY + "</td>";
+                        html += "<td style='padding: 10px; font-size: 12px;'><a href='@Url.Action("CreateReorder", "Order")?so=" + obj[i].SO + "' class='text-success'>Reorder</a></td>";
                         html += "</tr>";
                         rowCount++;
                     }
@@ -97,7 +98,7 @@
                             <div class="col-2">
                                 <div class="form-group">
                                     <label> SO</label>
-                                    <input type="text" id="txtSO" name="txtSO" class="form-control" style="font-size: 12px;" value="" />
+                                    <input type="text" id="txtSO" name="txtSO" class="form-control" style="font-size: 12px;" value="" placeholder="Search..." />
                                 </div>
                             </div>
                             <div class="col-2">
@@ -118,6 +119,7 @@
                                             <td style="color: white; padding: 10px; font-size: 12px;">Bill Party Name</td>
                                             <td style="color: white; padding: 10px; font-size: 12px;">City</td>
                                             <td style="color: white; padding: 10px; font-size: 12px;">Country</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Action</td>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody">

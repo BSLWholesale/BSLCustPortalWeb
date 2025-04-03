@@ -610,6 +610,8 @@
     <Content Include="Views\Order\SampleRequest.cshtml" />
     <Content Include="Views\Order\SalesOrder.cshtml" />
     <Content Include="Views\Order\SalesOrderDetail.cshtml" />
+    <Content Include="Views\Order\Reorder.cshtml" />
+    <Content Include="Views\Order\CreateReorder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

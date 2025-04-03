@@ -37,6 +37,15 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
+        public ActionResult Reorder()
+        {
+            return View();
+        }
+        public ActionResult CreateReorder()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult Fn_Send_Sample_Request(clsSamplRequest objReq)
         {
