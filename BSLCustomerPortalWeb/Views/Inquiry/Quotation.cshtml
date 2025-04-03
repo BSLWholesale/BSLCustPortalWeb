@@ -1,0 +1,590 @@
+﻿
+@{
+    ViewBag.Title = "Quotation";
+}
+
+@{
+    @*<script type="text/javascript">
+
+            $(document).ready(function () {
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const prmCode = urlParams.get('Code');
+
+                if (prmCode != null) {
+                    var strQuotationId = prmCode.slice(1, -1);
+                    Fn_Get_Quotation(strQuotationId);
+                    Fn_Get_Quotation_Detail(strQuotationId);
+
+                    $('#btnSubmit').val("Update");
+                }
+                else {
+                    $('#btnSubmit').val("Submit");
+                }
+
+                var vUserEmail = '@strUserEmail';
+                $('#txtUserEmail').val(vUserEmail);
+                Fn_Fill_AutoComplite('txtArticle', 'MaterialMast', 'Quality');
+
+
+
+                $('#txtContactPerson').focusout(function () {
+                    Fn_Get_Customer_Detail_By_EmailORMobile();
+                });
+
+                $('#txtEmailId').focusout(function () {
+                    Fn_Get_Customer_Detail_By_EmailORMobile();
+                });
+
+            });
+
+
+            function Fn_Fill_AutoComplite(ControlId, strTBLName, strFieldName) {
+
+                $("#" + ControlId).autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '/Inquiry/Fn_Fill_AutoComplite',
+                            type: "POST",
+                            dataType: "json",
+                            data: { Prefix: request.term, strTBLName: strTBLName, strFieldName: strFieldName },
+                            success: function (data) {
+
+                                var obj = JSON.parse(data.message);
+                                response($.map(obj, function (item) {
+                                    return { label: item.vFieldName, value: item.vFieldName };
+                                }));
+                            }
+                        });
+                    },
+                    select: function (event, ui) {
+                        var str = ui.item.value;
+                        Fn_Get_All_MaterialMaster(str);
+                    }
+                });
+            }
+
+            function Fn_Get_All_MaterialMaster(strQuality) {
+
+                var clsFabric = {};
+                clsFabric.vQuality = strQuality
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Product/Fn_Get_All_MaterialMaster',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsFabric),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message)
+                        $("#txtBlend").val(obj[0].vBlendDescription);
+                        $("#txtWeight").val(obj[0].nGSM);
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            }
+
+            function Fn_Make_Quotation() {
+
+                var clsQuotation = {};
+                clsQuotation.vErrorMsg = "";
+                clsQuotation.UserId = '@strUserId';
+                clsQuotation.CompanyName = $('#txtCompanyName').val();
+                clsQuotation.CustomerName = $('#txtCustomerName').val();
+                clsQuotation.ContactPerson = $('#txtContactPerson').val();
+                clsQuotation.EmailId = $('#txtEmailId').val();
+                clsQuotation.vRemarks = $('#txtRemarks').val();
+                clsQuotation.vUserEmail = $('#txtUserEmail').val();
+                clsQuotation.vValidity = $('#txtValidity').val();
+
+                var btnCheck = $('#btnSubmit').val();
+                var strMSG = "";
+
+                if (btnCheck == "Update") {
+                    clsQuotation.QueryType = "Update";
+                    clsQuotation.QuotationId = $('#txtQuotationId').val();
+                    strMSG = "Updated " + clsQuotation.QuotationId + "successfully.";
+                }
+                else {
+                    clsQuotation.QueryType = "InsertMaster";
+                }
+
+                var clsQuotationList = [];
+                    var arrays = [];
+                    $('#tblList').eq(0).find('tr').each((r, row) => arrays.push($(row).find('td').map((c, cell) => $(cell).text()).toArray()))
+
+                    for (var i = 1; i < arrays.length; i++) {
+                        var _list =
+                        {
+                            vArticle: arrays[i][0], vBlend: arrays[i][1], vWeight: arrays[i][2],
+                            vWidth: arrays[i][3], vPrice: arrays[i][4], vUnit: arrays[i][5],
+                            vUnitType: arrays[i][6], vPaymentTerms: arrays[i][7], vDeliveryTerms: arrays[i][8]
+                        }
+
+                        clsQuotationList.push(_list);
+                    }
+
+                if (clsQuotationList.length == 0) {
+                    clsQuotation.vErrorMsg = "List is empty.";
+                    swal("", clsQuotation.vErrorMsg, "error");
+                        return;
+                 }
+                clsQuotation._oList = clsQuotationList;
+
+
+                if (clsQuotation.vErrorMsg == "") {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Inquiry/Fn_Make_Quotation',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify(clsQuotation),
+                        beforeSend: function () {
+                            $("#loader").show();
+                        },
+                        success: function (data) {
+                            var obj = JSON.parse(data.message);
+
+                            if (obj.vErrorMsg == 'Success') {
+
+                                if (btnCheck == "Update") {
+                                    strMSG = "Updated Successfully.";
+                                }
+                                else {
+                                    strMSG = "Save Successfully.";
+                                }
+
+                                swal("", strMSG, "success");
+                                Fn_Clear_Control();
+                            }
+                            else {
+                                swal("", obj.vErrorMsg, "error");
+                            }
+                        },
+                        complete: function () {
+                            $("#loader").hide();
+                        },
+                        error: function (err) {
+                            swal("", err, "error");
+                        }
+                    });
+                }
+            }
+
+
+            function Fn_Clear_Control() {
+
+                $('#txtCustomerName').val("");
+                $('#txtContactPerson').val("");
+                $('#txtEmailId').val("");
+                $('#txtUserEmail').val("");
+                $('#txtValidity').val("");
+
+
+                $('#txtArticle').val("");
+                $('#txtBlend').val("");
+                $('#txtWeight').val("");
+                $('#txtWidth').val("");
+                $('#txtPrice').val("");
+                $('#txtUnit').val("");
+                $('#txtPaymentTerms').val("");
+                $('#txtDeliveryTerms').val("");
+                $('#txtRemarks').val("");
+                $('#txtCompanyName').val();
+                $("#dvList").html('');
+            }
+
+            function Fn_Get_Quotation(strQOT) {
+
+                var clsQuotation = {};
+                clsQuotation.UserId = '@strUserId';
+                clsQuotation.QuotationId = strQOT;
+
+            $.ajax({
+                type: "POST",
+                url: '/Inquiry/Fn_Get_Quotation',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsQuotation),
+                success: function (data) {
+                    $("#tbody").html('');
+
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vErrorMsg == "Success") {
+
+                        $('#txtQuotationId').val(obj[0].QuotationId);
+                        $('#txtCompanyName').val(obj[0].CompanyName);
+                        $('#txtCustomerName').val(obj[0].CustomerName);
+                        $('#txtContactPerson').val(obj[0].ContactPerson);
+                        $('#txtEmailId').val(obj[0].EmailId);
+                        $('#txtDate').val(obj[0].CreatedDate);
+                        $('#txtRemarks').val(obj[0].vRemarks);
+                        $('#txtUserEmail').val(obj[0].vUserEmail);
+                        $('#txtValidity').val(obj[0].vValidity);
+                    }
+                    else {
+
+                    }
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+            }
+
+            function Fn_Get_Quotation_Detail(id) {
+
+
+                var clsQuotationList = {};
+                clsQuotationList.QuotationId = id;
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Inquiry/Fn_Get_Quotation_Detail',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsQuotationList),
+                    success: function (data) {
+                        $("#tbodyDetail").html('');
+                        var obj = JSON.parse(data.message)
+                        var html = '';
+                        if (obj[0].vErrorMsg == "Success") {
+                            for (var i = 0; i < obj.length; i++) {
+
+                                html += "<tr style='padding: 10px;'>";
+                                html += "<td style='padding: 10px; font-size: 12px;' class='scancode'>" + obj[i].vArticle + "</th>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vBlend + "</td>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vWeight + "</td>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vWidth + "</td>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vPrice + "</td>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vUnit + "</td>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vUnitType + "</td>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vPaymentTerms + "</td>";
+                                html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].vDeliveryTerms + "</td>";
+
+                                html += "<td style='padding: 10px; font-size: 12px;text-align: center;'><i class='fa fa-trash text-danger delete' style='color:red; mrgin-left: 20px;'></i></td></tr>";
+
+                            }
+                        }
+                        $("#dvList").append(html);
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            }
+
+            function Fn_Get_Customer_Detail_By_EmailORMobile() {
+
+                var clsRegistration = {};
+                clsRegistration.CEmailId = $('#txtEmailId').val();
+                clsRegistration.CMobileNo = $('#txtContactPerson').val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Inquiry/Fn_Get_Customer_Detail_By_EmailORMobile',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        data: JSON.stringify(clsRegistration),
+                        success: function (Result) {
+                            var obj = JSON.parse(Result.message);
+                            if (obj.ErrorMsg == 'success') {
+
+                                var customerNale = obj.CFirstName + ' ' + obj.CLastName
+                                $('#txtCompanyName').val(obj.CCompanyName);
+                                $('#txtCustomerName').val(customerNale);
+                                $('#txtContactPerson').val(obj.CMobileNo);
+                                $('#txtEmailId').val(obj.CEmailId);
+
+                            }
+                            else {
+
+                            }
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
+
+            }
+
+        </script>*@
+}
+
+
+<!-- Breadcrumb Start -->
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
+                            </li>
+                            <li class="nav-item">
+                                Quotation /
+                            </li>
+                            <li class="nav-item" id="liItemCount">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb End -->
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact-from" style="padding: 25px">
+                    <div class="main-form">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">CONTACT PERSON</label>
+                                    <input type="text" id="txtContactPerson" name="txtContactPerson" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">EMAIL ID</label>
+                                    <input type="text" id="txtEmailId" name="txtEmailId" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">COMPANY NAME</label>
+                                    <input type="text" id="txtCompanyName" name="txtCompanyName" class="form-control" style="font-size: 12px;" value="" />
+                                    <input type="hidden" id="txtQuotationId" name="txtQuotationId" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">CUSTOMER NAME</label>
+                                    <input type="text" id="txtCustomerName" name="txtCustomerName" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">EXECUTIVE EMAIL </label>
+                                    <input type="text" id="txtUserEmail" name="txtUserEmail" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">VALIDITY </label>
+                                    <input type="text" id="txtValidity" name="txtValidity" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">REMARKS</label>
+                                    <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">ARTICLE</label>
+                                    <input type="text" id="txtArticle" name="txtArticle" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">BLEND</label>
+                                    <input type="text" id="txtBlend" name="txtBlend" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">GSM</label>
+                                    <input type="text" id="txtWeight" name="txtWeight" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">WIDTH</label>
+                                    <input type="text" id="txtWidth" name="txtWidth" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">PRICE</label>
+                                    <br />
+                                    <select id="ddlCurrency" style="font-size: 12px; width: 50px; height: 25px;">
+                                        <option value="INR">INR</option>
+                                        <option value="USD">USD</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="QAR">QAR</option>
+                                    </select>
+                                    <input type="text" id="txtPrice" name="txtPrice" style="font-size: 12px; width: 80px; text-align:right" value="" />
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>MCQ/MOQ</label>
+                                    <br />
+                                    <select id="ddlUnit" style="font-size: 12px; width: 50px; height: 25px;">
+                                        <option value="MTR">MTR</option>
+                                        <option value="YRD">YRD</option>
+                                    </select>
+                                    <input type="text" id="txtUnit" name="txtUnit" style="font-size: 12px; width: 80px;" value="" />
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">PAYMENT TERMS</label>
+                                    <input type="text" id="txtPaymentTerms" name="txtPaymentTerms" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label style="font-size:12px;">DELIVERY TERMS</label>
+                                    <input type="text" id="txtDeliveryTerms" name="txtDeliveryTerms" class="form-control" style="font-size: 12px;" value="" />
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <input type="submit" id="btnAdd" name="btnAdd" value="Add" onclick="Fn_Make_List();" style="height:40px; width:60px;" class="btn btn-success pull-right" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pl-lg-3 pr-lg-3">
+                            <div style="overflow:auto; width: 100%;">
+                                <table id="tblList" class="table table-striped table-hover">
+                                    <thead style="background-color: #08417B; color: white;">
+                                        <tr>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">ARTICLE</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">BLEND</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">GSM</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">WIDTH</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">PRICE</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">MCQ/MOQ</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">UOM</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">PAYMENT TERMS</th>
+                                            <th style="color: white; padding: 10px; font-size: 12px;">DELIVERY TERMS</th>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">ACTION</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dvList"></tbody>
+                                </table>
+                            </div>
+
+                            <script>
+                                $(document).on("click", '.delete', function () {
+                                    $(this).closest('tr').remove();
+                                });
+
+                                $("#txtDeliveryTerms").keyup(function (e) {
+                                    if (e.which == 13) {
+                                        Fn_Make_List();
+                                    }
+                                    else {
+                                        //  Do whatever you like
+                                    }
+                                    e.preventDefault();
+                                });
+
+                                function Fn_Make_List() {
+                                    var html = '';
+                                    $("#txtArticle").focus();
+                                    var p = $('#txtArticle').val().trim();
+
+                                    var tds = $("#tblList").find(".scancode");
+                                    var isContains = false;
+                                    for (var i = 0; i < tds.length; i++) {
+                                        var td = tds[i];
+                                        if (td.innerText == p) {
+                                            isContains = true;
+                                            break;
+                                        }
+                                    }
+                                    if (isContains) {
+                                        swal("", "Already Exist", "error");
+                                        $('#txtArticle').val("");
+                                        p = '';
+                                        return;
+                                    }
+                                    else {
+
+                                        var txtArticle = $('#txtArticle').val();
+
+                                        var txtBlend = $('#txtBlend').val();
+
+                                        var txtWeight = $('#txtWeight').val();
+                                        var txtWidth = $('#txtWidth').val();
+                                        var txtPrice = $('#txtPrice').val();
+                                        var ddlCurrency = $('#ddlCurrency').val();
+                                        var ddlUnit = $('#ddlUnit').val();
+
+                                        var txtUnit = $('#txtUnit').val();
+                                        var txtPaymentTerms = $('#txtPaymentTerms').val();
+                                        var txtDeliveryTerms = $('#txtDeliveryTerms').val();
+
+                                        if (txtArticle == "" || txtBlend == "0") {
+                                            swal("", "Please fill all fields", "error");
+                                        }
+                                        else {
+                                            html += "<tr>";
+                                            html += "<td style='padding: 10px; font-size: 12px;' class='scancode'>" + txtArticle + "</th>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + txtBlend + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + txtWeight + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + txtWidth + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + ddlCurrency + '-' + txtPrice + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + txtUnit + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + ddlUnit + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + txtPaymentTerms + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px;'>" + txtDeliveryTerms + "</td>";
+                                            html += "<td style='padding: 10px; font-size: 12px; text-align: center;'><i class='fa fa-trash text-danger delete' style='color:red; mrgin-left: 20px;'></i></td></tr>";
+
+
+                                            $("#dvList").append(html);
+
+                                            $('#txtArticle').val("");
+                                            $('#txtBlend').val("");
+                                            $('#txtWeight').val("");
+                                            $('#txtWidth').val("");
+                                            $('#txtPrice').val("");
+                                            $('#txtUnit').val("");
+                                            $('#txtPaymentTerms').val("");
+                                            $('#txtDeliveryTerms').val("");
+                                        }
+                                    }
+                                }
+
+                            </script>
+
+                        </div>
+
+                        <div class="row pl-lg-3 pr-lg-3">
+                            <div class="col-12">
+                                <div class="form-group pull-right">
+                                    <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit" onclick="Fn_Make_Quotation();" class="btn btn-primary mt-4" />
+                                    <a href="@Url.Action("DisplayQuotation", "Inquiry")" class="btn btn-outline-success mt-4">Display</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- main form -->
+                </div> <!--  contact from -->
+            </div>
+
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
