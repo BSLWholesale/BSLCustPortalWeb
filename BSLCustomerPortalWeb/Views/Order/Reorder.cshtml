@@ -14,10 +14,13 @@
         });
 
         function Fn_GET_Reorder() {
-            
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmvstatus = urlParams.get('vstatus');
+
             var clsReorder = {};
             clsReorder.UserId = 1;
-            debugger;
+            clsReorder.vStatus = prmvstatus;
             $.ajax({
                 type: "POST",
                 url: '/Order/Fn_GET_Reorder',
@@ -25,11 +28,10 @@
                 dataType: "json",
                 data: JSON.stringify(clsReorder),
                 success: function (data) {
-                    $("#dvList").html('');
+                    $("#tbody").html('');
                     var obj = JSON.parse(data.message);
-                    debugger;
-                    var html = ''; var rowCount = 1;
-                    if (obj[0].vERRORMSG == "Success") {
+                    var html = ''; 
+                    if (obj[0].vErrorMsg == "Success") {
                         for (var i = 0; i < obj.length; i++) {
 
 
@@ -40,13 +42,14 @@
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Shade + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Qty + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].UOM + "</td>";
-                            html += "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'><a href='@Url.Action("CreateReorder", "Order")?rid=" + obj[i].RID + "&type=E&so=" + obj[i].SO + "'><i class='fa fa-edit text-success'></i></a></td>";
+                            html += "</tr>";
                            
                         }
                     }
                     else {
 
-                        html += "<tr><td style='font-size: 12px;' colspan='9' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                        html += "<tr><td style='font-size: 12px;' colspan='7' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
                     }
                     $("#tbody").append(html);
 
@@ -105,6 +108,7 @@
                                             <th style="padding: 5px;">Shade</th>
                                             <th style="padding: 5px;">Qty</th>
                                             <th style="padding: 5px;">UOM</th>
+                                            <th style="padding: 5px;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody"></tbody>
