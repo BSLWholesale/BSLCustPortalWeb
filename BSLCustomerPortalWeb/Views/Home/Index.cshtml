@@ -32,11 +32,11 @@
             swal("Login", "Password Field should not be Empty", "error");
         }
         else {
-            
+
             var clsCustomer = {};
             clsCustomer.CustomerId = $("#txtCustomerId").val().trim();
             clsCustomer.CustPassword = $("#txtPassword").val().trim();
-            
+
             $.ajax({
                 type: "POST",
                 url: "/Home/Fn_LogIn_Customer",
@@ -83,47 +83,54 @@
     }
 
 </script>
-<main>
-    <section style="background-color: edf0f2;">
-        <div class="container" style="margin-top: 8%;">
-            <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-6">
-                    <div class="card mb-0 h-auto">
-                        <div class="card-body">
-                            <div class="text-center mb-2">
-                                @*<h5>BSL Customer Portal</h5>*@
-                                <img src="~/Images/SingleLogoHighnoBG.png" width="35%" height="5%" />
-                            </div><br />
-                            <h4 class="text-center mb-4" style="color:black;">Customer Login</h4>
-                            <div>
-                                <div class="form-group">
-                                    <label class="form-label" for="username">Customer ID</label>
-                                    <input type="text" id="txtCustomerId" name="txtCustomerId" class="form-control" placeholder="Enter Your Customer ID">
+
+<section>
+    <div class="container" style="margin-top: 8%;">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6">
+                <div class="card mb-0 h-auto" style="padding: 10px; border-radius: 12px; background: #fff; transition: box-shadow 0.3s ease; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);">
+                    <div class="card-body">
+                        <div class="text-center mb-1">
+                            <img src="~/Images/SingleLogoHighnoBG.png" width="40%" />
+                        </div><br />
+                        <h3 class="text-center mb-4" style="color:#333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 600;">Customer Login</h3>
+                        <div>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="username" style="font-weight: 500; font-size: 13px;">Customer ID</label>
+                                <div class="input-group">
+                                    @*<span class="input-group-text"><i class="fa fa-user"></i></span>*@
+                                    <input type="text" id="txtCustomerId" name="txtCustomerId" class="form-control" placeholder="Enter Your Customer ID" style="border-radius: 8px;">
                                 </div>
-                                <div class="mb-4 position-relative">
-                                    <label class="form-label" for="dlabPassword">Password</label>
-                                    <input type="password" id="txtPassword" name="txtPassword" class="form-control" value="" placeholder="Enter Your Password">
-                                    <span class="show-pass eye" onclick="Fn_ShowPassword();">
-                                        <i class="fa fa-eye-slash"></i>
-                                        <i class="fa fa-eye"></i>
-                                    </span>
+                            </div>
+                            <div class="mb-4 position-relative">
+                                <label class="form-label" for="dlabPassword" style="font-weight: 500; font-size: 13px;">Password</label>
+                                <div class="input-group">
+                                    @*<span class="input-group-text"><i class="fa fa-lock"></i></span>*@
+                                    <input type="password" id="txtPassword" name="txtPassword" class="form-control" value="" placeholder="Enter Your Password" style="border-radius: 8px;">
                                 </div>
-                                <div class="form-row d-flex flex-wrap justify-content-between mt-4 mb-2">
-                                    <div class="form-group ms-2" style="display:none;">
-                                        <a class="btn-link" href="@Url.Action("", "")">Forgot Password?</a>
-                                    </div>
+
+                                @*<span class="show-pass eye" onclick="Fn_ShowPassword();" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                    <i class="fa fa-eye-slash"></i>
+                                    <i class="fa fa-eye" style="display: none;"></i>
+                                </span>*@
+                            </div>
+                            @*<div class="form-row d-flex flex-wrap justify-content-between mt-4 mb-2">
+                                <div class="form-group ms-2" style="display:none;">
+                                    <a class="btn-link" href="@Url.Action("", "")">Forgot Password?</a>
                                 </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-warning btn-block" onclick="Fn_LogIn_Customer();" style="background-color: #ffc600; color: black;"><b>Log In</b></button>
-                                </div>
-                                <div class="new-account mt-3">
-                                    <p style="display:none;">New Customer <a class="text-primary" href="">Sign up</a></p>
-                                </div>
+                            </div>*@
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-warning btn-block" onclick="Fn_LogIn_Customer();" style="background: linear-gradient(90deg, #ffc600, #ff8c00); color: white; border-radius: 25px; font-weight: bold; font-size: 1.1rem; padding: 12px 20px; transition: background 0.3s ease-in-out;">
+                                    Log In
+                                </button>
+                            </div>
+                            <div class="new-account mt-3">
+                                <p style="display:none;">New Customer <a class="text-primary" href="">Sign up</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-</main>
+    </div>
+</section>
