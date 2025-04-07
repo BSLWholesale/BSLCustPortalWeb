@@ -134,6 +134,7 @@ namespace BSLCustomerPortalWeb.Models
         public string CreatedDate { get; set; }
         public int UserId { get; set; }
         public string Category { get; set; }
+        public string QueryType { get; set; }
         public string vErrorMsg { get; set; }
 
     }

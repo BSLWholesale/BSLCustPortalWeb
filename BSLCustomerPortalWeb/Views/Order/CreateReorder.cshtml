@@ -8,25 +8,49 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmSO = urlParams.get('so');
+            const prmRID = urlParams.get('rid');
+            const prmType = urlParams.get('type');
+
+            if (prmType == "E") {
+                Fn_GET_Reorder(prmRID);
+                $('#btnSubmit').val("Update");
+            }
+            else if (prmType == "R") {
+                Fn_GET_Sales_OrderDetail(prmSO);
+                $('#btnSubmit').val("Submit");
+            }
+            else {
+                $("#dvList").html('');
+                $('#btnSubmit').val("Submit");
+            }
            
-           // Fn_GET_Sales_OrderDetail();
-            $("#dvList").html('');
 
         });
 
         function Fn_Create_Reorder() {
 
+            var btnVal = $('#btnSubmit').val();
             const urlParams = new URLSearchParams(window.location.search);
-            const prmCode = urlParams.get('so');
-            // var result = prmCode.slice(1, -1);
-
-            $('#liMenu').html(prmCode);
-
+            const prmSO = urlParams.get('so');
+            const prmRID = urlParams.get('rid');
+          
+            var strMsg = "";
             var clsReorder = {};
             clsReorder.UserId = sessionStorage.getItem("CustId");
             clsReorder.CSAPId = 1100009112;
-           // clsReorder.SO = result;
-            debugger;
+
+            if (btnVal == "Update") {
+                clsReorder.QueryType = "Update";
+                strMsg = "Reorder Updated successfully.";
+            }
+            else {
+                clsReorder.QueryType = "Insert";
+                strMsg = "Reorder successfully.";
+            }
+
             var clsReorderList = [];
             var arrays = [];
             $('#tblList').eq(0).find('tr').each((r, row) => arrays.push($(row).find('td').map((c, cell) => $(cell).text()).toArray()))
@@ -35,16 +59,16 @@
                 var _list =
                 {
                     Category: arrays[i][0], Material: arrays[i][1], Descriptions: arrays[i][2],
-                    Shade: arrays[i][3], Qty: arrays[i][4], UOM: arrays[i][5],
-                    vStatus: 'In-Process', UserId: 1, SO: prmCode
+                    Shade: arrays[i][3], Qty: arrays[i][4], UOM: arrays[i][5], Id: arrays[i][7], RID: prmRID,
+                    vStatus: 'In-Process', UserId: 1, SO: prmSO, QueryType: clsReorder.QueryType
+                    
                 }
 
                 clsReorderList.push(_list);
             }
 
             clsReorder = clsReorderList;
-            debugger;
-
+            
             $.ajax({
                 type: "POST",
                 url: '/Order/Fn_Create_Reorder',
@@ -54,12 +78,12 @@
                 success: function (data) {
                     $("#tbody").html('');
                     var obj = JSON.parse(data.message);
-                    debugger;
                     if (obj.vErrorMsg == "Success") {
-                        swal("", "Reorder successfully.", "success");
+                        $("#dvList").html('');
+                        swal("", strMsg, "success");
                     }
                     else {
-                        swal("", obj.vErrorMsg, "success");
+                        swal("", obj.vErrorMsg, "error");
                     }
                 },
                 error: function (err) {
@@ -69,14 +93,13 @@
         }
 
         function Fn_GET_Sales_OrderDetail() {
-            debugger;
+
             const urlParams = new URLSearchParams(window.location.search);
             const prmCode = urlParams.get('so');
-          //  var result = prmCode.slice(1, -1);
             var clsSalesOrder = {};
             clsSalesOrder.CSAPId = 1100009112;
             clsSalesOrder.SO = prmCode;
-            debugger;
+
             $.ajax({
                 type: "POST",
                 url: '/Order/Fn_GET_Sales_OrderDetail',
@@ -86,18 +109,19 @@
                 success: function (data) {
                     $("#dvList").html('');
                     var obj = JSON.parse(data.message);
-                    debugger;
-                    var html = ''; var rowCount = 1;
+
+                    var html = ''; 
                     if (obj[0].vERRORMSG == "Success") {
                         for (var i = 0; i < obj.length; i++) {
 
-
                             html += "<tr style='padding: 10px;'>";
-                            html += "<td style='padding: 10px; font-size: 12px;'>" + rowCount + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>Fabric</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material_Description + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Fab_Shade_Name + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].QTY + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].UOM + "</td>";
+                            html += "<td><i class='fa fa-trash text-danger delete' style='color:red; mrgin-left: 20px;'></i></td>";
                             html += "</td>";
                             rowCount++;
                         }
@@ -105,6 +129,52 @@
                     else {
 
                       //  html += "<tr><td style='font-size: 12px;' colspan='9' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                    }
+                    $("#dvList").append(html);
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+         function Fn_GET_Reorder(so) {
+
+             debugger
+            var clsReorder = {};
+            clsReorder.UserId = 1;
+            clsReorder.RID = so;
+            $.ajax({
+                type: "POST",
+                url: '/Order/Fn_GET_Reorder',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsReorder),
+                success: function (data) {
+                    $("#tbody").html('');
+                    var obj = JSON.parse(data.message);
+                    var html = '';
+                    if (obj[0].vErrorMsg == "Success") {
+                        for (var i = 0; i < obj.length; i++) {
+
+
+                            html += "<tr style='padding: 10px;'>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Category + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Descriptions + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Shade + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Qty + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].UOM + "</td>";
+                            html += "<td><i class='fa fa-trash text-danger delete' style='color:red; mrgin-left: 20px;'></i></td>";
+                            html += "<td style='padding: 10px; font-size: 12px; display: none;'>" + obj[i].Id + "</td>";
+                            html += "</tr>";
+
+                        }
+                    }
+                    else {
+
+                       // html += "<tr><td style='font-size: 12px;' colspan='7' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
                     }
                     $("#dvList").append(html);
 
@@ -131,9 +201,9 @@
                                 <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
                             </li>
                             <li class="nav-item">
-                                Reorder /
+                                <a href="@Url.Action("Reorder", "Order")?vstatus=Open">Reorder</a> / 
                             </li>
-                            <li class="nav-item" id="liprm"> </li>
+                            <li class="nav-item"> Create</li>
                         </ul>
                     </div>
                 </div>
@@ -213,6 +283,7 @@
                                             <th style="color: white; padding: 10px;">Qty</th>
                                             <th style="color: white; padding: 10px;">UOM</th>
                                             <td style="color: white; padding: 10px;">Action</td>
+                                            <td style="color: white; padding: 10px; display: none;">Id</td>
                                         </tr>
                                     </thead>
                                     <tbody id="dvList"></tbody>
@@ -298,7 +369,7 @@
                             <div class="col-6">
                                 <div class="form-group pull-right">
                                     <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit" onclick="Fn_Create_Reorder();" class="btn btn-outline-danger mt-4" />
-                                    <a href="@Url.Action("DsiplayRequest", "Order")" class="btn btn-outline-success mt-4">Dsiplay</a>
+                                    <a href="@Url.Action("Reorder", "Order")?vstatus=Open" class="btn btn-outline-success mt-4">Dsiplay</a>
                                 </div>
                             </div>
                         </div>

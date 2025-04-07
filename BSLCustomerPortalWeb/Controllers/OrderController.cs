@@ -191,7 +191,7 @@ namespace BSLCustomerPortalWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult Fn_GET_Reorder(List<clsReorder> objReq)
+        public JsonResult Fn_GET_Reorder(clsReorder objReq)
         {
             using (var client = new HttpClient())
             {
