@@ -1,7 +1,38 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+
+<section id="shop-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / About Us
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="singel-publication mt-10">
+            <div style="background-color: #15c5eb; box-shadow: 2px 8px 19px -9px #15c5eb; margin-top: -2%; ">
+            </div>
+            <div class="name mt-3">
+                <p>Banswara is situated in South Rajastan in India.</p>
+                <p>Banswara princely state was founded by Maharwal Jagmal Singh.</p>
+                <p>It gets the name from dominance of "Bans" or bamboo forests.</p>
+                <p>It is also known as 'City of Hundred Islands', due to presence of numerous islands in the Mahi River, which flows through Banswara.</p>
+
+            </div>
+        </div> <!-- singel publication -->
+    </div>
+</section>
