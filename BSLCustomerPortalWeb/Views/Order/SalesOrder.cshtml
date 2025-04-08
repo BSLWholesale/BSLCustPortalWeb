@@ -12,49 +12,50 @@
         });
 
 
-
         function Fn_GET_Sales_Order() {
+            
             var clsSalesOrder = {};
-            clsSalesOrder.UserId = 1;
-            clsSalesOrder.CSAPId = 1100009112;
+            //clsSalesOrder.UserId = 1;
+            clsSalesOrder.CSAPId = sessionStorage.getItem("SAPCustId");
+            //clsSalesOrder.CSAPId = 1100009112;
             clsSalesOrder.SO = $('#txtSO').val();
+            
+            $.ajax({
+                type: "POST",
+                url: '/Order/Fn_GET_Sales_Order',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsSalesOrder),
+                success: function (data) {
+                    $("#tbody").html('');
+                    var obj = JSON.parse(data.message);
+                    var html = ''; var rowCount = 0;
+                    if (obj[0].vERRORMSG == "Success") {
+                        for (var i = 0; i < obj.length; i++) {
 
-        $.ajax({
-            type: "POST",
-            url: '/Order/Fn_GET_Sales_Order',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: JSON.stringify(clsSalesOrder),
-            success: function (data) {
-                $("#tbody").html('');
-                var obj = JSON.parse(data.message);
-                var html = ''; var rowCount = 0;
-                if (obj[0].vERRORMSG == "Success") {
-                    for (var i = 0; i < obj.length; i++) {
-
-                        html += "<tr style='padding: 10px;' class='trColor' id='tr_" + obj[i].SO + "'>";
-                        html += "<td class='tdColor' id='td_" + obj[i].SO + "' style='padding: 10px; font-size: 12px; cursor: pointer;'> <span onclick=Fn_GET_Sales_OrderDetail('" + obj[i].SO + "');>" + obj[i].SO + "</span></td>";
-                        html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Inv_Date + "</td>";
-                        html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].SOLD_TO_PARTY_NAME + "</td>";
-                        html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].BILL_TO_PARTY_NAME + "</td>";
-                        html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].CITY + "</td>";
-                        html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].COUNTRY + "</td>";
-                        html += "<td style='padding: 10px; font-size: 12px;'><a href='@Url.Action("CreateReorder", "Order")?so=" + obj[i].SO + "&type=R' class='text-success'>Reorder</a></td>";
-                        html += "</tr>";
-                        rowCount++;
+                            html += "<tr style='padding: 10px;' class='trColor' id='tr_" + obj[i].SO + "'>";
+                            html += "<td class='tdColor' id='td_" + obj[i].SO + "' style='padding: 10px; font-size: 12px; cursor: pointer;'> <span onclick=Fn_GET_Sales_OrderDetail('" + obj[i].SO + "');>" + obj[i].SO + "</span></td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Inv_Date + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].SOLD_TO_PARTY_NAME + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].BILL_TO_PARTY_NAME + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].CITY + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].COUNTRY + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'><a href='@Url.Action("CreateReorder", "Order")?so=" + obj[i].SO + "&type=R' class='text-success'>Reorder</a></td>";
+                            html += "</tr>";
+                            rowCount++;
+                        }
                     }
+                    else {
+                        html += "<tr style='padding: 10px;'><td style='font-size: 12px;' colspan='6'class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                    }
+                    $("#tbody").append(html);
+                    $('#liItemCount').html(rowCount + ' Results')
+                },
+                error: function (err) {
+                    alert(err);
                 }
-                else {
-                    html += "<tr style='padding: 10px;'><td style='font-size: 12px;' colspan='6'class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
-                }
-                $("#tbody").append(html);
-                $('#liItemCount').html(rowCount + ' Results')
-            },
-            error: function (err) {
-                alert(err);
+            });
             }
-        });
-        }
 
         function Fn_GET_Sales_OrderDetail(SO) {
             window.location.href = "/Order/SalesOrderDetail?code='" + SO + "'";

@@ -32,11 +32,10 @@
             swal("Login", "Password Field should not be Empty", "error");
         }
         else {
-
             var clsCustomer = {};
-            clsCustomer.CustomerId = $("#txtCustomerId").val().trim();
+            clsCustomer.CustEmailId = $("#txtCustomerId").val().trim();
             clsCustomer.CustPassword = $("#txtPassword").val().trim();
-
+            
             $.ajax({
                 type: "POST",
                 url: "/Home/Fn_LogIn_Customer",
@@ -47,10 +46,13 @@
                     var obj = JSON.parse(data.message);
                     if (obj.ErrorMsg == "Success") {
                         sessionStorage.setItem("CustId", obj.CustomerId);
-                        sessionStorage.setItem("EmailId", obj.CustEmailId);
+                        sessionStorage.setItem("SAPCustId", obj.SAPCustId);
+                        sessionStorage.setItem("CEmailId", obj.CustEmailId);
                         sessionStorage.setItem("CompanyName", obj.CustCompanyName);
-                        sessionStorage.setItem("Mobile", obj.CustMobile);
+                        sessionStorage.setItem("CMobileNo", obj.CustMobile);
                         sessionStorage.setItem("CustName", obj.CustName);
+                        sessionStorage.setItem("CustUserType", obj.CustUserType);
+                        //sessionStorage.setItem("ADRNR", obj.CustADRNR);
                         sessionStorage.setItem("CreateDate", obj.CustCreatedDate);
                         window.location.href = "@Url.Action("DashBoard", "Home")";
                     }

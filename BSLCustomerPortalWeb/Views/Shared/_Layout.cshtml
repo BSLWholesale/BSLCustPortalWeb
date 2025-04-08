@@ -31,23 +31,25 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            
-            var CustLoginId = sessionStorage.getItem("CustId");
-            var CustEmailId = sessionStorage.getItem("EmailId");
+
+            var CustTableId = sessionStorage.getItem("CustId");
+            var CustSAPId = sessionStorage.getItem("SAPCustId");
+            var CustEmailId = sessionStorage.getItem("CEmailId");
             var CustCompanyName = sessionStorage.getItem("CompanyName");
-            var CustMobileNo = sessionStorage.getItem("Mobile");
+            var CustMobileNo = sessionStorage.getItem("CMobileNo");
             var CustCreatedDate = sessionStorage.getItem("CreateDate");
             var CustName = sessionStorage.getItem("CustName");
             var CurrentDate = new Date();
             var CurrentYear = CurrentDate.getFullYear();
             var CustTypeYears = CurrentYear - CustCreatedDate;
+            var CustUserType = sessionStorage.getItem("CustUserType");
 
-            if (CustLoginId == null || CustLoginId == 0 || CustEmailId == null || CustEmailId == "") {
+            if (CustSAPId == null || CustSAPId == 0 || CustEmailId == null || CustEmailId == "") {
                 window.location.href = '/Home/Index';
             }
 
             $("#divCustCompanyName").html(CustCompanyName);
-            $("#divCustAccount").html(CustLoginId);
+            $("#divCustAccount").html(CustSAPId);
             $("#divCustContact").html(CustMobileNo);
             $("#divCustYears").html(CustTypeYears);
 
