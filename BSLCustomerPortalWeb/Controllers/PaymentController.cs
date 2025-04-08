@@ -37,7 +37,7 @@ namespace BSLCustomerPortalWeb.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Product inserting faild." }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "Invalid Request." }, JsonRequestBehavior.AllowGet);
                 }
             }
         }

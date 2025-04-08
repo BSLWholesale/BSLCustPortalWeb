@@ -13,23 +13,20 @@
 
         function Fn_Get_Payment() {
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const prmvstatus = urlParams.get('vstatus');
-
             var clsPayment = {};
-            clsPayment.UserId = 1;
-            clsPayment.vStatus = prmvstatus;
+            clsPayment.CustomerCode = "1200002325";
 
             $.ajax({
                 type: "POST",
                 url: '/Payment/Fn_Get_Payment',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: JSON.stringify(clsSamplRequest),
+                data: JSON.stringify(clsPayment),
                 success: function (data) {
                     $("#tbody").html('');
-
+                    debugger;
                     var obj = JSON.parse(data.message);
+                   
                     var html = ''; var rowCount = 0
                     if (obj[0].vErrorMsg == "Success") {
                         for (var i = 0; i < obj.length; i++) {
@@ -73,6 +70,7 @@
                     $('#liItemCount').html(rowCount + ' Records')
                 },
                 error: function (err) {
+                    debugger;
                     alert(err);
                 }
             });
@@ -118,45 +116,37 @@
                 <div class="contact-from" style="padding: 25px">
                     <div class="main-form">
                         <div class="row">
-                            <div class="col-6">
-                                <table class="table table-striped table-hover">
+                            <div class="col-12">
+                                <table class="table table-responsive table-striped table-hover">
                                     <thead style="background-color: #08417B; color: white;">
                                         <tr>
-                                            <th style="padding: 5px;">ID</th>
-                                            @*<th style="padding: 5px;">Name</th>*@
+                                            <th style="padding: 5px;">Invoice</th>
                                             <th style="padding: 5px;">Date</th>
+                                            <th style="padding: 5px;">Customer Name</th>
+                                            <th style="padding: 5px;">Document Type</th>
+                                            <th style="padding: 5px;">Debit Amt</th>
+                                            <th style="padding: 5px;">Credit Amt</th>
+                                            <th style="padding: 5px;">Balance</th>
+                                            <th style="padding: 5px;">Doc Currency</th>
+                                            <th style="padding: 5px;">Due Days</th>
+                                            <th style="padding: 5px;">Sales Person</th>
                                             <th style="padding: 5px;">Division</th>
-                                            <th style="padding: 5px;">Status</th>
+                                            <th style="padding: 5px;">Over Due Days</th>
+                                            <th style="padding: 5px;">Pay Term Desc</th>
+                                            <th style="padding: 5px;">Sales Order</th>
+                                            <th style="padding: 5px;">Due Date</th>
+                                            <th style="padding: 5px;">Fiscal Year</th>
+                                            <th style="padding: 5px;">Inv Qty</th>
+                                            <th style="padding: 5px;">LC Date</th>
+                                            <th style="padding: 5px;">LC No</th>
+                                            <th style="padding: 5px;">Country</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody">
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-6">
-                                <table class="table table-striped table-hover">
-                                    <thead style="background-color: #08417B; color: white;">
-                                        <tr>
-                                            <th style="padding: 5px;">Product</th>
-                                            <th style="padding: 5px;" class='dvF'>Color</th>
-                                            <th style="padding: 5px;" class='dvF'>ShadeCard</th>
-                                            <th style="padding: 5px;" class='dvF'>Yardage</th>
-
-                                            <th style="padding: 5px;" class='dvG'>Style</th>
-                                            <th style="padding: 5px;" class='dvG'>Style No</th>
-                                            <th style="padding: 5px;" class='dvG'>Fabric Quality</th>
-
-                                            <th style="padding: 5px;" class='dvY'>Count</th>
-                                            <th style="padding: 5px;" class='dvY'>Blend Description</th>
-                                            <th style="padding: 5px;" class='dvY'>Blend Percentage</th>
-                                            <th style="padding: 5px;" class='dvY'>EndUse</th>
-                                            <th style="padding: 5px;" class='dvY'>Dye</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbodyDetail">
-                                    </tbody>
-                                </table>
-                            </div>
+                            
 
                         </div>
                     </div> <!-- main form -->
