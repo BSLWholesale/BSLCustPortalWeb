@@ -4,7 +4,7 @@
 }
 
 @{
-    @*<script type="text/javascript">
+    <script type="text/javascript">
 
             $(document).ready(function () {
 
@@ -22,7 +22,8 @@
                     $('#btnSubmit').val("Submit");
                 }
 
-                var vUserEmail = '@strUserEmail';
+                @*var vUserEmail = '@strUserEmail';*@
+                var vUserEmail = sessionStorage.getItem("SAPCustId");
                 $('#txtUserEmail').val(vUserEmail);
                 Fn_Fill_AutoComplite('txtArticle', 'MaterialMast', 'Quality');
 
@@ -90,7 +91,8 @@
 
                 var clsQuotation = {};
                 clsQuotation.vErrorMsg = "";
-                clsQuotation.UserId = '@strUserId';
+                @*clsQuotation.UserId = '@strUserId';*@
+                clsQuotation.UserId = sessionStorage.getItem("SAPCustId");
                 clsQuotation.CompanyName = $('#txtCompanyName').val();
                 clsQuotation.CustomerName = $('#txtCustomerName').val();
                 clsQuotation.ContactPerson = $('#txtContactPerson').val();
@@ -199,40 +201,41 @@
             function Fn_Get_Quotation(strQOT) {
 
                 var clsQuotation = {};
-                clsQuotation.UserId = '@strUserId';
+                @*clsQuotation.UserId = '@strUserId';*@
+                clsQuotation.UserId = sessionStorage.getItem("SAPCustId");
                 clsQuotation.QuotationId = strQOT;
 
-            $.ajax({
-                type: "POST",
-                url: '/Inquiry/Fn_Get_Quotation',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(clsQuotation),
-                success: function (data) {
-                    $("#tbody").html('');
+                $.ajax({
+                    type: "POST",
+                    url: '/Inquiry/Fn_Get_Quotation',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsQuotation),
+                    success: function (data) {
+                        $("#tbody").html('');
 
-                    var obj = JSON.parse(data.message);
-                    if (obj[0].vErrorMsg == "Success") {
+                        var obj = JSON.parse(data.message);
+                        if (obj[0].vErrorMsg == "Success") {
 
-                        $('#txtQuotationId').val(obj[0].QuotationId);
-                        $('#txtCompanyName').val(obj[0].CompanyName);
-                        $('#txtCustomerName').val(obj[0].CustomerName);
-                        $('#txtContactPerson').val(obj[0].ContactPerson);
-                        $('#txtEmailId').val(obj[0].EmailId);
-                        $('#txtDate').val(obj[0].CreatedDate);
-                        $('#txtRemarks').val(obj[0].vRemarks);
-                        $('#txtUserEmail').val(obj[0].vUserEmail);
-                        $('#txtValidity').val(obj[0].vValidity);
+                            $('#txtQuotationId').val(obj[0].QuotationId);
+                            $('#txtCompanyName').val(obj[0].CompanyName);
+                            $('#txtCustomerName').val(obj[0].CustomerName);
+                            $('#txtContactPerson').val(obj[0].ContactPerson);
+                            $('#txtEmailId').val(obj[0].EmailId);
+                            $('#txtDate').val(obj[0].CreatedDate);
+                            $('#txtRemarks').val(obj[0].vRemarks);
+                            $('#txtUserEmail').val(obj[0].vUserEmail);
+                            $('#txtValidity').val(obj[0].vValidity);
+                        }
+                        else {
+
+                        }
+
+                    },
+                    error: function (err) {
+                        alert(err);
                     }
-                    else {
-
-                    }
-
-                },
-                error: function (err) {
-                    alert(err);
-                }
-            });
+                });
             }
 
             function Fn_Get_Quotation_Detail(id) {
@@ -312,7 +315,7 @@
 
             }
 
-        </script>*@
+    </script>
 }
 
 
