@@ -87,7 +87,8 @@
              $('#tblDetail').hide();
 
             var clsQuotationReport = {};
-            clsQuotationReport.UserId = '@strUserId';
+            @*clsQuotationReport.UserId = '@strUserId';*@
+            clsQuotationReport.UserId = sessionStorage.getItem("SAPCustId");
             clsQuotationReport.QuotationId = $('#txtQuotationId').val();
             clsQuotationReport.CustomerName = $('#txtCustomerName').val();
             clsQuotationReport.CreatedDate = $('#txtDate').val();
