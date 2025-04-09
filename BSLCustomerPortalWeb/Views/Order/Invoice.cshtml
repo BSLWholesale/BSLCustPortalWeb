@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Invoice";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            Fn_GET_Sales_Order();
+            Fn_GET_Sales_OrderDetail();
+
+        });
+       
+        function Fn_GET_Sales_OrderDetail() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCode = urlParams.get('code');
+            var result = prmCode.slice(1, -1);
+            var clsSalesOrder = {};
+            clsSalesOrder.CSAPId = sessionStorage.getItem("SAPCustId");  // 1100009112;
+            clsSalesOrder.SO = result;
+
+            $.ajax({
+                type: "POST",
+                url: '/Order/Fn_GET_Sales_OrderDetail',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsSalesOrder),
+                success: function (data) {
+                    $("#tbodyDetail").html('');
+                    var obj = JSON.parse(data.message);
+                    var html = ''; var rowCount = 1;
+                    if (obj[0].vERRORMSG == "Success") {
+                        for (var i = 0; i < obj.length; i++) {
+
+                            var amount = parseFloat(obj[i].QTY) * parseFloat(obj[i].BASIC_RATE)
+                            html += "<tr style='padding: 10px;'>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + rowCount + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material + " " + obj[i].Material_Description + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material_Description + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].UOM + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].QTY + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].BASIC_RATE + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + amount + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Inv_Date + "</td>";
+                            html += "</td>";
+                            rowCount++;
+                        }
+
+                    }
+                    else {
+
+                        html += "<tr><td style='font-size: 12px;' colspan='9' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                    }
+                    $("#tbodyDetail").append(html);
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        
+
+    </script>
+}
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
+                            </li>
+                            <li class="nav-item">
+                                Invoice /
+                            </li>
+                            <li class="nav-item" id="liItemCount">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact-from" style="padding: 25px">
+                    <div class="main-form">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label> SO</label>
+                                    <input type="text" id="txtSO" name="txtSO" class="form-control" style="font-size: 12px;" value="" placeholder="Search..." />
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <input type="submit" id="btnSearch" name="btnSearch" value="Search" onclick="Fn_GET_Sales_Order();" class="btn btn-success" style="margin-top: 30px;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-12">
+                                <table class="table table-striped table-hover" style="max-height: 350px; overflow: auto;">
+                                    <thead style="background-color: #08417B; color: white;">
+                                        <tr>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">SO</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">SO Date</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Sold Party Name</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Bill Party Name</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">City</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Country</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div> <!-- main form -->
+                </div> <!--  contact from -->
+            </div>
+
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+

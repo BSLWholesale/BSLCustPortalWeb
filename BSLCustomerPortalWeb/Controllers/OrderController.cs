@@ -46,6 +46,11 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
+        public ActionResult Invoice()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult Fn_Send_Sample_Request(clsSamplRequest objReq)
         {
