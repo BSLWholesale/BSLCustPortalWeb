@@ -8,7 +8,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             Fn_Get_Payment();
-           
+
         });
 
         function Fn_Get_Payment() {
@@ -24,59 +24,57 @@
                 data: JSON.stringify(clsPayment),
                 success: function (data) {
                     $("#tbody").html('');
-                    debugger;
                     var obj = JSON.parse(data.message);
-                   
+
                     var html = ''; var rowCount = 0
                     if (obj[0].vErrorMsg == "Success") {
                         for (var i = 0; i < obj.length; i++) {
-                            html += "<tr>";
-                            html += "<td style='padding: 5px; font-size: 12px;'> " + obj[i].CustomerCode + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].CustomerName + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].DocumentType + "</td>";
 
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].BSLRefNo + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].InvNo + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].InvDate + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].DebitAmtINR + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].CreditAmtINR + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].BalanceINR + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].DebitAmtFC + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].CreditAmtFC + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].BalanceFC + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].DocCurrency + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].DueDays + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].SalesPersonName + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].DivisionDescription + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].OverDueDays + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].PayTermDesc + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].SalesOrder + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].DueDate + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].FIDocument + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].FiscalYear + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].InvQty + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].LCDate + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].LCNo + "</td>";
-                            html += "<td style='padding: 5px; font-size: 12px;'>" + obj[i].CountryName + "</td>";
-                            
-                            html += "</tr>";
+                            html = html + "<div class='col-lg-3 col-md-6 col-sm-8'>";
+                            html = html + "<div class='singel-publication mt-30'>";
+                            html = html + "<div class='name'>";
+                            html = html + "<p style='font-size: 12px;'><b>Invoice:</b> " + obj[i].InvNo + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Invoice Date:</b> " + obj[i].InvDate + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Customer:</b> " + obj[i].CustomerName + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Document Type:</b> " + obj[i].DocumentType + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Debit Amt INR:</b> " + obj[i].DebitAmtINR + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Credit Amt INR:</b> " + obj[i].CreditAmtINR + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Balance INR:</b> " + obj[i].BalanceINR + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Doc Currency:</b> " + obj[i].DocCurrency + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Due Days:</b> " + obj[i].DueDays + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Sales Person:</b> " + obj[i].SalesPersonName + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Division:</b> " + obj[i].DivisionDescription + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Over Due Days:</b> " + obj[i].OverDueDays + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Pay Term:</b> " + obj[i].PayTermDesc + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Sales Order:</b> " + obj[i].SalesOrder + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Due Date:</b> " + obj[i].DueDate + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Fiscal Year:</b> " + obj[i].FiscalYear + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Invoice Qty:</b> " + obj[i].InvQty + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>LC Date:</b> " + obj[i].LCDate + "</p>";
+
+                            html = html + "<p style='font-size: 12px;'><b>LC No:</b> " + obj[i].LCNo + "</p>";
+                            html = html + "<p style='font-size: 12px;'><b>Country:</b> " + obj[i].CountryName + "</p>";
+
+                            html = html + "</div>";
+                            html = html + "</div>";
+                            html = html + " </div>";
+
                             rowCount++;
                         }
                     }
                     else {
-                        html += "<tr><td style='padding: 5px; font-size: 10px;' colspan='4'><p class='text-center'>" + obj[0].vErrorMsg + "</p></td></tr>";
+                       // html += "<tr><td style='padding: 5px; font-size: 10px;' colspan='4'><p class='text-center'>" + obj[0].vErrorMsg + "</p></td></tr>";
                     }
-                    $("#tbody").append(html);
+                    $("#dvList").append(html);
                     $('#liItemCount').html(rowCount + ' Records')
                 },
                 error: function (err) {
-                    debugger;
                     alert(err);
                 }
             });
         }
 
-      
+
 
     </script>
 }
@@ -103,56 +101,16 @@
                 </div>
             </div>
         </div> <!-- row -->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
+                <div class="row" id="dvList">
 
-
-    </div> <!-- container -->
-
-</section>
-
-<section id="contact-page" class="pt-10 pb-10 gray-bg">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="contact-from" style="padding: 25px">
-                    <div class="main-form">
-                        <div class="row">
-                            <div class="col-12">
-                                <table class="table table-responsive table-striped table-hover">
-                                    <thead style="background-color: #08417B; color: white;">
-                                        <tr>
-                                            <th style="padding: 5px;">Invoice</th>
-                                            <th style="padding: 5px;">Date</th>
-                                            <th style="padding: 5px;">Customer Name</th>
-                                            <th style="padding: 5px;">Document Type</th>
-                                            <th style="padding: 5px;">Debit Amt</th>
-                                            <th style="padding: 5px;">Credit Amt</th>
-                                            <th style="padding: 5px;">Balance</th>
-                                            <th style="padding: 5px;">Doc Currency</th>
-                                            <th style="padding: 5px;">Due Days</th>
-                                            <th style="padding: 5px;">Sales Person</th>
-                                            <th style="padding: 5px;">Division</th>
-                                            <th style="padding: 5px;">Over Due Days</th>
-                                            <th style="padding: 5px;">Pay Term Desc</th>
-                                            <th style="padding: 5px;">Sales Order</th>
-                                            <th style="padding: 5px;">Due Date</th>
-                                            <th style="padding: 5px;">Fiscal Year</th>
-                                            <th style="padding: 5px;">Inv Qty</th>
-                                            <th style="padding: 5px;">LC Date</th>
-                                            <th style="padding: 5px;">LC No</th>
-                                            <th style="padding: 5px;">Country</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody">
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-
-                        </div>
-                    </div> <!-- main form -->
-                </div> <!--  contact from -->
+                </div> <!-- row -->
             </div>
 
-        </div> <!-- row -->
+        </div>
+
     </div> <!-- container -->
+
 </section>
+
