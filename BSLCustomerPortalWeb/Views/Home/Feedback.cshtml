@@ -35,7 +35,7 @@
         clsFeedback.Heading = $('#txtHeading').val();
         clsFeedback.Comments = $('#txtComments').val();
         clsFeedback.vStatus = $('input[name="rbStatus"]:checked').val();
-        clsFeedback.UserId = 1;
+        clsFeedback.UserId = sessionStorage.getItem("CustId");
         
 
         if (clsFeedback.Heading == "") {
@@ -79,7 +79,7 @@
     function Fn_Get_Feedback(prmvstatus) {
 
         var clsFeedback = {};
-        clsFeedback.UserId = 1;
+        clsFeedback.UserId = sessionStorage.getItem("CustId");;
         clsFeedback.vStatus = prmvstatus;
         clsFeedback.QueryType = "Select";
 
@@ -133,7 +133,7 @@
 
                     var clsFeedback = {};
                     clsFeedback.Id = id;
-                    clsFeedback.UserId = 1;
+                    clsFeedback.UserId = sessionStorage.getItem("CustId");;
                     $.ajax({
                         type: "POST",
                         url: '/Home/Fn_Delete_Feedback',
@@ -168,7 +168,7 @@
     function Fn_Edit_Feedback(id) {
 
         var clsFeedback = {};
-        clsFeedback.UserId = 1;
+        clsFeedback.UserId = sessionStorage.getItem("CustId");;
         clsFeedback.Id = id;
         clsFeedback.QueryType = "SelectByID";
 

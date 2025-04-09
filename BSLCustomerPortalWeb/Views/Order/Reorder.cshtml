@@ -19,7 +19,7 @@
             const prmvstatus = urlParams.get('vstatus');
 
             var clsReorder = {};
-            clsReorder.UserId = 1;
+            clsReorder.UserId = sessionStorage.getItem("CustId");;
             clsReorder.vStatus = prmvstatus;
             $.ajax({
                 type: "POST",

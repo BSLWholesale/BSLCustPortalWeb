@@ -35,7 +35,7 @@
             const prmvstatus = urlParams.get('vstatus');
 
             var clsSamplRequest = {};
-            clsSamplRequest.UserId = 1;
+            clsSamplRequest.UserId = sessionStorage.getItem("CustId");;
             clsSamplRequest.vStatus = prmvstatus;
 
             $.ajax({

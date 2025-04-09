@@ -36,11 +36,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const prmSO = urlParams.get('so');
             const prmRID = urlParams.get('rid');
-          
+
             var strMsg = "";
             var clsReorder = {};
             clsReorder.UserId = sessionStorage.getItem("CustId");
-            clsReorder.CSAPId = 1100009112;
+            clsReorder.CSAPId = sessionStorage.getItem("SAPCustId"); // 1100009112;
 
             if (btnVal == "Update") {
                 clsReorder.QueryType = "Update";
@@ -97,7 +97,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const prmCode = urlParams.get('so');
             var clsSalesOrder = {};
-            clsSalesOrder.CSAPId = 1100009112;
+            clsSalesOrder.CSAPId = sessionStorage.getItem("SAPCustId"); // 1100009112;
             clsSalesOrder.SO = prmCode;
 
             $.ajax({
@@ -141,9 +141,8 @@
 
          function Fn_GET_Reorder(so) {
 
-             debugger
             var clsReorder = {};
-            clsReorder.UserId = 1;
+             clsReorder.UserId = sessionStorage.getItem("CustId");;
             clsReorder.RID = so;
             $.ajax({
                 type: "POST",

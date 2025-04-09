@@ -18,7 +18,7 @@
         function Fn_Send_Sample_Request() {
             var clsSamplRequest = {};
             clsSamplRequest.vErrorMsg = "";
-            clsSamplRequest.UserId = 1;
+            clsSamplRequest.UserId = sessionStorage.getItem("CustId");
             clsSamplRequest.vCategory = $('#ddlProductCategory').val();
             clsSamplRequest.vRemark = $('#txtRemarkM').val();
 

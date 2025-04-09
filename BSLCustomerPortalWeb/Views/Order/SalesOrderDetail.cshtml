@@ -22,8 +22,8 @@
             $('#liMenu').html(result);
 
             var clsSalesOrder = {};
-            clsSalesOrder.UserId = 1;
-            clsSalesOrder.CSAPId = 1100009112;
+            clsSalesOrder.UserId = sessionStorage.getItem("CustId");;
+            clsSalesOrder.CSAPId = sessionStorage.getItem("SAPCustId"); // 1100009112;
             clsSalesOrder.SO = result;
 
             $.ajax({
@@ -74,7 +74,7 @@
             const prmCode = urlParams.get('code');
             var result = prmCode.slice(1, -1);
             var clsSalesOrder = {};
-             clsSalesOrder.CSAPId = 1100009112;
+            clsSalesOrder.CSAPId = sessionStorage.getItem("SAPCustId");  // 1100009112;
             clsSalesOrder.SO = result;
 
             $.ajax({
