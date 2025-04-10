@@ -20,7 +20,8 @@
             var result = prmCode.slice(1, -1);
 
             var clsQuotation = {};
-            clsQuotation.UserId = '@strUserId';
+            @*clsQuotation.UserId = '@strUserId';*@
+            clsQuotation.UserId = sessionStorage.getItem("SAPCustId");
             clsQuotation.QuotationId = result;
 
             $.ajax({
@@ -152,7 +153,7 @@
 
 <div class="content-body">
     <!-- row -->
-    <div class="container-fluid">
+    <div class="container">
 
         <!-- Breadcrumb Begin -->
         <div class="row">
