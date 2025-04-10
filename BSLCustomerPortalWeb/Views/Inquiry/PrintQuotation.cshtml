@@ -1,0 +1,278 @@
+﻿
+@{
+    ViewBag.Title = "PrintQuotation";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Web/js/sweetalert.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            Fn_Get_Quotation();
+
+        });
+
+        function Fn_Get_Quotation() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmCode = urlParams.get('Code');
+            var result = prmCode.slice(1, -1);
+
+            var clsQuotation = {};
+            clsQuotation.UserId = '@strUserId';
+            clsQuotation.QuotationId = result;
+
+            $.ajax({
+                type: "POST",
+                url: '/Inquiry/Fn_Get_Quotation',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsQuotation),
+                success: function (data) {
+                    $("#tbody").html('');
+
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vErrorMsg == "Success") {
+
+                        $('#spnQuotationId').html(obj[0].QuotationId);
+                        $('#spnCompanyName').html(obj[0].CompanyName);
+                        $('#spnCustomerName').html(obj[0].CustomerName);
+                        $('#spnContactPerson').html(obj[0].ContactPerson);
+                        $('#spnEmailId').html(obj[0].EmailId);
+                        $('#spnDate').html(obj[0].CreatedDate);
+                        $('#spnRemarks').html(obj[0].vRemarks);
+                        $('#pValidity').html(obj[0].vValidity);
+                        $('#pUserEmailId').html(obj[0].vUserEmail);
+
+                        Fn_Get_Quotation_Detail(obj[0].QuotationId);
+
+                    }
+                    else {
+
+                    }
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        function Fn_Get_Quotation_Detail(id) {
+
+
+            var clsQuotationList = {};
+            clsQuotationList.QuotationId = id;
+
+            $.ajax({
+                type: "POST",
+                url: '/Inquiry/Fn_Get_Quotation_Detail',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsQuotationList),
+                success: function (data) {
+                    $("#tbodyDetail").html('');
+                    var obj = JSON.parse(data.message)
+                    var html = '';
+                    var srCount = 1; var ddlCarrency = ''; var strPrice = '';
+                    if (obj[0].vErrorMsg == "Success") {
+                        for (var i = 0; i < obj.length; i++) {
+
+                            var strPrice = obj[i].vPrice;
+                            strPrice = strPrice.substring(4);
+                            ddlCarrency = obj[i].vPrice;
+                            ddlCarrency = ddlCarrency.substring(0, 3);
+
+                            html += "<tr style='padding: 4px 10px;'>";
+                            html += "<td style='padding: 4px 10px; text-align: center;'>" + srCount + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: left; font-size: 12px; padding-left: 5px;'>" + obj[i].vArticle + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: left; font-size: 12px; padding-left: 5px;'>" + obj[i].vBlend + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: right; font-size: 12px; padding-left: 5px;'>" + obj[i].vWeight + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: right; font-size: 12px; padding-left: 5px;'>" + obj[i].vWidth + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: right; font-size: 12px; padding-left: 5px;'>" + strPrice + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: right; font-size: 12px; padding-left: 5px;'>" + obj[i].vUnit + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: right; font-size: 12px; padding-left: 5px;'>" + obj[i].vUnitType + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: left; font-size: 12px; padding-left: 5px;'>" + obj[i].vPaymentTerms + "</td>";
+                            html += "<td style='padding: 4px 10px; text-align: left; font-size: 12px; padding-left: 5px;'>" + obj[i].vDeliveryTerms + "</td>";
+                            html += "</td>";
+
+                            srCount++;
+                        }
+                    }
+                    else {
+
+                        html += "<tr><td style='padding: 4px; font-size: 12px; padding-left: 5px;' colspan='10' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                    }
+                    $("#tbodyDetail").append(html);
+                    $('#thPrice').html('PRICE (' + ddlCarrency + ')');
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+
+        function Fn_Print_Quotation(divId) {
+            var printContents = document.getElementById(divId).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
+
+    </script>
+
+    <style>
+        .box {
+            height: 100px;
+            position: relative;
+        }
+
+        .content_Left {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .content_Right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+}
+
+
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+
+        <!-- Breadcrumb Begin -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Print Quotation Display
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <div class="row">
+            <div class="col-lg-12 mb-3">
+                <div class="card" id="printableArea">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4"><img src="/Web/NewLogo.jpg" width="90px" height="72px"></div>
+                            <div class="col-sm-4">
+                                <p style="font-weight:900; text-align:center;">QUOTATION</p>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Quotation # </p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Date </p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Company Name</p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Customer Name </p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Contact Person</p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; Color: black;">Email Id</p>
+
+                            </div>
+                            <div class="col-sm-6">
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;"><strong id="spnQuotationId"></strong></p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;"><strong id="spnDate"></strong></p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;"><strong id="spnCompanyName"></strong></p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;"><strong id="spnCustomerName"></strong></p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;"><strong id="spnContactPerson"></strong></p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;"><strong id="spnEmailId"></strong></p>
+
+                            </div>
+                            <div class="col-sm-3">
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;">Banswara Syntex Limited</p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;">4th & 5th Floor, Gopal Bhavan,</p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;">199, Princess Street</p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;">Mumbai-400 002, Maharashtra, INDIA</p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;"> +91 022 66336571-76</p>
+                                <p style="padding: 0px; margin: 0 0 0px 0; font-size: 12px; font-weight:900; Color: black;" id="pUserEmailId">info@banswarasyntex.com</p>
+
+
+                            </div>
+
+
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <strong style="color: #000000;">Detail</strong>
+                                <table class="table table-striped table-bordered text-nowrap" id="tblDetail" style='padding: 0px 10px;'>
+                                    <thead style='padding: 0px 10px;'>
+                                        <tr style='padding: 0px 10px;'>
+                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Sr No.</th>
+                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Article</th>
+                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Blend</th>
+                                            <th style="padding: 4px; text-align: center; font-size: 12px;">GSM</th>
+                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Width</th>
+                                            <th style="padding: 4px; text-align: right; font-size: 12px;" id="thPrice"></th>
+                                            <th style="padding: 4px; text-align: right; font-size: 12px;">MCQ/MOQ</th>
+                                            <th style="padding: 4px; text-align: right; font-size: 12px;">UOM</th>
+                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Payment Terms</th>
+                                            <th style="padding: 4px; text-align: center; font-size: 12px;">Delivery Terms</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyDetail">
+                                    </tbody>
+                                </table>
+                                <strong style="color: #000000;">Remarks: </strong>
+                                <b><span style="color: #000000;" id="spnRemarks"></span></b>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+
+                                <div class="box">
+                                    <div class="content_Left">
+                                        <p><b>Validity: </b><span id="pValidity"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-3">
+                                <div class="box">
+                                    <div class="content_Right">
+                                        <p>Thank you for your business</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-right">
+                <button onclick="Fn_Print_Quotation('printableArea')" class="btn btn-light" type="button"> <i class="fa fa-print"></i> Print </button>
+            </div>
+        </div>
+    </div>
+</div>
