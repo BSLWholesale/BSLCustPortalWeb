@@ -68,7 +68,7 @@
             function Fn_Get_All_MaterialMaster(strQuality) {
 
                 var clsFabric = {};
-                clsFabric.vQuality = strQuality
+                clsFabric.Quality = strQuality
 
                 $.ajax({
                     type: "POST",
@@ -78,8 +78,8 @@
                     data: JSON.stringify(clsFabric),
                     success: function (data) {
                         var obj = JSON.parse(data.message)
-                        $("#txtBlend").val(obj[0].vBlendDescription);
-                        $("#txtWeight").val(obj[0].nGSM);
+                        $("#txtBlend").val(obj[0].BlendDescription);
+                        $("#txtWeight").val(obj[0].GSM);
                     },
                     error: function (err) {
                         alert(err);
@@ -460,14 +460,14 @@
                                 </div>
                             </div>
 
-                            <div class="col-3">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <input type="submit" id="btnAdd" name="btnAdd" value="Add" onclick="Fn_Make_List();" style="height:40px; width:60px;" class="btn btn-success pull-right" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row pl-lg-3 pr-lg-3">
+                        <div class="row pl-lg-3 pr-lg-3 mt-2">
                             <div style="overflow:auto; width: 100%;">
                                 <table id="tblList" class="table table-striped table-hover">
                                     <thead style="background-color: #08417B; color: white;">
