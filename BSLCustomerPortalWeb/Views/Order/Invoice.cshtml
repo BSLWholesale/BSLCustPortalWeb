@@ -8,19 +8,19 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            Fn_GET_Sales_Order();
-            Fn_GET_Sales_OrderDetail();
+           
+            Fn_GET_Sales_Invoice();
 
         });
        
-        function Fn_GET_Sales_OrderDetail() {
+        function Fn_GET_Sales_Invoice() {
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const prmCode = urlParams.get('code');
-            var result = prmCode.slice(1, -1);
+            //const urlParams = new URLSearchParams(window.location.search);
+            //const prmCode = urlParams.get('code');
+            //var result = prmCode.slice(1, -1);
             var clsSalesOrder = {};
             clsSalesOrder.CSAPId = sessionStorage.getItem("SAPCustId");  // 1100009112;
-            clsSalesOrder.SO = result;
+           // clsSalesOrder.SO = result;
 
             $.ajax({
                 type: "POST",
@@ -29,7 +29,7 @@
                 dataType: "json",
                 data: JSON.stringify(clsSalesOrder),
                 success: function (data) {
-                    $("#tbodyDetail").html('');
+                    $("#tbody").html('');
                     var obj = JSON.parse(data.message);
                     var html = ''; var rowCount = 1;
                     if (obj[0].vERRORMSG == "Success") {
@@ -37,14 +37,15 @@
 
                             var amount = parseFloat(obj[i].QTY) * parseFloat(obj[i].BASIC_RATE)
                             html += "<tr style='padding: 10px;'>";
-                            html += "<td style='padding: 10px; font-size: 12px;'>" + rowCount + "</td>";
-                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material + " " + obj[i].Material_Description + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Invoice_No + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Inv_Date + "</td>";
+                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Material_Description + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].UOM + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].QTY + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].BASIC_RATE + "</td>";
                             html += "<td style='padding: 10px; font-size: 12px;'>" + amount + "</td>";
-                            html += "<td style='padding: 10px; font-size: 12px;'>" + obj[i].Inv_Date + "</td>";
+                           
                             html += "</td>";
                             rowCount++;
                         }
@@ -52,9 +53,9 @@
                     }
                     else {
 
-                        html += "<tr><td style='font-size: 12px;' colspan='9' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
+                        html += "<tr><td style='font-size: 12px;' colspan='8' class='text-center'>" + obj[0].vErrorMsg + "</td></tr>";
                     }
-                    $("#tbodyDetail").append(html);
+                    $("#tbody").append(html);
 
                 },
                 error: function (err) {
@@ -97,32 +98,20 @@
             <div class="col-lg-12">
                 <div class="contact-from" style="padding: 25px">
                     <div class="main-form">
-                        <div class="row">
-                            <div class="col-2">
-                                <div class="form-group">
-                                    <label> SO</label>
-                                    <input type="text" id="txtSO" name="txtSO" class="form-control" style="font-size: 12px;" value="" placeholder="Search..." />
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-group">
-                                    <input type="submit" id="btnSearch" name="btnSearch" value="Search" onclick="Fn_GET_Sales_Order();" class="btn btn-success" style="margin-top: 30px;" />
-                                </div>
-                            </div>
-                        </div>
-
+                        
                         <div class="row mt-1">
                             <div class="col-12">
                                 <table class="table table-striped table-hover" style="max-height: 350px; overflow: auto;">
                                     <thead style="background-color: #08417B; color: white;">
                                         <tr>
-                                            <td style="color: white; padding: 10px; font-size: 12px;">SO</td>
-                                            <td style="color: white; padding: 10px; font-size: 12px;">SO Date</td>
-                                            <td style="color: white; padding: 10px; font-size: 12px;">Sold Party Name</td>
-                                            <td style="color: white; padding: 10px; font-size: 12px;">Bill Party Name</td>
-                                            <td style="color: white; padding: 10px; font-size: 12px;">City</td>
-                                            <td style="color: white; padding: 10px; font-size: 12px;">Country</td>
-                                            <td style="color: white; padding: 10px; font-size: 12px;">Action</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Invoice</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Invoice Date</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Material</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Description</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">UOM</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Qty</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Rate</td>
+                                            <td style="color: white; padding: 10px; font-size: 12px;">Amount</td>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody">
