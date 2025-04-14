@@ -118,12 +118,12 @@
                     if (obj[0].vErrorMsg == "Success") {
                         for (var i = 0; i < obj.length; i++) {
                             html = html + "<tr>";
-                            html = html + "<td style='font-size: 12px;'>" + obj[i].InvNo + "</td>";
+                            html = html + "<td style='font-size: 12px;display:none;'>" + obj[i].InvNo + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].InvDate + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].CustomerCode + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].CustomerName + "</td>";
-                            html = html + "<td style='font-size: 12px;'>" + obj[i].DocumentType + "</td>";
-                            html = html + "<td style='font-size: 12px;'>" + obj[i].BSLRefNo + "</td>";
+                            html = html + "<td style='font-size: 12px;display:none;'>" + obj[i].DocumentType + "</td>";
+                            html = html + "<td style='font-size: 12px;display:none;'>" + obj[i].BSLRefNo + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].DebitAmtINR + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].CreditAmtINR + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].BalanceINR + "</td>";
@@ -140,12 +140,12 @@
                             html = html + "<td style='font-size: 12px;'>" + obj[i].PayTermDesc + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].SalesOrder + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].DueDate + "</td>";
-                            html = html + "<td style='font-size: 12px;'>" + obj[i].FIDocument + "</td>";
+                            html = html + "<td style='font-size: 12px;display:none;'>" + obj[i].FIDocument + "</td>";
                            // html = html + "<td style='font-size: 12px;'>" + obj[i].FiscalYear + "</td>";
                             html = html + "<td style='font-size: 12px;'>" + obj[i].InvQty + "</td>";
                            // html = html + "<td style='font-size: 12px;'>" + obj[i].LCDate + "</td>";
                            // html = html + "<td style='font-size: 12px;'>" + obj[i].LCNo + "</td>";
-                            html = html + "<td style='font-size: 12px;'>" + obj[i].CountryName + "</td>";
+                            html = html + "<td style='font-size: 12px;display:none;'>" + obj[i].CountryName + "</td>";
 
                             html = html + "</tr>";
 
@@ -320,12 +320,12 @@
                                 <table class="table table-responsive table-striped table-hover" id="tblLC" style="display: none;">
                                     <thead>
                                         <tr>
-                                            <td>InvoiceNo</td>
+                                            @*<td>InvoiceNo</td>*@
                                             <td>InvoiceDate</td>
                                             <td>CustomerCode</td>
                                             <td>CustomerName</td>
-                                            <td>DocumentType</td>
-                                            <td>BSLRefNo</td>
+                                            @*<td>DocumentType</td>*@
+                                            @*<td>BSLRefNo</td>*@
                                             <td>DebitAmtINR</td>
                                             <td>CreditAmtINR</td>
                                             <td>BalanceINR</td>
@@ -340,12 +340,12 @@
                                             <td>PayTermDesc</td>
                                             <td>SalesOrder</td>
                                             <td>DueDate</td>
-                                            <td>FIDocument</td>
+                                            @*<td>FIDocument</td>*@
                                             @*<td>FiscalYear</td>*@
                                             <td>InvQty</td>
                                             @*<td>LCDate</td>
                                             <td>LCNo</td>*@
-                                            <td>Country</td>
+                                            @*<td>Country</td>*@
                                         </tr>
                                     </thead>
                                     <tbody id="tbodyLC"></tbody>
