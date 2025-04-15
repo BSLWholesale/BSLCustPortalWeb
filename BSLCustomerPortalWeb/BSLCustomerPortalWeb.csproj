@@ -416,6 +416,7 @@
     <Content Include="Images\Yarn\Greige.jpg" />
     <Content Include="Images\Yarn\GREY.jpg" />
     <Content Include="Images\Yarn\GRINDLE.jpg" />
+    <Content Include="JS\SearchCustomer.js" />
     <Content Include="JS\sweetalert.min.js" />
     <Content Include="JS\sweetalert2.all.js" />
     <Content Include="JS\sweetalert2.all.min.js" />
@@ -627,6 +628,7 @@
     <Content Include="Views\Payment\PaymentReceipt.cshtml" />
     <Content Include="Views\HR\ITHelpdesk.cshtml" />
     <Content Include="Views\CustomerVisit\Display_Schedule_Meeting.cshtml" />
+    <Content Include="Views\CustomerVisit\CustomerMeetingListDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

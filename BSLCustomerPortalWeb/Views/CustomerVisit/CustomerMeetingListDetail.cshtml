@@ -1,0 +1,488 @@
+﻿
+@{
+    ViewBag.Title = "CustomerMeetingListDetail";
+}
+
+<script>
+
+    $(document).ready(function () {
+        Fn_Get_Meeting_List();
+        const urlParams = new URLSearchParams(window.location.search);
+        const prmMeetingId = urlParams.get('MeetingId');
+        const prmStatus = urlParams.get('vStatus');
+
+        var currdate = new Date();
+        var currmonth = currdate.getMonth() + 1;
+        var currYear = currdate.getFullYear();
+        var h = currdate.getHours();
+        var tzone = h >= 12 ? "PM" : "AM";
+        h = h % 12;
+        h = h ? h : 12;
+        h = (h < 10) ? ("0" + h) : h;
+
+        var m = currdate.getMinutes();
+        m = (m < 10) ? ("0" + m) : m;
+
+        var s = currdate.getSeconds();
+        s = (s < 10) ? ("0" + s) : s;
+
+        $('#dtpReschedule').datepicker({
+            dateFormat: 'dd-mm-yy' + "' " + h + ":" + m + ":" + s + "'" + " '" + tzone + "'",
+            minDate: 0
+        });
+
+    });
+
+    function Fn_Edit_Meeting(MeetingId) {
+        sessionStorage.setItem("MeetingId", MeetingId);
+        window.location.href = '/CustomerVisit/CustomerVisitor?mId=' + MeetingId;
+    }
+
+    function Fn_Get_Meeting_List() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const prmMeetingId = urlParams.get('MeetingId');
+        var clsCustomerVisitor = {};
+        clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        clsCustomerVisitor.MeetingId = prmMeetingId;
+
+        $.ajax({
+            type: "POST",
+            url: "/CustomerVisit/Fn_Get_Meeting_List",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(clsCustomerVisitor),
+            success: function (data) {
+                var obj = JSON.parse(data.message);
+                if (obj.vErrorMsg == 'success') {
+                    $("#h_MeetingId").html(" ( Meeting Id : " + obj.MeetingId + " )");
+                    $("#hdnCustId").val(obj.CustId);
+                    $("#vMeetingId").html(prmMeetingId);
+                    $("#vCustomerName").html(obj.vCustomerName);
+                    $("#vEmail").html(obj.vEmailId);
+                    $("#vMobile").html(obj.vMobile);
+                    $("#vAddress").html(obj.vAddress1);
+                    $("#vState").html(obj.vState);
+                    $("#hdnStatus").val(obj.vStatus);
+                    $("#pEdit").html('');
+
+                    if (obj.vStatus == "Open" || obj.vStatus == "Schedule") {
+                        var p = "<p class='btn btn-link' onclick='Fn_Edit_Meeting(" + obj.MeetingId + ");'>Edit</p>";
+                        $("#pEdit").append(p);
+                        $("#txtMeetingID").val(obj.MeetingId);
+                        $('#dtpReschedule').val(obj.vMeetingDate);
+                        $("#txtMeetingVenue").val(obj.vMeetingVenue);
+                        $("#txtPurposeofVisit").val(obj.vMeetingPurposevisit);
+                        $("#dvReschedule").show();
+                    }
+                    else {
+                        $("#pEdit").html('');
+                        $("#dvReschedule").hide();
+                    }
+                    $("#vCity").html(obj.vCity);
+                    $("#vPinCode").html(obj.vPinCode);
+                    $("#vCompanyName").html(obj.vCompanyName);
+                    var _row = ''; var Remk = '';
+                    $("#tbodyFollowUp_tbody").html('');
+
+                    _row += "<tr><td><span style='color: #007bff; cursor: pointer;' onclick='Fn_ShowList(" + obj.MeetingId + ");'>" + obj.MeetingId + "</span></td>";
+                    _row += "<td>" + obj.vMeetingVenue + "</td>";
+                    _row += "<td>" + obj.vMeetingDate + "</td>";
+                    _row += "<td>" + obj.vMeetingPurposevisit + "</td>";
+                    _row += "<td>" + obj.vStatus + "</td>";
+
+                    if (obj.FollowUpID != 0) {
+                        _row += "<td>Follow Up : " + obj.FollowUpID + "</td>";
+                    }
+                    else {
+                        _row += "<td>New</td>";
+                    }
+                    _row += "</tr>";
+
+                    $("#tbodyFollowUp_tbody").append(_row);
+
+                    Remk = "<tr class='cls_" + obj.MeetingId + " cls_Row'><td>" + obj.vMeetingCommunication + "<td></tr>";
+
+                    $("#vMeetingCommunication").append(Remk);
+
+                    let arr = obj.oProductList;
+
+                    $("#dvProductList").html('');
+                    var htmlList = '';
+                    var imgPath = ""
+                    if (arr[0].vErrorMsg == "Success") {
+                        for (let i = 0; i < arr.length; i++) {
+                            if (arr[0].vErrorMsg == "No Record Found.") {
+                                htmlList += "<tr class='cls_" + obj.MeetingId + " cls_Row'><td colspan='4'><center>No Record Found.</center></td>";
+                            }
+                            else {
+
+                                if (arr[i].vProductCategory == "Yarn") {
+                                    imgPath = "/web/Images/yarn/" + arr[i].vMaterialCode + ".jpeg";
+                                }
+                                if (arr[i].vProductCategory == "Fabric") {
+                                    imgPath = "/web/Images/fabric/" + arr[i].vMaterialCode + ".jpeg";
+                                }
+                                if (arr[i].vProductCategory == "Garments") {
+                                    imgPath = "/web/Images/garments/" + arr[i].vMaterialCode + ".jpeg";
+                                }
+
+                                htmlList += "<tr class='cls_" + obj.MeetingId + " cls_Row'><td>" + arr[i].vProductCategory + "</td>";
+                                htmlList += "<td>" + arr[i].vMaterialCode + "</td>";
+                                htmlList += "<td><img class='image' src='" + imgPath + "' /></td>";
+                                htmlList += "<td>" + arr[i].vScanCode + "</td>";
+                                htmlList += "</tr>";
+                            }
+                        }
+                    }
+                    else {
+                        if (obj.FollowUpID == "") {
+                            htmlList += "<tr class='cls_" + obj.FollowUpID + " cls_Row'><td colspan='4'><center>" + arr[0].vErrorMsg + "</center></td>";
+                            //htmlList += "<tr class='cls_" + obj.MeetingId + " cls_Row'><td colspan='4'><center>" + arr[0].vErrorMsg + "</center></td>";
+                        }
+                    }
+                    $("#dvProductList").append(htmlList);
+                    if (obj.FollowUpID != 0) {
+                        Fn_Get_FollowUp_MeetingList(obj.FollowUpID);
+                    }
+                }
+                else {
+                    swal("", obj.vErrorMsg, "error");
+                }
+                $("img").on("error", function () {
+                    $(this).attr("src", "/Web/Images/placeholder.jpg");
+                });
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+
+    function Fn_Get_FollowUp_MeetingList(id) {
+
+        var clsCustomerVisitor = {};
+        clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        clsCustomerVisitor.MeetingId = id;
+        $.ajax({
+            type: "POST",
+            url: "/CustomerVisit/Fn_Get_FollowUp_MeetingList",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(clsCustomerVisitor),
+            success: function (data) {
+                var obj = JSON.parse(data.message);
+                var html = ''; var Remark = '';
+                if (obj[0].vErrorMsg == 'success') {
+                    for (let i = 0; i < obj.length; i++) {
+                        html += "<tr><td><span style='color: #007bff; cursor: pointer;' onclick='Fn_ShowList(" + obj[i].MeetingId + ");'>" + obj[i].MeetingId + "</span></td>";
+                        html += "<td>" + obj[i].vMeetingVenue + "</td>";
+                        html += "<td>" + obj[i].vMeetingDate + "</td>";
+                        html += "<td>" + obj[i].vMeetingPurposevisit + "</td>";
+                        html += "<td>" + obj[i].vStatus + "</td>";
+                        if (obj[i].FollowUpID == 0) {
+                            html += "<td>New</td></tr>";
+                        }
+                        else {
+                            html += "<td>Follow Up :" + obj[i].FollowUpID + "</td></tr>";
+                        }
+
+                        let arr = obj[i].oProductList;
+
+                        var html_FollowUp = '';
+                        var imgPath = ""
+                        for (let k = 0; k < arr.length; k++) {
+                            if (arr[0].vErrorMsg == "No Record Found.") {
+                                //    html_FollowUp += "<tr class='cls_" + obj[i].MeetingId + " cls_Row'><td colspan='4'><center>No Record Found.</center></td>";
+                            }
+                            else {
+                                if (arr[k].vProductCategory == "Yarn") {
+                                    imgPath = "/web/Images/yarn/" + arr[k].vMaterialCode + ".jpeg";
+                                }
+                                if (arr[k].vProductCategory == "Fabric") {
+                                    imgPath = "/web/Images/fabric/" + arr[k].vMaterialCode + ".jpeg";
+                                }
+                                if (arr[k].vProductCategory == "Garments") {
+                                    imgPath = "/web/Images/garments/" + arr[k].vMaterialCode + ".jpeg";
+                                }
+
+                                html_FollowUp += "<tr class='cls_" + obj[i].MeetingId + " cls_Row'><td>" + arr[k].vProductCategory + "</td>";
+                                html_FollowUp += "<td>" + arr[k].vMaterialCode + "</td>";
+                                html_FollowUp += "<td><img class='image' src='" + imgPath + "' /></td>";
+                                html_FollowUp += "<td>" + arr[k].vScanCode + "</td>";
+                                html_FollowUp += "</tr>";
+                            }
+                        }
+                        $("#dvProductList").append(html_FollowUp);
+
+                        //Remark += "<tr class='cls_" + obj[i].MeetingId + " cls_Row' style='display:none;'><td><center>Meeting Id : " + obj[i].MeetingId + "</center><td></tr>";
+                        Remark += "<tr class='cls_" + obj[i].MeetingId + " cls_Row'><td>" + "<b>" + obj[i].MeetingId + " :- </b>" + obj[i].vMeetingCommunication + "<td></tr>";
+
+                        if (obj[i].FollowUpID != 0) {
+                            Fn_Get_FollowUp_MeetingList(obj[i].FollowUpID);
+                        }
+                    }
+                    $("#tbodyFollowUp_tbody").append(html);
+                    $("#vMeetingCommunication").append(Remark);
+                }
+                else {
+                    swal("", obj.vErrorMsg, "error");
+                }
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+
+    function Fn_ShowList(id) {
+        $(".cls_Row").show();
+        $(".cls_").show();
+        $("#h_MeetingId").html('');
+        $("#h_MeetingId").html("( Meeting Id : " + id + ")");
+        var txtMeetingId = $("#txtMeetingID").val();
+
+        if (txtMeetingId == id) {
+            $("#pEdit").show();
+            $("#dvReschedule").show();
+        }
+        else {
+            $("#pEdit").hide();
+            $("#dvReschedule").hide();
+        }
+    }
+
+    function Fn_Reschedule_Meeting() {
+
+        var clsCustomerVisitor = {};
+        clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        clsCustomerVisitor.MeetingId = $("#txtMeetingID").val();
+        clsCustomerVisitor.vMeetingDate = $("#dtpReschedule").val();
+        clsCustomerVisitor.vMeetingVenue = $("#txtMeetingVenue").val();
+        clsCustomerVisitor.vMeetingPurposevisit = $("#txtPurposeofVisit").val();
+        clsCustomerVisitor.vCompanyName = $("#vCompanyName").html();
+        clsCustomerVisitor.vCustomerName = $("#vCustomerName").html();
+        clsCustomerVisitor.vEmailId = $("#vEmail").html();
+        clsCustomerVisitor.vMobile = $("#vMobile").html();
+        clsCustomerVisitor.vAddress1 = $("#vAddress").html();
+        clsCustomerVisitor.CustId = $("#hdnCustId").val();
+        clsCustomerVisitor.vStatus = $("#hdnStatus").val();
+
+        $.ajax({
+            type: "POST",
+            url: '/CustomerVisit/Fn_Reschedule_Meeting',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(clsCustomerVisitor),
+            beforeSend: function () {
+                $("#loader").show();
+            },
+            success: function (data) {
+                var obj = JSON.parse(data.message);
+                if (obj.vErrorMsg == 'Success') {
+
+                    var msg = "Rescheduled Meeting Id : " + obj.MeetingId;
+                    swal("", msg, "success");
+                    Fn_Get_Meeting_List();
+                    $("#myModal").modal('hide');
+                }
+                else {
+                    swal("", obj.vErrorMsg, "error");
+                }
+            },
+            complete: function () {
+                $("#loader").hide();
+            },
+            error: function (err) {
+                swal("", err, "error");
+            }
+        });
+    }
+
+</script>
+
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <!-- Breadcrumb Begin -->
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Customer Meeting List Detail
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Breadcrumb End -->
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="contact-from" style="padding: 25px">
+            <div class="main-form">
+                <div class="container" id="divMain">
+                    <div class="row mt-3">
+                        <div class="col-sm-2">
+                            <label class="form-control-sm pull-right">Select Month</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="month" id="txtMonth" name="txtMonth" class="form-control" onchange="Fn_Get_Calender();" />
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-link pull-left" style="color: #08417b;" data-toggle="modal" data-target="#myModal_scheduleMeeting"><i class="fa fa-plus"></i> New Meeting</button>
+                        </div>
+                        <div class="col-sm-5">
+                            <label class="form-control-sm pull-left"><i class="fa fa-star p-1" style="color:green;"></i>Open</label>
+                            <label class="form-control-sm pull-left"><i class="fa fa-star p-1" style="color:blue;"></i>Schedule</label>
+                            <label class="form-control-sm pull-left"><i class="fa fa-star p-1" style="color:red;"></i>Closed</label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead style="background-color: #08417B; color: white;">
+                                    <tr>
+                                        <td style="width: 150px;">Sun</td>
+                                        <td style="width: 150px;">Mon</td>
+                                        <td style="width: 150px;">Tue</td>
+                                        <td style="width: 150px;">Wed</td>
+                                        <td style="width: 150px;">Thu</td>
+                                        <td style="width: 150px;">Fri</td>
+                                        <td style="width: 150px;">Sat</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div> <!-- main form -->
+        </div> <!--  contact from -->
+        <!-- row -->
+
+    </div> <!-- container -->
+    <!-- Schedule Meeting Modal -->
+    <div id="myModal_scheduleMeeting" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title">Schedule Meeting</h4>
+                    <button type="button" class="close" data-dismiss="modal" onclick="Fn_CloseModal();">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container" style="margin-top:1%;">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtCompanyName1" class="form-label">Company Name</label>
+                                    <input type="text" id="txtCompanyName1" class="form-control" style="font-size: 12px;" name="txtCompanyName1" tabindex="4" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtAddress11" class="form-label">Address</label>
+                                    <input type="text" id="txtAddress11" class="form-control" style="font-size: 12px;" name="txtAddress11" tabindex="5" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtEmail1" class="form-label">Email</label>
+                                    <input type="text" id="txtEmail1" class="form-control" onchange="Fn_Get_Customer_By_Email('1');" style="font-size: 12px;" name="txtEmail1" tabindex="2" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtCity1" class="form-label">City</label>
+                                    <input type="text" id="txtCity1" class="form-control" style="font-size: 12px;" name="txtCity1" tabindex="6" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtMobile1" class="form-label">Mobile No</label>
+                                    <input type="text" id="txtMobile1" class="form-control" style="font-size: 12px;" name="txtMobile1" tabindex="3" maxlength="10" minlength="10" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtState1" class="form-label">State</label>
+                                    <input type="text" id="txtState1" class="form-control" style="font-size: 12px;" name="txtState1" tabindex="7" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtCustomerName1" class="form-label">Contact Person</label>
+                                    <input type="text" id="txtCustomerName1" class="form-control" style="font-size: 12px;" name="txtCustomerName1" tabindex="1" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtPinCode1" class="form-label">PIN Code</label>
+                                    <input type="text" id="txtPinCode1" class="form-control" style="font-size: 12px;" name="txtPinCode1" tabindex="8" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="container" style="margin-top:1%;">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtScheduleDate" class="form-label">Meeting Date & Time</label>
+                                    <input type="text" id="txtScheduleDate" class="form-control" style="font-size: 12px;" name="txtScheduleDate" tabindex="9" />
+                                    @*<input type="datetime-local" id="txtScheduleDate" class="form-control" style="font-size: 12px;" name="txtScheduleDate" tabindex="9" />*@
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtScheduleVenue" class="form-label">Meeting Location</label>
+                                    <input type="text" id="txtScheduleVenue" class="form-control" style="font-size: 12px;" name="txtScheduleVenue" tabindex="10" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtPurposeVisit" class="form-label">Purpose of Visit</label>
+                                    <input type="text" id="txtPurposeVisit" class="form-control" style="font-size: 12px;" name="txtPurposeVisit" tabindex="11" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <img src="~/Web/Images/loading.gif?timestamp(~/Web/Images/loading.gif)" id="loader" width="5%" style="display:none;margin-left:40%;align-content:center;" />
+                    <input type="submit" id="btnSave" name="btnSave" onclick="Fn_Schedule_Customer_Meeting();" value="Save" class="btn btn-outline-primary" />
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" id="CloseModal" onclick="Fn_CloseModal();">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!------------------------------>
+
+
+
+
+</section>
