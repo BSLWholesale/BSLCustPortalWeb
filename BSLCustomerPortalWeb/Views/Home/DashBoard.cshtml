@@ -143,17 +143,14 @@
 
                         <div class="singel-publication mt-10">
                             <div style="background-color: #B7B1F2; box-shadow: 2px 8px 19px -9px #B7B1F2; margin-top: -2%; ">
-                                <p class="text-center" style="color: #ffffff;">IT Helpdesk</p>
+                                <p class="text-center" style="color: #ffffff;">Reorder</p>
                             </div>
-
                             <div class="name mt-3">
-                                <p class="text-center" style="color: #505050;"><a href="#" style="color: #505050;">Open Tickets</a></p>
-                                <p class="text-center" style="color: #505050;"><a href="#" style="color: #505050;">Closed Tickets</a></p>
-                                <p class="text-center" style="color: #505050;"><a href="#" style="color: #505050;"></a></p>
+                                <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=Open" style="color: #505050;">Open</a></p>
+                                <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=In-Process" style="color: #505050;">In-Process</a></p>
+                                <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=Closed" style="color: #505050;">Closed</a></p>
                                 <p></p>
                             </div>
-
-
                         </div> <!-- singel publication -->
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-8">
@@ -232,12 +229,12 @@
                     <div class="col-lg-4 col-md-6 col-sm-8">
                         <div class="singel-publication mt-10">
                             <div style="background-color: #0fe1e1; box-shadow: 2px 8px 19px -9px #0fe1e1; margin-top:-2%;">
-                                <p class="text-center" style="color: #ffffff;">Reorder</p>
+                                <p class="text-center" style="color: #ffffff;">IT Helpdesk</p>
                             </div>
                             <div class="name mt-3">
-                                <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=Open" style="color: #505050;">Open</a></p>
-                                <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=In-Process" style="color: #505050;">In-Process</a></p>
-                                <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=Closed" style="color: #505050;">Closed</a></p>
+                                <p class="text-center" style="color: #505050;"><a href="#" style="color: #505050;">Open Tickets</a></p>
+                                <p class="text-center" style="color: #505050;"><a href="#" style="color: #505050;">Closed Tickets</a></p>
+                                <p class="text-center" style="color: #505050;"><a href="#" style="color: #505050;"></a></p>
                                 @*<p class="text-center mb-4"></p>*@
                             </div>
                         </div> <!-- singel publication -->
@@ -256,7 +253,7 @@
                 <div class="shop-top-search pb-1 pt-1" style="padding: 10px 30px;">
                     <div class="shop-bar">
                         <ul class="nav" id="myTab" role="tablist">
-                            <li class="nav-item">Showcase</li>
+                            <li class="nav-item">Exhibit</li>
                         </ul>
                     </div>
                 </div>
