@@ -620,6 +620,8 @@
     <Content Include="Views\Order\Invoice.cshtml" />
     <Content Include="Views\Inquiry\PrintQuotation.cshtml" />
     <Content Include="Views\Order\Delivery.cshtml" />
+    <Content Include="Views\Payment\Claim.cshtml" />
+    <Content Include="Views\Payment\PaymentReceipt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

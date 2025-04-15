@@ -19,6 +19,17 @@ namespace BSLCustomerPortalWeb.Controllers
             return View();
         }
 
+        public ActionResult Claim()
+        {
+            return View();
+        }
+
+        public ActionResult PaymentReceipt()
+        {
+            return View();
+        }
+        
+
         [HttpPost]
         public JsonResult Fn_Get_Payment(clsPayment objReq)
         {
@@ -31,6 +42,29 @@ namespace BSLCustomerPortalWeb.Controllers
                 string DATA = Newtonsoft.Json.JsonConvert.SerializeObject(objReq);
                 HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
                 HttpResponseMessage responsePost = client.PostAsync("api/PaymentAPI/Fn_Get_Payment", content).Result;
+                if (responsePost.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Product inserting faild." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Fn_Get_Claim(clsPaymentLedger objReq)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Convert.ToString(ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                string DATA = Newtonsoft.Json.JsonConvert.SerializeObject(objReq);
+                HttpContent content = new StringContent(DATA, UTF8Encoding.UTF8, "application/json");
+                HttpResponseMessage responsePost = client.PostAsync("api/PaymentAPI/Fn_Get_Claim", content).Result;
                 if (responsePost.IsSuccessStatusCode)
                 {
                     return Json(new { success = true, message = responsePost.Content.ReadAsStringAsync().Result }, JsonRequestBehavior.AllowGet);
