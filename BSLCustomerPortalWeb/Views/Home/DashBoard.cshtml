@@ -212,20 +212,20 @@
                                 <p class="text-center"><a href="@Url.Action("Feedback", "Home")?vstatus=Positive" style="color: #505050;">Positive</a></p>
                                 <p class="text-center"><a href="@Url.Action("Feedback", "Home")?vstatus=Negative" style="color: #505050;">Negative</a></p>
                                 <p class="text-center"><a href="@Url.Action("Feedback", "Home")?vstatus=Neutral" style="color: #505050;">Neutral</a></p>
-                                <p class="text-center mb-4"></p>
+                                @*<p class="text-center mb-4"></p>*@
                             </div>
                         </div> <!-- singel publication -->
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-8">
                         <div class="singel-publication mt-10">
-                            <div style="background-color: #45d009; box-shadow: 2px 8px 19px -9px #45d009; margin-top:-2%;">
-                                <p class="text-center" style="color: #ffffff;">New Arrivals</p>
+                            <div style="background-color: #45d009; box-shadow: 2px 8px 19px -9px #45d009; margin-top: -2%; ">
+                                <p class="text-center" style="color: #ffffff;">Sample Order</p>
                             </div>
                             <div class="name mt-3">
-                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Yarn", "Product")" style="color: #505050;">Yarn</a></p>
-                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Fabric", "Product")" style="color: #505050;">Fabric</a></p>
-                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Garments", "Product")" style="color: #505050;">Garments</a></p>
-                                <p class="text-center" style="color: #505050; margin-bottom:-2%;"><a href="@Url.Action("New Products", "Product")" style="color: #505050;">New Products</a></p>
+                                <p class="text-center"><a href="@Url.Action("SampleRequest", "Order")" style="color: #505050;">Sample Request</a></p>
+                                <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=P" style="color: #505050;">In-Process</a></p>
+                                <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=N" style="color: #505050;">Not Ready</a></p>
+                                @*<p></p>*@
                             </div>
                         </div> <!-- singel publication -->
                     </div>
@@ -238,7 +238,7 @@
                                 <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=Open" style="color: #505050;">Open</a></p>
                                 <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=In-Process" style="color: #505050;">In-Process</a></p>
                                 <p class="text-center"><a href="@Url.Action("Reorder", "Order")?vstatus=Closed" style="color: #505050;">Closed</a></p>
-                                <p class="text-center mb-4"></p>
+                                @*<p class="text-center mb-4"></p>*@
                             </div>
                         </div> <!-- singel publication -->
                     </div>
@@ -266,35 +266,34 @@
             <div class="tab-pane fade show active" id="shop-grid" role="tabpanel" aria-labelledby="shop-grid-tab">
                 <div class="row justify-content-center">
                     <div class="col-lg-4 col-md-6 col-sm-8">
-
                         <div class="singel-publication mt-10">
                             <div style="background-color: #da17f1; box-shadow: 2px 8px 19px -9px #da17f1; margin-top:-2%;">
                                 <p class="text-center" style="color: #ffffff;">Catalogue</p>
                             </div>
-
                             <div class="name mt-3">
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("YarnCatalogue", "Product")" style="color: #505050;">Yarn</a></p>
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("FabricCatalogue", "Product")" style="color: #505050;">Fabric</a></p>
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("GarmentsCatalogue", "Product")" style="color: #505050;">Garments</a></p>
-                                <p></p>
+                                <p class="text-center mb-4"></p>
                             </div>
-
-
                         </div> <!-- singel publication -->
                     </div>
+
                     <div class="col-lg-4 col-md-6 col-sm-8">
                         <div class="singel-publication mt-10">
-                            <div style="background-color: #fea11d; box-shadow: 2px 8px 19px -9px #fea11d; margin-top:-2%;">
-                                <p class="text-center" style="color: #ffffff;">Sample Order</p>
+                            <div style="background-color: #fea11d; box-shadow: 2px 8px 19px -9px #fea11d; margin-top: -2%; ">
+                                <p class="text-center" style="color: #ffffff;">New Arrivals</p>
                             </div>
                             <div class="name mt-3">
-                                <p class="text-center"><a href="@Url.Action("SampleRequest", "Order")" style="color: #505050;">Sample Request</a></p>
-                                <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=P" style="color: #505050;">In-Process</a></p>
-                                <p class="text-center"><a href="@Url.Action("DisplayRequest", "Order")?vstatus=N" style="color: #505050;">Not Ready</a></p>
-                                <p></p>
+                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Yarn", "Product")" style="color: #505050;">Yarn</a></p>
+                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Fabric", "Product")" style="color: #505050;">Fabric</a></p>
+                                <p class="text-center" style="color: #505050;"><a href="@Url.Action("Garments", "Product")" style="color: #505050;">Garments</a></p>
+                                <p class="text-center" style="color: #505050; margin-bottom:-2%;"><a href="@Url.Action("New Products", "Product")" style="color: #505050;">New Products</a></p>
                             </div>
                         </div> <!-- singel publication -->
                     </div>
+
+
                     <div class="col-lg-4 col-md-6 col-sm-8">
                         <div class="singel-publication mt-10">
                             <div style="background-color: #FF9A8A; box-shadow: 2px 8px 19px -9px #FF9A8A; margin-top: -2%; ">
@@ -304,6 +303,7 @@
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("Contact", "Home")" style="color: #505050;">Email (Email Details)</a></p>
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("Contact", "Home")" style="color: #505050;">Phone (Contact Details)</a></p>
                                 <p class="text-center" style="color: #505050;"><a href="@Url.Action("Contact", "Home")" style="color: #505050;">Office Address</a></p>
+                                <p class="text-center mb-4"></p>
                             </div>
                         </div> <!-- singel publication -->
                     </div>
