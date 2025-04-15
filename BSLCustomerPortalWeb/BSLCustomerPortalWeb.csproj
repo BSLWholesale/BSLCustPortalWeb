@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HRController.cs" />
     <Compile Include="Controllers\InquiryController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -622,6 +623,7 @@
     <Content Include="Views\Order\Delivery.cshtml" />
     <Content Include="Views\Payment\Claim.cshtml" />
     <Content Include="Views\Payment\PaymentReceipt.cshtml" />
+    <Content Include="Views\HR\ITHelpdesk.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
