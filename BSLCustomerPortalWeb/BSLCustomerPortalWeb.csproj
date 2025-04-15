@@ -122,6 +122,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HRController.cs" />
     <Compile Include="Controllers\InquiryController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -622,6 +623,9 @@
     <Content Include="Views\Order\Invoice.cshtml" />
     <Content Include="Views\Inquiry\PrintQuotation.cshtml" />
     <Content Include="Views\Order\Delivery.cshtml" />
+    <Content Include="Views\Payment\Claim.cshtml" />
+    <Content Include="Views\Payment\PaymentReceipt.cshtml" />
+    <Content Include="Views\HR\ITHelpdesk.cshtml" />
     <Content Include="Views\CustomerVisit\Display_Schedule_Meeting.cshtml" />
   </ItemGroup>
   <ItemGroup>

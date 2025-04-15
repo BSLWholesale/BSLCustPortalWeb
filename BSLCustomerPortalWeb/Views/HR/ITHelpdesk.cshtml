@@ -1,0 +1,297 @@
+﻿
+@{
+    ViewBag.Title = "ITHelpdesk";
+}
+
+@{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmvstatus = urlParams.get('vstatus');
+
+            $('#liprm').html(prmvstatus);
+
+            Fn_Get_Tickets();
+
+        });
+
+        function Fn_Create_Tickets() {
+
+            var strMsg = "";
+            var clsITHelpdesk = {};
+            clsITHelpdesk.QueryType = "Insert";
+            strMsg = "Save record successfully";
+
+            clsITHelpdesk.Heading = $('#txtHeading').val();
+            clsITHelpdesk.Comments = $('#txtComments').val();
+            clsITHelpdesk.UserId = sessionStorage.getItem("CustId");
+
+
+            if (clsITHelpdesk.Heading == "") {
+                alert('Please Enter Heading');
+            }
+            else if (clsITHelpdesk.Comments == "") {
+                alert('Please Enter Comments');
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: '/HR/Fn_Create_Tickets',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsITHelpdesk),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+
+                        if (obj.vErrorMsg == 'Success') {
+
+                            swal('', strMsg, 'success');
+
+                            $('#txtHeading').val("");
+                            $('#txtComments').val("");
+                            $('#myModal').modal('hide');
+
+                           // Fn_Get_Tickets("Open");
+                           // $('#liprm').html(clsITHelpdesk.vStatus);
+                        }
+                        else {
+                            swal('', 'Inserting faild', 'error');
+                        }
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            }
+        }
+
+        function Fn_Get_Tickets() {
+
+            var clsITHelpdesk = {};
+            clsITHelpdesk.UserId = sessionStorage.getItem("CustId");;
+            //clsITHelpdesk.vStatus = prmvstatus;
+            clsITHelpdesk.QueryType = "Select";
+
+            $.ajax({
+                type: "POST",
+                url: '/HR/Fn_Get_Tickets',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsITHelpdesk),
+                success: function (data) {
+                    $("#tbody").html('');
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vErrorMsg == 'Success') {
+
+                        var html = '';
+                        for (var i = 0; i < obj.length; i++) {
+
+                            html = html + "<tr>";
+                            html = html + "<td style='padding: 5px;'>" + obj[i].Id + "</td>";
+                            html = html + "<td style='padding: 5px;'>" + obj[i].Heading + "</td>";
+                            html = html + "<td style='padding: 5px;'>" + obj[i].Comments + "</td>";
+                            html = html + "<td style='padding: 5px;'>" + obj[i].RequestDate + "</td>";
+                            html = html + "<td style='padding: 5px;'>" + obj[i].vStatus + "</td>";
+                            //html = html + "<td style='padding: 5px;'><i class='fa fa-edit text-success' onclick=Fn_Edit_Feedback(" + obj[i].Id + ")>";
+                            //html = html + " <i class='fa fa-trash text-danger ml-3' onclick='Fn_Delete_Feedback(" + obj[i].Id + ")'></td>";
+                            html = html + "</tr>";
+                        }
+                    }
+                    else {
+                        html = html + "<tr><td colspan='5' class='text-center'> No Record Found</td></tr> ";
+                    }
+                    $("#tbody").append(html);
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+        function Fn_Delete_Feedback(id) {
+
+            swal({
+                title: "Are you sure?",
+                text: "You want to delete!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        var clsITHelpdesk = {};
+                        clsITHelpdesk.Id = id;
+                        clsITHelpdesk.UserId = sessionStorage.getItem("CustId");;
+                        $.ajax({
+                            type: "POST",
+                            url: '/HR/Fn_Delete_Feedback',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: JSON.stringify(clsITHelpdesk),
+                            success: function (data) {
+                                var obj = JSON.parse(data.message);
+
+                                if (obj.vErrorMsg == 'Success') {
+
+                                    swal('', 'Deleted record successfully', 'success');
+
+                                    const urlParams = new URLSearchParams(window.location.search);
+                                    const prmvstatus = urlParams.get('vstatus');
+                                    Fn_Get_Feedback(prmvstatus);
+                                }
+                                else {
+                                    swal('', obj.vErrorMsg, 'error');
+                                }
+                            },
+                            error: function (err) {
+                                alert(err);
+                            }
+                        });
+
+                    }
+                });
+        }
+
+
+        function Fn_Edit_Feedback(id) {
+
+            var clsITHelpdesk = {};
+            clsITHelpdesk.UserId = sessionStorage.getItem("CustId");;
+            clsITHelpdesk.Id = id;
+            clsITHelpdesk.QueryType = "SelectByID";
+
+            $.ajax({
+                type: "POST",
+                url: '/HR/Fn_Get_Feedback',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsITHelpdesk),
+                success: function (data) {
+                    var obj = JSON.parse(data.message);
+                    if (obj[0].vErrorMsg == 'Success') {
+
+                        $('#myModal').modal('show');
+                        $('#hdnId').val(obj[0].Id);
+                        $('#txtHeading').val(obj[0].Heading);
+                        $('#txtComments').val(obj[0].Comments);
+                        $('#rb' + obj[0].vStatus).attr('checked', 'checked');
+
+                        $('#btnSubmit').val("Update");
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+    </script>
+}
+
+<!--====== ABOUT PART START ======-->
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home")"><i class="fa fa-home"></i></a> /
+                            </li>
+                            <li class="nav-item">
+                                IT Helpdesk /
+                            </li>
+                            <li class="nav-item" id="liprm"> </li>
+                        </ul>
+                    </div>
+                    <div class="shop-select">
+                        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">Create Tickets</button>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- row -->
+
+    </div> <!-- container -->
+</section>
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact-from" style="padding: 25px">
+                    <div class="main-form">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table table-striped table-hover">
+                                    <thead style="background-color: #08417B; color: white;">
+                                        <tr>
+                                            <th style="padding: 5px;">Id</th>
+                                            <th style="padding: 5px;">Heading</th>
+                                            <th style="padding: 5px;">Comment</th>
+                                            <th style="padding: 5px;">Date</th>
+                                            <th style="padding: 5px;">Status</th>
+                                            @*<th style="padding: 5px;">Action</th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody"></tbody>
+                                </table>
+                            </div>
+
+                        </div> <!-- row -->
+                    </div> <!-- main form -->
+                </div> <!--  contact from -->
+            </div>
+
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+<!--====== ABOUT PART ENDS ======-->
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Heading</label>
+                                <input type="text" class="form-control" id="txtHeading" name="txtHeading" />
+                                <input type="hidden" id="hdnId" name="hdnId" />
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label>Comments</label>
+                                @*<input type="text" class="form-control" id="txtComments" name="txtComments" />*@
+                                <textarea type="text" id="txtComments" name="txtComments" cols="50" rows="3" class="form-control" style="font-size: 12px;" value=""></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" class="btn btn-outline-success mt-lg-5" value="Submit" onclick="Fn_Create_Tickets();" id="btnSubmit" name="btnSubmit" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
