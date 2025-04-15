@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InquiryController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -129,6 +130,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\clsCustomer.cs" />
+    <Compile Include="Models\clsCustomerVisitor.cs" />
     <Compile Include="Models\clsOrder.cs" />
     <Compile Include="Models\clsProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -620,6 +622,7 @@
     <Content Include="Views\Order\Invoice.cshtml" />
     <Content Include="Views\Inquiry\PrintQuotation.cshtml" />
     <Content Include="Views\Order\Delivery.cshtml" />
+    <Content Include="Views\CustomerVisit\Display_Schedule_Meeting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
