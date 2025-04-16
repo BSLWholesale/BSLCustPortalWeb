@@ -133,7 +133,8 @@
 
         var clsReqScheduleMeeting = {};
         clsReqScheduleMeeting.vErrorMsg = "";
-        clsReqScheduleMeeting.nLoginId = $('#strUserId').val();
+        //clsReqScheduleMeeting.nLoginId = $('#strUserId').val();
+        clsReqScheduleMeeting.nLoginId = sessionStorage.getItem("SAPCustId");
 
         var _month = $('#txtMonth').val();
         var _currYear = new Date().getFullYear();
@@ -189,7 +190,8 @@
     function Fn_Fill_CustomerVisit(MeetingId) {
 
         var clsCustomerVisitor = {};
-        clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        //clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        clsCustomerVisitor.nLoginId = sessionStorage.getItem("SAPCustId");
         clsCustomerVisitor.MeetingId = MeetingId;
 
         $.ajax({

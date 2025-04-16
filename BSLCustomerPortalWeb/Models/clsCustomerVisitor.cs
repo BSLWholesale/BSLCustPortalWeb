@@ -70,6 +70,7 @@ namespace BSLCustomerPortalWeb.Models
         public string vMonth { get; set; }
         public string vYear { get; set; }
     }
+
     public class clsRespScheduleMeeting
     {
         public int nLoginId { get; set; }
@@ -113,7 +114,7 @@ namespace BSLCustomerPortalWeb.Models
         public string vErrorMsg { get; set; }
     }
 
-    public class clsCustomerSearchRequest           // New Class Added 17 MAY 2024
+    public class clsCustomerSearchRequest
     {
         public string SearchKeyword { get; set; }
     }
@@ -121,6 +122,6 @@ namespace BSLCustomerPortalWeb.Models
     public class clsCustomerSearchResponse
     {
         public string SearchKeyword { get; set; }
-    }                                               // New Class Added 17 MAY 2024
+    }
 
 }

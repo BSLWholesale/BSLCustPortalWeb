@@ -42,7 +42,8 @@
         const urlParams = new URLSearchParams(window.location.search);
         const prmMeetingId = urlParams.get('MeetingId');
         var clsCustomerVisitor = {};
-        clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        //clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        clsCustomerVisitor.nLoginId = sessionStorage.getItem("SAPCustId");
         clsCustomerVisitor.MeetingId = prmMeetingId;
 
         $.ajax({

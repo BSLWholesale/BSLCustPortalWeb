@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "CustomerMeetingList";
+}
+
+<style>
+    .tab {
+        margin-top: 5px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: 1px solid #ccc;
+        outline: none;
+        cursor: pointer;
+        padding: 8px 5px;
+        transition: 0.3s;
+        font-size: 17px;
+        width: 80px;
+    }
+
+    .tab button:hover {
+        background-color: #08417B;
+        color: white;
+    }
+
+    .tab button.active {
+        background-color: #08417B;
+        color: white;
+    }
+</style>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(location.search);
+        var strStatus = urlParams.get("Status");
+        if (strStatus == "" || strStatus == null) {
+            Fn_Get_CustMeetingMasterList("All");
+        }
+        else {
+            Fn_Get_CustMeetingMasterList(strStatus);
+        }
+    });
+
+
+    function Fn_Get_CustMeetingMasterList(vStatus) {
+
+        $("#btnAll").removeClass("active");
+       /* $("#btnSchedule").removeClass("active");*/
+        $("#btnOpen").removeClass("active");
+        $("#btnClosed").removeClass("active");
+        $("#btn" + vStatus).addClass("active");
+
+        var clsCustMeetingMaster = {};
+        //clsCustMeetingMaster.nLoginId = $("#strUserId").val();
+        clsCustMeetingMaster.nLoginId = sessionStorage.getItem("SAPCustId");
+        clsCustMeetingMaster.vStatus = vStatus;
+
+        $.ajax({
+            type: "POST",
+            url: '/CustomerVisit/Fn_Get_CustMeetingMasterList',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(clsCustMeetingMaster),
+            success: function (data) {
+                $("#tbody").html('');
+                var obj = JSON.parse(data.message)
+                var html = '';
+                if (obj[0].vErrorMsg == "success") {
+                    for (var i = 0; i < obj.length; i++) {
+                        //var dt = obj[i].vMeetingDate;
+                        //dt = dt.substring(0, dt.length - 9);
+                        html += "<tr>";
+                        html += "<td><a href='@Url.Action("CustomerMeetingListDetail", "CustomerVisit")?MeetingId=" + obj[i].MeetingId + "&vStatus=" + obj[i].vStatus + "'>" + obj[i].MeetingId + "</a></td>";
+                        html += "<td>" + obj[i].vCustomerName + "</td>";
+                        //html += "<td>" + dt + "</td>";
+                        html += "<td>" + obj[i].vMeetingDate + "</td>";
+                        html += "<td>" + obj[i].vMeetingVenue + "</td>";
+                        html += "<td>" + obj[i].vMeetingPurposevisit + "</td>";
+                        html += "<td>" + obj[i].vStatus + "</td>"
+                        if (obj[i].FollowUpID == null || obj[i].FollowUpID == "")
+                        {
+                            html += "<td>New</td>";
+                        }
+                        else {
+                            html += "<td>FUM of : " + obj[i].FollowUpID + "</td>";
+                        }
+
+
+                        if (obj[i].vStatus == "Closed") {
+                            if (vStatus == "All") {
+                                html += "<td><a href='#'>+ FUM</a></td>";
+                                html += "<td>" + obj[i].vClosureRemarks + "</td>";
+                                html += "<td><button id='#CloseInquiry' class='btn btn-primary' style='width:100px;height:25px;padding:0px;font-size:10px;font-weight:700;' onclick='Fn_Close_CustomerMeeting(" + obj[i].MeetingId + ")' disabled>Close Meeting</button></td> </td> <td>";
+
+                                $(".tdFUM").show();
+                                $(".tdAction").show();
+                            }
+                            else {
+                                html += "<td>" + obj[i].vClosureRemarks + "</td> </td> <td>";
+                                $(".tdFUM").hide();
+                                $(".tdAction").hide();
+
+                            }
+                        }
+                        else if (obj[i].vStatus == "Schedule")
+                        {
+                                html += "<td><a href='#'>+ FUM</a></td>";
+                                //html += "<td><select class='form-control tdClosureRemarks' id='ddlResion" + obj[i].MeetingId + "' style='width: 165px; height: 30px; font-size: 12px; font-weight: 500;'><option value='0'>Select</option><option value='Converted into Business'>Converted in to Business</option><option value='Dropped'>Dropped</option><option value='Declined Customer'>Declined Customer</option><option value='We Declined'>We Declined</option><option value='Customer Denied'>Customer Denied</option></select></td>";
+                                html += "<td><select class='form-control tdClosureRemarks' id='ddlResion" + obj[i].MeetingId + "' style='width: 165px; height: 30px; font-size: 12px; font-weight: 500;'><option value='0'>Select</option><option value='Converted into Business'>Converted in to Business</option><option value='Customer Denied'>Customer Denied</option><option value='Price Issue'>Price Issue</option><option value='Quantity was Very Less'>Quantity was Very Less</option><option value='Product couldn't be developed'>Product couldn't be developed</option><option value='Lead Time Issue'>Lead Time Issue</option><option value='Compliance Issue'>Compliance Issue</option><option value='Customer not responding'>Customer not responding</option><option value='Customer reputation'>Customer reputation</option><option value='Disputed Customer'>Disputed Customer</option></select></td>";
+                            html += "<td><button id='#CloseInquiry' class='btn btn-primary' style='width:100px;height:25px;padding:0px;font-size:10px;font-weight:700;' onclick='Fn_Close_CustomerMeeting(" + obj[i].MeetingId + ")'>Close Meeting</button></td> </td> <td>";
+                                $(".tdFUM").show();
+                                $(".tdAction").show();
+                        }
+                        else {
+                            html += "<td><a href='@Url.Action("MeetingFollowUp", "CustomerVisit")?MeetingId=" + obj[i].MeetingId + "'>+ FUM</a></td>";
+                            //html += "<td><select class='form-control tdClosureRemarks' id='ddlResion" + obj[i].MeetingId + "' style='width: 165px; height: 30px; font-size: 12px; font-weight: 500;'><option value='0'>Select</option><option value='Converted into Business'>Converted in to Business</option><option value='Dropped'>Dropped</option><option value='Declined Customer'>Declined Customer</option><option value='We Declined'>We Declined</option><option value='Customer Denied'>Customer Denied</option></select></td>";
+                            html += "<td><select class='form-control tdClosureRemarks' id='ddlResion" + obj[i].MeetingId + "' style='width: 165px; height: 30px; font-size: 12px; font-weight: 500;'><option value='0'>Select</option><option value='Converted into Business'>Converted in to Business</option><option value='Customer Denied'>Customer Denied</option><option value='Price Issue'>Price Issue</option><option value='Quantity was Very Less'>Quantity was Very Less</option><option value='Product couldn't be developed'>Product couldn't be developed</option><option value='Lead Time Issue'>Lead Time Issue</option><option value='Compliance Issue'>Compliance Issue</option><option value='Customer not responding'>Customer not responding</option><option value='Customer reputation'>Customer reputation</option><option value='Disputed Customer'>Disputed Customer</option></select></td>";
+                            html += "<td><button id='#CloseInquiry' class='btn btn-primary' style='width:100px;height:25px;padding:0px;font-size:10px;font-weight:700;' onclick='Fn_Close_CustomerMeeting(" + obj[i].MeetingId + ")'>Close Meeting</button></td>";
+                            $(".tdFUM").show();
+                            $(".tdAction").show();
+
+
+                             html += "<td><a class='btn btn-link' style='color: #08417b;' href='@Url.Action("MeetingExpenses", "CustomerVisit")?mId=" + obj[i].MeetingId + "'> <i class='fa fa-plus'></i> Expenses</a></td>";
+                        }
+                         // html += "<td><a class='btn btn-link' id='#DisableExpense' style='color: #08417b;' onclick='Fn_Disabled_Expenses(" + obj[i].MeetingId + ")?mId=' disabled> <i class='fa fa-plus'></i> Expenses</a></td>";
+                        html += "</td>";
+                    }
+                }
+                else {
+                    html += "<tr><td colspan='10'><p class='text-center'>" + obj[0].vErrorMsg + "</p></td></tr>";
+                }
+                $("#tbody").append(html);
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+
+
+    function Fn_Close_CustomerMeeting(nMeetingId) {
+
+        var clsCustomerVisitor = {};
+        //clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        clsCustomerVisitor.nLoginId = sessionStorage.getItem("SAPCustId");
+        clsCustomerVisitor.MeetingId = nMeetingId;
+        clsCustomerVisitor.vClosureRemarks = $("#ddlResion" + nMeetingId).val();
+        if (clsCustomerVisitor.vClosureRemarks == "0") {
+            swal("", "Please Select closure remark", "error");
+            return;
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/CustomerVisit/Fn_Close_CustomerMeeting",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsCustomerVisitor),
+                success: function (data) {
+                    var obj = JSON.parse(data.message)
+                    if (obj.vErrorMsg == 'success') {
+                        swal("CustomerVisit", "Meeting Closed", "success");
+                        $("#CloseMeeting").attr('disabled', true);
+                        Fn_Get_CustMeetingMasterList("Closed");
+                    }
+                    else {
+                        swal("", "Not Closed", "error");
+                    }
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+    }
+
+    function Fn_Disabled_Expenses(mId) {
+
+        var clsCustomerVisitor = {};
+        clsCustomerVisitor.nLoginId = $("#strUserId").val();
+        clsCustomerVisitor.MeetingId = mId;
+
+        $.ajax({
+            type: "POST",
+            url: "/CustomerVisit/Fn_Get_CustMeetingMasterList",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(clsCustomerVisitor),
+            success: function (data) {
+                var obj = JSON.parse(data.message)
+                if (obj.vErrorMsg == 'success') {
+                    $("#DisableExpense").attr('disabled', true);
+                    Fn_Get_CustMeetingMasterList("Open");
+                    Fn_Get_CustMeetingMasterList("Schedule");
+                }
+                else {
+                    swal("", "Not Redirect To Expenses", "error");
+                }
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+
+</script>
+
