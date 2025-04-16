@@ -130,12 +130,12 @@
     }
 
     function Fn_Fetch_Schedule_Meeting_Month_wise() {
-
+        
         var clsReqScheduleMeeting = {};
         clsReqScheduleMeeting.vErrorMsg = "";
         //clsReqScheduleMeeting.nLoginId = $('#strUserId').val();
         clsReqScheduleMeeting.nLoginId = sessionStorage.getItem("CustId");
-
+        
         var _month = $('#txtMonth').val();
         var _currYear = new Date().getFullYear();
         var _currMonth = new Date().getMonth() + 1;
@@ -344,7 +344,8 @@
     function Fn_Schedule_Customer_Meeting() {
         var clsCustomerVisitor = {};
         clsCustomerVisitor.vErrorMsg = "";
-        clsCustomerVisitor.nLoginId = $('#strUserId').val();
+        //clsCustomerVisitor.nLoginId = $('#strUserId').val();
+        clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
         clsCustomerVisitor.vCustomerName = $("#txtCustomerName1").val();
         if (clsCustomerVisitor.vCustomerName == "") {
             clsCustomerVisitor.vErrorMsg = "Customer Name is empty.";
