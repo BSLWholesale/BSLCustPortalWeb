@@ -1,0 +1,1017 @@
+﻿
+@{
+    ViewBag.Title = "CustomerVisitor";
+}
+
+@{
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btnUpdte").hide();
+            //$('#txtMeetingDate').datepicker({
+            //    dateFormat: 'dd-M-yy'
+
+            //});
+            //$("#txtMeetingDate").datepicker("setDate", new Date());
+
+            $('#txtScheduleDate').datepicker({
+                dateFormat: 'dd-M-yy',
+                minDate: 0
+            });
+
+            $("#txtScheduleDate").datepicker("setDate", new Date());
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmMeetingId = urlParams.get('mId');
+            var _MeetingId = sessionStorage.getItem("MeetingId");
+
+            if (prmMeetingId != 0 && prmMeetingId != null) {
+                if (prmMeetingId != _MeetingId) {
+                    swal("", "Invalid Meeting Id", "error");
+                    return;
+                }
+                else {
+
+                    Fn_Fill_CustomerVisit(prmMeetingId);
+                }
+            }
+
+        });
+
+
+
+        function Fn_Insert_CustomerVisit() {
+            var clsCustomerVisitor = {};
+            clsCustomerVisitor.vErrorMsg = "";
+            //clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
+            clsCustomerVisitor.MeetingId = $("#strMeetingID").val();
+            clsCustomerVisitor.vCustomerName = $("#txtCustomerName").val();
+            if (clsCustomerVisitor.vCustomerName == "") {
+                clsCustomerVisitor.vErrorMsg = "Customer Name is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vEmailId = $("#txtEmail").val();
+            if (clsCustomerVisitor.vEmailId == "") {
+                clsCustomerVisitor.vErrorMsg = "EmailId is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMobile = $("#txtMobile").val();
+            if (clsCustomerVisitor.vMobile == "") {
+                clsCustomerVisitor.vErrorMsg = "Mobile Number is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vCompanyName = $("#txtCompanyName").val();
+            if (clsCustomerVisitor.vCompanyName == "") {
+                clsCustomerVisitor.vErrorMsg = "Company Name is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vAddress1 = $("#txtAddress1").val();
+            if (clsCustomerVisitor.vAddress1 == "") {
+                clsCustomerVisitor.vErrorMsg = "Address is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vCity = $("#txtCity").val();
+            if (clsCustomerVisitor.vCity == "") {
+                clsCustomerVisitor.vErrorMsg = "City is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vState = $("#txtState").val();
+            if (clsCustomerVisitor.vState == "") {
+                clsCustomerVisitor.vErrorMsg = "State is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vPinCode = $("#txtPinCode").val();
+            if (clsCustomerVisitor.vPinCode == "") {
+                clsCustomerVisitor.vErrorMsg = "PinCode is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingDate = $("#txtMeetingDate").val();
+            if (clsCustomerVisitor.vMeetingDate == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Date is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingVenue = $("#txtMeetingVenue").val();
+            if (clsCustomerVisitor.vMeetingVenue == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Venue is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingPurposevisit = $("#txtPurposeVisit").val();
+            if (clsCustomerVisitor.vMeetingPurposevisit == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Purpose visit is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            //clsCustomerVisitor.vProductCategory = $("#ddlProductCategory").val();
+            //if (clsCustomerVisitor.vProductCategory == "0") {
+            //    clsCustomerVisitor.vErrorMsg = "Select Category.";
+            //    swal("", clsCustomerVisitor.vErrorMsg, "error");
+            //    return;
+            //}
+
+            clsCustomerVisitor.vMeetingCommunication = $("#txtBreifDiscussion").val();
+            if (clsCustomerVisitor.vMeetingCommunication == "") {
+                clsCustomerVisitor.vErrorMsg = "Breif Discussion is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+
+            var clsProductList = [];
+            var arrays = [];
+            $('#tblList').eq(0).find('tr').each((r, row) => arrays.push($(row).find('td').map((c, cell) => $(cell).text()).toArray()))
+
+
+            for (var i = 1; i < arrays.length; i++) {
+               var  _list =
+                   { vProductCategory: arrays[i][0], vMaterialCode: arrays[i][1], vScanCode: arrays[i][3] }
+
+                clsProductList.push(_list);
+            }
+            if (clsProductList.length == 0)
+            {
+                clsCustomerVisitor.vErrorMsg = "Product List is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+
+            clsCustomerVisitor.oProductList = clsProductList;
+
+            if (clsCustomerVisitor.vErrorMsg == "") {
+                $.ajax({
+                    type: "POST",
+                    url: '/CustomerVisit/Fn_Insert_CustomerVisit',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsCustomerVisitor),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+                        if (obj.vErrorMsg == 'Success') {
+
+                            sessionStorage.setItem("MeetingId", obj.MeetingId);
+                            sessionStorage.setItem("vEmailId", obj.vEmailId);
+                            var msg = "Save meeting detail. Meeting Id : " + obj.MeetingId;
+                            swal("", msg, "success");
+                            Fn_ResetField();
+                            $("#dvList").html('');
+                        }
+                        else {
+                            swal("", obj.vErrorMsg, "error");
+                        }
+                    },
+                    error: function (err) {
+                        swal("", err, "error");
+                    }
+                });
+            }
+        }
+
+        function Fn_ResetField() {
+            $('#strUserId').val("");
+            $("#txtCustomerName").val("");
+            $("#txtEmail").val("");
+            $("#txtMobile").val("");
+            $("#txtCompanyName").val("");
+            $("#txtAddress1").val("");
+            $("#txtCity").val("");
+            $("#txtState").val("");
+            $("#txtPinCode").val("");
+            //$('#ddlProductCategory').val(0).change();
+            $('#txtProduct').val('');
+            $("#txtMeetingDate").val("");
+            $("#txtMeetingVenue").val("");
+            $("#txtPurposeVisit").val("");
+            $("#txtBreifDiscussion").val("");
+        }
+
+        function Fn_Send_Mail_Meeting_Communication() {
+
+            var clsCustomerVisitor = {};
+            clsCustomerVisitor.vErrorMsg = "";
+            //clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
+            //clsCustomerVisitor.vEmailId = sessionStorage.getItem("vEmailId");
+            clsCustomerVisitor.vEmailId = $("#txtEmail").val();
+            clsCustomerVisitor.vCustomerName = $("#txtCustomerName").val();
+            //clsCustomerVisitor.vCustomerName = sessionStorage.getItem("vCustomerName");
+            if (clsCustomerVisitor.vEmailId == "" || clsCustomerVisitor.vEmailId == 0) {
+                clsCustomerVisitor.vErrorMsg = "To Email is empty";
+            }
+            clsCustomerVisitor.MeetingId = sessionStorage.getItem("MeetingId");
+            if (clsCustomerVisitor.MeetingId == "" || clsCustomerVisitor.MeetingId == 0) {
+                clsCustomerVisitor.vErrorMsg = "Meeting Id is empty";
+            }
+            clsCustomerVisitor.vMeetingCommunication = $('#txtCommunication').val();
+            if (clsCustomerVisitor.vMeetingCommunication == "" || clsCustomerVisitor.vMeetingCommunication == 0) {
+                clsCustomerVisitor.vErrorMsg = "Meeting Communication is empty";
+            }
+
+            if (clsCustomerVisitor.vErrorMsg == "") {
+                $.ajax({
+                    type: "POST",
+                    url: '/CustomerVisit/Fn_Send_Mail_Meeting_Communication',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsCustomerVisitor),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+                        if (obj.vErrorMsg == 'Success') {
+                            sessionStorage.clear();
+                            $('#txtCommunication').val("");
+                            swal("", "Send mail.", "success");
+                        }
+                        else {
+                            swal("", obj.vErrorMsg, "error");
+                        }
+                    },
+                    error: function (err) {
+                        swal("", err, "error");
+                    }
+                });
+            }
+        }
+
+
+        function Fn_Fill_CustomerVisit(MeetingId) {
+
+            var clsCustomerVisitor = {};
+            //clsCustomerVisitor.nLoginId = $("#strUserId").val();
+            clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
+            clsCustomerVisitor.MeetingId = MeetingId;
+
+            $.ajax({
+                type: "POST",
+                url: "/CustomerVisit/Fn_Get_Meeting_List",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsCustomerVisitor),
+                success: function (data) {
+                    var obj = JSON.parse(data.message)
+                    if (obj.vErrorMsg == 'success') {
+                        $("#hdnStatus").val(obj.vStatus);
+                        $("#txtCustomerName").val(obj.vCustomerName);
+                        $("#txtCustomerName").prop("readonly", true);
+                        $("#txtEmail").val(obj.vEmailId);
+                        $("#txtEmail").prop("readonly", true);
+                        $("#txtMobile").val(obj.vMobile);
+                        $("#txtMobile").prop("readonly", true);
+                        $("#txtAddress1").val(obj.vAddress1);
+                        $("#txtAddress1").prop("readonly", true);
+                        $("#txtState").val(obj.vState);
+                        $("#txtState").prop("readonly", true);
+                        $("#txtStatus").val(obj.vStatus);
+                        $("#txtStatus").prop("readonly", true);
+                        $("#txtCity").val(obj.vCity);
+                        $("#txtCity").prop("readonly", true);
+                        $("#txtPinCode").val(obj.vPinCode);
+                        $("#txtPinCode").prop("readonly", true);
+                        $("#txtCompanyName").val(obj.vCompanyName);
+                        $("#txtCompanyName").prop("readonly", true);
+                        $("#txtMeetingVenue").val(obj.vMeetingVenue);
+                        $("#txtMeetingVenue").prop("readonly", true);
+                        $("#txtBreifDiscussion").val(obj.vMeetingCommunication);
+                        $("#txtCommunication").val(obj.vMeetingCommunication);
+                        $("#txtPurposeVisit").val(obj.vMeetingPurposevisit);
+                        $("#txtPurposeVisit").prop("readonly", true);
+                        $("#txtMeetingDate").val(obj.vMeetingDate);
+                        $("#txtMeetingDate").prop("readonly", true);
+                        $("#pMeetingId").html('Meeting Id :' + clsCustomerVisitor.MeetingId);
+
+                        $("#strFollowUpID").val(obj.FollowUpID)
+                        if (obj.FollowUpID == 0) {
+                            $("#dvScanCode").show();
+                        }
+                        else {
+                            $("#dvScanCode").hide();
+                        }
+
+                        $("#custdetails").show();
+                        $("#meetingdetails").show();
+
+                        $("#_heading").html('Edit Customer Visit');
+                        $("#btnSubmit").hide();
+                        $("#btnUpdte").show();
+                        let arr = obj.oProductList;
+                        var html = ''; var imgPath = "";
+                        if (arr[0].vErrorMsg == "Success") {
+                            for (var i = 0; i < arr.length; i++) {
+                                if (arr[i].vProductCategory == "Yarn") {
+                                    imgPath = "/web/Images/yarn/" + arr[i].vMaterialCode + ".jpeg";
+                                }
+                                if (arr[i].vProductCategory == "Fabric") {
+                                    imgPath = "/web/Images/fabric/" + arr[i].vMaterialCode + ".jpeg";
+                                }
+                                if (arr[i].vProductCategory == "Garments") {
+                                    imgPath = "/web/Images/garments/" + arr[i].vMaterialCode + ".jpeg";
+                                }
+                                html += "<tr><td>" + arr[i].vProductCategory + "</td>";
+                                html += "<td>" + arr[i].vMaterialCode + "</td>";
+                                html += "<td><img class='image' src='" + imgPath + "' /></td>";
+                                html += "<td class='scancode'>" + arr[i].vScanCode + "</td>";
+                                html += "<td><i class='fa fa-trash fa-2x text-danger delete' style='color:red; mrgin-left: 20px;'></i></td></tr>";
+                            }
+                        }
+                        else {
+                            html = '';
+                        }
+                        $("#dvList").append(html);
+
+                    }
+                    else {
+                        swal("", obj.vErrorMsg, "error");
+                    }
+                    $("img").on("error", function () {
+                        $(this).attr("src", "/Web/Images/placeholder.jpg");
+                    });
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+
+
+        function Fn_Update_Meeting(saveType) {
+            var clsCustomerVisitor = {};
+            clsCustomerVisitor.vErrorMsg = "";
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const prmMeetingId = urlParams.get('mId');
+            var _MeetingId = sessionStorage.getItem("MeetingId");
+            clsCustomerVisitor.MeetingId = prmMeetingId;
+            clsCustomerVisitor.vStatus = $("#hdnStatus").val();
+            if (clsCustomerVisitor.MeetingId == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Id not supplied";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            if (prmMeetingId != _MeetingId) {
+                clsCustomerVisitor.vErrorMsg = "Invalid Meeting Id";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            clsCustomerVisitor.vCustomerName = $("#txtCustomerName").val();
+            if (clsCustomerVisitor.vCustomerName == "") {
+                clsCustomerVisitor.vErrorMsg = "Customer Name is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vEmailId = $("#txtEmail").val();
+            if (clsCustomerVisitor.vEmailId == "") {
+                clsCustomerVisitor.vErrorMsg = "EmailId is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMobile = $("#txtMobile").val();
+            if (clsCustomerVisitor.vMobile == "") {
+                clsCustomerVisitor.vErrorMsg = "Mobile Number is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vCompanyName = $("#txtCompanyName").val();
+            if (clsCustomerVisitor.vCompanyName == "") {
+                clsCustomerVisitor.vErrorMsg = "Company Name is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vAddress1 = $("#txtAddress1").val();
+            if (clsCustomerVisitor.vAddress1 == "") {
+                clsCustomerVisitor.vErrorMsg = "Address is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vCity = $("#txtCity").val();
+            if (clsCustomerVisitor.vCity == "") {
+                clsCustomerVisitor.vErrorMsg = "City is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vState = $("#txtState").val();
+            if (clsCustomerVisitor.vState == "") {
+                clsCustomerVisitor.vErrorMsg = "State is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vPinCode = $("#txtPinCode").val();
+            if (clsCustomerVisitor.vPinCode == "") {
+                clsCustomerVisitor.vErrorMsg = "PinCode is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingDate = $("#txtMeetingDate").val();
+            if (clsCustomerVisitor.vMeetingDate == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Date is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingVenue = $("#txtMeetingVenue").val();
+            if (clsCustomerVisitor.vMeetingVenue == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Venue is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingPurposevisit = $("#txtPurposeVisit").val();
+            if (clsCustomerVisitor.vMeetingPurposevisit == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Purpose visit is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingCommunication = $("#txtBreifDiscussion").val();
+            if (clsCustomerVisitor.vMeetingCommunication == "") {
+                clsCustomerVisitor.vErrorMsg = "Breif Discussion is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.FollowUpID = $("#strFollowUpID").val();
+            if (clsCustomerVisitor.FollowUpID == 0) {
+                var clsProductList = [];
+                var arrays = [];
+                $('#tblList').eq(0).find('tr').each((r, row) => arrays.push($(row).find('td').map((c, cell) => $(cell).text()).toArray()))
+
+
+                for (var i = 1; i < arrays.length; i++) {
+                    var _list =
+                        { vProductCategory: arrays[i][0], vMaterialCode: arrays[i][1], vScanCode: arrays[i][3] }
+
+                    clsProductList.push(_list);
+                }
+
+                if (clsProductList.length == 0) {
+                    clsCustomerVisitor.vErrorMsg = "Product List is empty.";
+                    swal("", clsCustomerVisitor.vErrorMsg, "error");
+                    return;
+                }
+                clsCustomerVisitor.oProductList = clsProductList;
+            }
+            clsCustomerVisitor.vClosureRemarks = saveType;
+
+            if (clsCustomerVisitor.vErrorMsg == "") {
+                $.ajax({
+                    type: "POST",
+                    url: '/CustomerVisit/Fn_Update_Meeting',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsCustomerVisitor),
+                    beforeSend: function () {
+                        $("#loader").show();
+                        $("#divMain").hide();
+                    },
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+                        if (obj.vErrorMsg == 'Success') {
+                            var msg = "";
+                            if (saveType == "SS") {
+                                msg = "Saved your meeting list.";
+                            }
+                            else {
+                                msg = "Saved draft your meeting list.";
+                            }
+
+                            $("#pMeetingId").html('');
+                            $("#dvList").html('');
+
+                            $("#txtCustomerName").prop("readonly", false);
+                            $("#txtEmail").prop("readonly", false);
+                            $("#txtMobile").prop("readonly", false);
+                            $("#txtAddress1").prop("readonly", false);
+                            $("#txtState").prop("readonly", false);
+                            $("#txtStatus").prop("readonly", false);
+                            $("#txtCity").prop("readonly", false);
+                            $("#txtPinCode").prop("readonly", false);
+                            $("#txtCompanyName").prop("readonly", false);
+
+                            Fn_ResetField();
+                            sessionStorage.clear();
+                            swal({
+                                title: 'Success!',
+                                text: msg,
+                                type: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                window.location.href = "@Url.Action("CustomerMeetingListDetail", "CustomerVisit")?MeetingId=" + obj.MeetingId;
+                            });
+
+                        }
+                        else {
+                            swal("", obj.vErrorMsg, "error");
+                        }
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                        $("#divMain").show();
+                    },
+                    error: function (err) {
+                        swal("", err, "error");
+                    }
+                });
+            }
+        }
+
+        function Fn_Get_MaterialCode(vCategory, vCode)
+        {
+            var clsProductList = {};
+            clsProductList.vProductCategory = vCategory;
+            clsProductList.vMaterialCode = vCode
+              $.ajax({
+                    type: "POST",
+                    url: '/CustomerVisit/Fn_Get_MaterialCode',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsCustomerVisitor),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+                        if (obj.vErrorMsg == 'Success') {
+                            swal("", "Updated meeting detail.", "success");
+                        }
+                        else {
+                            swal("", obj.vErrorMsg, "error");
+                        }
+                    },
+                    error: function (err) {
+                        swal("", err, "error");
+                    }
+                });
+        }
+
+        //////////////////////////////////////////
+
+        function Fn_Get_Customer_By_Email(_id) {
+
+            var clsCustomerVisitor = {};
+            if (_id == "1") {
+                clsCustomerVisitor.vEmailId = $("#txtEmail1").val().trim();
+            }
+            else {
+                clsCustomerVisitor.vEmailId = $("#txtEmail").val().trim();
+            }
+            clsCustomerVisitor.nLoginId = $("#strUserId").val();
+            $.ajax({
+                type: "POST",
+                url: "/CustomerVisit/Fn_Get_Customer_By_Email",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(clsCustomerVisitor),
+                success: function (data) {
+                    var obj = JSON.parse(data.message)
+                    if (obj.vErrorMsg == 'Success') {
+                        $("#txtCustomerName" + _id).val(obj.vCustomerName);
+                        $("#txtEmail" + _id).val(obj.vEmailId);
+                        $("#txtMobile" + _id).val(obj.vMobile);
+                        $("#txtAddress1" + _id).val(obj.vAddress1);
+                        $("#txtState" + _id).val(obj.vState);
+                        $("#txtCity" + _id).val(obj.vCity);
+                        $("#txtPinCode" + _id).val(obj.vPinCode);
+                        $("#txtCompanyName" + _id).val(obj.vCompanyName);
+                        $("#txtMeetingVenue").val(obj.vMeetingVenue);
+                        $("#txtMeetingDate").val(obj.vMeetingDate);
+                        $("#strMeetingID").val(obj.MeetingId);
+
+                    }
+                    else {
+                        swal("", obj.vErrorMsg, "error");
+                    }
+                },
+                error: function (err) {
+                    swal("", err, "error");
+                }
+            });
+        }
+         /////////////////////////////////////////////////////
+
+        function Fn_ResetField() {
+            $("#txtCustomerName1").val("");
+            $("#txtEmail1").val("");
+            $("#txtMobile1").val("");
+            $("#txtCompanyName1").val("");
+            $("#txtAddress11").val("");
+            $("#txtCity1").val("");
+            $("#txtState").val("");
+            $("#txtPinCode1").val("");
+            $("#txtScheduleDate").val("");
+            $("#txtScheduleVenue").val("");
+        }
+
+        function Fn_Schedule_Customer_Meeting() {
+            var clsCustomerVisitor = {};
+            clsCustomerVisitor.vErrorMsg = "";
+            clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            clsCustomerVisitor.vCustomerName = $("#txtCustomerName1").val();
+            if (clsCustomerVisitor.vCustomerName == "") {
+                clsCustomerVisitor.vErrorMsg = "Customer Name is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vEmailId = $("#txtEmail1").val();
+            if (clsCustomerVisitor.vEmailId == "") {
+                clsCustomerVisitor.vErrorMsg = "EmailId is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMobile = $("#txtMobile1").val();
+            if (clsCustomerVisitor.vMobile == "") {
+                clsCustomerVisitor.vErrorMsg = "Mobile Number is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vCompanyName = $("#txtCompanyName1").val();
+            if (clsCustomerVisitor.vCompanyName == "") {
+                clsCustomerVisitor.vErrorMsg = "Company Name is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vAddress1 = $("#txtAddress11").val();
+            if (clsCustomerVisitor.vAddress1 == "") {
+                clsCustomerVisitor.vErrorMsg = "Address is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vCity = $("#txtCity1").val();
+            if (clsCustomerVisitor.vCity == "") {
+                clsCustomerVisitor.vErrorMsg = "City is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vState = $("#txtState1").val();
+            if (clsCustomerVisitor.vState == "") {
+                clsCustomerVisitor.vErrorMsg = "State is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vPinCode = $("#txtPinCode1").val();
+            if (clsCustomerVisitor.vPinCode == "") {
+                clsCustomerVisitor.vErrorMsg = "PinCode is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingDate = $("#txtMeetingDate1").val();
+            if (clsCustomerVisitor.vMeetingDate == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Date is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsCustomerVisitor.vMeetingVenue = $("#txtMeetingVenue1").val();
+            if (clsCustomerVisitor.vMeetingVenue == "") {
+                clsCustomerVisitor.vErrorMsg = "Meeting Venue is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            var clsScheduleMeeting = {};
+            clsScheduleMeeting.vScheduleDate = $("#txtScheduleDate").val().trim();
+            if (clsCustomerVisitor.vScheduleDate == "") {
+                clsCustomerVisitor.vErrorMsg = "Schedule Date is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+            clsScheduleMeeting.vScheduleVenue = $("#txtScheduleVenue").val().trim();
+            if (clsCustomerVisitor.vScheduleVenue == "") {
+                clsCustomerVisitor.vErrorMsg = "Schedule Venue is empty.";
+                swal("", clsCustomerVisitor.vErrorMsg, "error");
+                return;
+            }
+
+            clsCustomerVisitor.oScheduleMeeting = clsScheduleMeeting;
+
+            if (clsCustomerVisitor.vErrorMsg == "") {
+                $.ajax({
+                    type: "POST",
+                    url: '/CustomerVisit/Fn_Schedule_Customer_Meeting',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(clsCustomerVisitor),
+                    success: function (data) {
+                        var obj = JSON.parse(data.message);
+                        if (obj.vErrorMsg == 'Success') {
+                            swal("", "Meeting Scheduled.", "success");
+                            Fn_ResetField();
+                        }
+                        else {
+                            swal("", obj.vErrorMsg, "error");
+                        }
+                    },
+                    error: function (err) {
+                        swal("", err, "error");
+                    }
+                });
+            }
+        }
+
+    </script>
+
+}
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <!-- Breadcrumb Begin -->
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Customer Visitor
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Breadcrumb End -->
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="contact-from" style="padding: 25px">
+            <div class="main-form">
+
+                <div class="container" style="margin-top:1%;">
+                    <button type="button" class="btn dropdown-toggle " data-toggle="collapse" data-target="#custdetails" style="width:100%;background-color:#08417b;color:white;text-align:left;">
+                        Customer Details
+                        <span class="pull-right" id="pMeetingId"></span>
+                    </button>
+
+                </div>
+                <div class="container" style="margin-top:1%;">
+                    <div id="custdetails" class="collapse">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtCustomerName" class="form-label">Customer Name</label>
+                                    <input type="text" id="txtCustomerName" class="form-control" style="font-size: 12px;" name="txtCustomerName" tabindex="1" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtAddress1" class="form-label">Address</label>
+                                    <input type="text" id="txtAddress1" class="form-control" style="font-size: 12px;" name="txtAddress1" tabindex="5" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtEmail" class="form-label">Email</label>
+                                    <input type="text" id="txtEmail" class="form-control" onchange="Fn_Get_Customer_By_Email('');" style="font-size: 12px;" name="txtEmail" tabindex="2" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtCity" class="form-label">City</label>
+                                    <input type="text" id="txtCity" class="form-control" style="font-size: 12px;" name="txtCity" tabindex="6" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtMobile" class="form-label">Mobile No</label>
+                                    <input type="text" id="txtMobile" class="form-control" style="font-size: 12px;" name="txtMobile" tabindex="3" maxlength="10" minlength="10" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtState" class="form-label">State</label>
+                                    <input type="text" id="txtState" class="form-control" style="font-size: 12px;" name="txtState" tabindex="7" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtCompanyName" class="form-label">Company Name</label>
+                                    <input type="text" id="txtCompanyName" class="form-control" style="font-size: 12px;" name="txtCompanyName" tabindex="4" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtPinCode" class="form-label">PIN Code</label>
+                                    <input type="text" id="txtPinCode" class="form-control" style="font-size: 12px;" name="txtPinCode" tabindex="8" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtMeetingDate" class="form-label">Meeting Date</label>
+                                    <input type="text" id="txtMeetingDate" class="form-control" style="font-size: 12px;" name="txtMeetingDatetime" tabindex="9" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtMeetingVenue" class="form-label">Meeting Venue</label>
+                                    <input type="text" id="txtMeetingVenue" class="form-control" style="font-size: 12px;" name="txtMeetingVenue" tabindex="10" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtPurposeVisit" class="form-label">Purpose of Visit</label>
+                                    <input type="text" id="txtPurposeVisit" class="form-control" style="font-size: 12px;" name="txtPurposeVisit" tabindex="11" />
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="container mt-2">
+                    <button type="button" class="btn dropdown-toggle " data-toggle="collapse" data-target="#meetingdetails" style="width: 100%; background-color: #08417b; color: white;text-align:left;">Meeting Details</button>
+                </div>
+                <div class="container" style="margin-top:1%;">
+                    <div id="meetingdetails" class="collapse">
+                        <div class="row">
+                            <div class="col-lg-8" id="dvScanCode">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" style="display:none;">
+                                            <label for="ddlProductCategory" class="form-label">Product Category</label>
+                                            <select class="form-control" id="ddlProductCategory" style="font-size: 12px;">
+                                                <option value="0">Select</option>
+                                                <option value="Yarn">Yarn</option>
+                                                <option value="Fabric">Fabric</option>
+                                                <option value="Garments">Garments</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="form-group">
+                                            <label for="ddlMaterialCode" class="form-label">Material Code/Quality/Piece No. <i class="fa fa-star" style="color:red;"></i> <i class="fa fa-star" style="color:green;" title="Use Scanner"></i></label>
+                                            <input type="text" id="txtProduct" class="form-control" style="font-size: 12px;" name="txtProduct" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pl-lg-3 pr-lg-3 mt-2">
+                                    <div style="height: 600px; overflow:auto; width: 100%;">
+                                        <table id="tblList" class="table table-striped table-hover">
+                                            <thead style="background-color: #08417B; color: white;">
+                                                <tr>
+                                                    <th style="color: white; padding: 10px; width: 10%">Category</th>
+                                                    <th style="color: white; padding: 10px; width: 40%">Product</th>
+                                                    <th style="color: white; padding: 10px; width: 10%">Image</th>
+                                                    <th style="color: white; padding: 10px; width: 100%">Scan Code</th>
+                                                    <td style="color: white; padding: 10px; width: 10%">Action</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dvList"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <script>
+                                            $(document).on("click", '.delete', function () {
+                                                $(this).closest('tr').remove();
+                                            });
+
+                                            $("#txtProduct").keyup(function (e) {
+                                                if (e.which == 13) {
+                                                    $("#txtProduct").focus();
+                                                    var p = $('#txtProduct').val().trim();
+
+                                                    var tds = $("#tblList").find(".scancode");
+                                                    var isContains = false;
+                                                    for (var i = 0; i < tds.length; i++) {
+                                                        var td = tds[i];
+                                                        if (td.innerText == p) {
+                                                            isContains = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (isContains) {
+                                                        swal("", "Already Exist", "error");
+                                                        $('#txtProduct').val("");
+                                                        p = '';
+                                                        return;
+                                                    }
+                                                    else {
+
+                                                    }
+
+                                                    if (p != '') {
+                                                        var clsProductList = {};
+                                                        clsProductList.vScanCode = $('#txtProduct').val().trim();
+                                                        var vScanCode = $('#txtProduct').val().trim();
+                                                        var vList = vScanCode.split("--");
+                                                        clsProductList.vScanCode = vList[0];
+                                                        clsProductList.vProductCategory = vList[2];
+
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: '/CustomerVisit/Fn_Get_MaterialCode',
+                                                            contentType: "application/json; charset=utf-8",
+                                                            dataType: "json",
+                                                            data: JSON.stringify(clsProductList),
+                                                            success: function (data) {
+                                                                var html = '';
+                                                                var imgPath = ""
+                                                                var obj = JSON.parse(data.message);
+                                                                if (obj.vErrorMsg == 'Success') {
+                                                                    //switch (obj.vProductCategory)
+                                                                    //{
+                                                                    //    case 1: "Yarn"
+                                                                    //        imgPath = "/web/Images/yarn/" + obj.vMaterialCode + ".jpeg";
+                                                                    //        break;
+                                                                    //        debugger
+                                                                    //    case 2: "Fabric"
+                                                                    //        imgPath = "/web/Images/fabric/" + obj.vMaterialCode + ".jpeg";
+                                                                    //        break;
+                                                                    //        debugger
+                                                                    //    case 3: "Garments"
+                                                                    //        imgPath = "/web/Images/garments/" + obj.vMaterialCode + ".jpeg";
+                                                                    //        break;
+                                                                    //}
+                                                                    //debugger
+                                                                    if (obj.vProductCategory == "Yarn") {
+                                                                        imgPath = "/web/Images/yarn/" + obj.vMaterialCode + ".jpeg";
+                                                                    }
+                                                                    if (obj.vProductCategory == "Fabric") {
+                                                                        imgPath = "/web/Images/fabric/" + obj.vMaterialCode + ".jpeg";
+                                                                    }
+                                                                    if (obj.vProductCategory == "Garments") {
+                                                                        imgPath = "/web/Images/garments/" + obj.vMaterialCode + ".jpeg";
+                                                                    }
+                                                                    html += "<tr><td>" + obj.vProductCategory + "</td>";
+                                                                    html += "<td>" + obj.vMaterialCode + "</td>";
+                                                                    html += "<td><img class='image' src='" + imgPath + "' /></td>";
+                                                                    html += "<td class='scancode'>" + p + "</td>";
+                                                                    html += "<td><i class='fa fa-trash fa-2x text-danger delete' style='color:red; mrgin-left: 20px;'></i></td></tr>";
+
+                                                                    $('#txtProduct').val("");
+                                                                    $('#txtProduct').focus();
+                                                                    $("#dvList").append(html);
+                                                                }
+                                                                else {
+                                                                    swal("", obj.vErrorMsg, "error");
+                                                                    $('#txtProduct').val("");
+                                                                    $('#txtProduct').focus();
+                                                                }
+                                                                $("img").on("error", function () {
+                                                                    $(this).attr("src", "/Web/Images/placeholder.jpg");
+                                                                });
+                                                            },
+                                                            error: function (err) {
+                                                                swal("", err, "error");
+                                                            }
+                                                        });
+                                                    }
+                                                    else {
+
+                                                        swal("", "Empty textbox", "error");
+                                                    }
+                                                }
+                                                else {
+                                                    //  Do whatever you like
+                                                }
+                                                e.preventDefault();
+                                            });
+
+
+
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="txtBreifDiscussion" class="form-label">Discussions</label>
+                                    <textarea id="txtBreifDiscussion" class="form-control" name="txtBreifDiscussion" style="font-size: 12px;" rows="5"></textarea>
+                                </div>
+
+                                <div class="form-group mt-2">
+                                    <button type="submit" name="btnUpdte" id="btnUpdte" onclick="Fn_Update_Meeting('SD');" class="btn btn-primary" value="Update" style="margin-left:5px; display: none;">Save Draft</button>
+                                    <button type="submit" name="btnSubmit" id="btnSubmit" onclick="Fn_Insert_CustomerVisit();" class="btn btn-primary" value="Submit" style="margin-left:5px;">Save</button>
+                                    @*<button type="submit" name="btnSend" id="btnSend" class="btn btn-primary pull-right" value="Submit" data-toggle="modal" data-target="#myModal">Send Discussion to Customer</button>*@
+                                    <button type="submit" name="btnSAveNSend" id="btnSAveNSend" onclick="Fn_Update_Meeting('SS');" class="btn btn-primary" value="Update">Save & Send</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div> <!-- main form -->
+        </div> <!--  contact from -->
+        <!-- row -->
+
+    </div> <!-- container -->
+
+    <input type="hidden" id="strMeetingID" name="strMeetingID" value="" />
+    <input type="hidden" id="strFollowUpID" name="strFollowUpID" value="" />
+
+    <div class="container-fluid" id="loader" style="display: none;">
+        <div class="section-title text-center" style="margin-top: 15%;">
+            <img src="~/Web/Images/loading.gif?timestamp(~/Web/Images/loading.gif)" width="8%" />
+        </div>
+    </div>
+
+</section>

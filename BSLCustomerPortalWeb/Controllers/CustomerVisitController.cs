@@ -70,9 +70,10 @@ namespace BSLCustomerPortalWeb.Controllers
         {
             using (var client = new HttpClient())
             {
-                cs.nLoginId = Convert.ToInt32(Session["UserId"].ToString());
+                //cs.nLoginId = Convert.ToInt32(Session["UserId"].ToString());
 
-                client.BaseAddress = new Uri(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                //client.BaseAddress = new Uri(Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
+                client.BaseAddress = new Uri(Convert.ToString(ConfigurationManager.AppSettings["BSLCustPortalWebAPI"]));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 

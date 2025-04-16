@@ -134,7 +134,7 @@
         var clsReqScheduleMeeting = {};
         clsReqScheduleMeeting.vErrorMsg = "";
         //clsReqScheduleMeeting.nLoginId = $('#strUserId').val();
-        clsReqScheduleMeeting.nLoginId = sessionStorage.getItem("SAPCustId");
+        clsReqScheduleMeeting.nLoginId = sessionStorage.getItem("CustId");
 
         var _month = $('#txtMonth').val();
         var _currYear = new Date().getFullYear();
@@ -191,7 +191,7 @@
 
         var clsCustomerVisitor = {};
         //clsCustomerVisitor.nLoginId = $("#strUserId").val();
-        clsCustomerVisitor.nLoginId = sessionStorage.getItem("SAPCustId");
+        clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
         clsCustomerVisitor.MeetingId = MeetingId;
 
         $.ajax({
@@ -470,6 +470,15 @@
     }
 
 </script>
+
+<script type="text/javascript">
+    function Fn_NavigatetoMeetingList() {
+        var custmeet = document.getElementById("btnCustMeetingList");
+        custmeet = window.location.replace("@Url.Action("CustomerMeetingList", "CustomerVisit")");
+        return true;
+    }
+</script>
+
 <style>
     .table tbody tr td {
         padding: 30px 10px;
@@ -494,8 +503,8 @@
                                 / Client Meeting
                             </li>
                             @*<li class="nav-item" style="margin-left:-3%;font-size:16px;">
-                                    / Client Meeting
-                                </li>*@
+                                / Client Meeting
+                            </li>*@
                         </ul>
                     </div>
                 </div>
@@ -513,10 +522,10 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row mt-3">
-                            <div class="col-sm-2">
+                            <div class="col-sm-1">
                                 <label class="form-control-sm pull-right">Select Month</label>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <input type="month" id="txtMonth" name="txtMonth" class="form-control" onchange="Fn_Get_Calender();" />
                             </div>
                             <div class="col-sm-2">
@@ -526,6 +535,9 @@
                                 <label class="form-control-sm pull-left"><i class="fa fa-star p-1" style="color:green;"></i>Open</label>
                                 <label class="form-control-sm pull-left"><i class="fa fa-star p-1" style="color:blue;"></i>Schedule</label>
                                 <label class="form-control-sm pull-left"><i class="fa fa-star p-1" style="color:red;"></i>Closed</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-primary" id="btnCustMeetingList" onclick="Fn_NavigatetoMeetingList();">Meeting List</button>
                             </div>
                         </div>
 

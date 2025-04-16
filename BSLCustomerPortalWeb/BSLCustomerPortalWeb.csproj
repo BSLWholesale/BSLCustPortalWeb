@@ -630,6 +630,7 @@
     <Content Include="Views\CustomerVisit\Display_Schedule_Meeting.cshtml" />
     <Content Include="Views\CustomerVisit\CustomerMeetingListDetail.cshtml" />
     <Content Include="Views\CustomerVisit\CustomerMeetingList.cshtml" />
+    <Content Include="Views\CustomerVisit\CustomerVisitor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

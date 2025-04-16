@@ -11,27 +11,27 @@
         background-color: #f1f1f1;
     }
 
-    .tab button {
-        background-color: inherit;
-        float: left;
-        border: 1px solid #ccc;
-        outline: none;
-        cursor: pointer;
-        padding: 8px 5px;
-        transition: 0.3s;
-        font-size: 17px;
-        width: 80px;
-    }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: 1px solid #ccc;
+            outline: none;
+            cursor: pointer;
+            padding: 8px 5px;
+            transition: 0.3s;
+            font-size: 17px;
+            width: 80px;
+        }
 
-    .tab button:hover {
-        background-color: #08417B;
-        color: white;
-    }
+            .tab button:hover {
+                background-color: #08417B;
+                color: white;
+            }
 
-    .tab button.active {
-        background-color: #08417B;
-        color: white;
-    }
+            .tab button.active {
+                background-color: #08417B;
+                color: white;
+            }
 </style>
 
 
@@ -59,7 +59,7 @@
 
         var clsCustMeetingMaster = {};
         //clsCustMeetingMaster.nLoginId = $("#strUserId").val();
-        clsCustMeetingMaster.nLoginId = sessionStorage.getItem("SAPCustId");
+        clsCustMeetingMaster.nLoginId = sessionStorage.getItem("CustId");
         clsCustMeetingMaster.vStatus = vStatus;
 
         $.ajax({
@@ -134,7 +134,7 @@
                     }
                 }
                 else {
-                    html += "<tr><td colspan='10'><p class='text-center'>" + obj[0].vErrorMsg + "</p></td></tr>";
+                    html += "<tr><td colspan='12'><p class='text-center'>" + obj[0].vErrorMsg + "</p></td></tr>";
                 }
                 $("#tbody").append(html);
             },
@@ -149,7 +149,7 @@
 
         var clsCustomerVisitor = {};
         //clsCustomerVisitor.nLoginId = $("#strUserId").val();
-        clsCustomerVisitor.nLoginId = sessionStorage.getItem("SAPCustId");
+        clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
         clsCustomerVisitor.MeetingId = nMeetingId;
         clsCustomerVisitor.vClosureRemarks = $("#ddlResion" + nMeetingId).val();
         if (clsCustomerVisitor.vClosureRemarks == "0") {
@@ -212,3 +212,71 @@
 
 </script>
 
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="row">
+            <!-- Breadcrumb Begin -->
+            <div class="col-lg-12">
+                <div class="shop-top-search">
+                    <div class="shop-bar">
+                        <ul class="nav" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DashBoard", "Home" )"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item" style="margin-left:-3%;font-size:16px;">
+                                / Client Meeting List
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Breadcrumb End -->
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+<section id="contact-page" class="pt-10 pb-10 gray-bg">
+    <div class="container">
+        <div class="contact-from" style="padding: 20px">
+            <div class="main-form">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab">
+                            <button class="tablinks" id="btnAll" onclick="Fn_Get_CustMeetingMasterList('All')">All</button>
+                            <button class="tablinks" id="btnOpen" onclick="Fn_Get_CustMeetingMasterList('Open')">Open</button>
+                            <button class="tablinks" id="btnClosed" onclick="Fn_Get_CustMeetingMasterList('Closed')">Closed</button>
+                        </div>
+                    </div>
+                </div> <!-- row -->
+            </div> <!-- main form -->
+            <div class="main-form">
+                <div class="row mt-2">
+                    <div class="col-lg-12">
+                        <table class="table table-striped table-hover">
+                            <thead style="background-color: #08417B; color: white;">
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Customer Name</td>
+                                    <td>Date</td>
+                                    <td>Venue</td>
+                                    <td>Purpose of Visit</td>
+                                    <td>Status</td>
+                                    <td>Type</td>
+                                    <td class="tdFUM">Create +</td>
+                                    <td class="tdClosureRemarks">Closure Remarks</td>
+                                    <td class="tdAction">Action</td>
+                                    <td>Expense</td>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div> <!--  contact from -->
+    </div>
+
+</section>
