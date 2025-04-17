@@ -416,7 +416,11 @@
     <Content Include="Images\Yarn\Greige.jpg" />
     <Content Include="Images\Yarn\GREY.jpg" />
     <Content Include="Images\Yarn\GRINDLE.jpg" />
+    <Content Include="JS\jquery-ui-1.14.1.js" />
+    <Content Include="JS\jquery-ui.css" />
+    <Content Include="JS\jQuery-v3.7.1.js" />
     <Content Include="JS\SearchCustomer.js" />
+    <Content Include="JS\SearchMaterialcode.js" />
     <Content Include="JS\sweetalert.min.js" />
     <Content Include="JS\sweetalert2.all.js" />
     <Content Include="JS\sweetalert2.all.min.js" />

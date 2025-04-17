@@ -3,6 +3,14 @@
     ViewBag.Title = "CustomerVisitor";
 }
 
+<script src="~/JS/SearchMaterialcode.js"></script>
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+@*<link rel="stylesheet" href="/resources/demos/style.css">*@
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+
 @{
     <script>
 
@@ -15,12 +23,12 @@
             //});
             //$("#txtMeetingDate").datepicker("setDate", new Date());
 
-            $('#txtScheduleDate').datepicker({
-                dateFormat: 'dd-M-yy',
-                minDate: 0
-            });
+            //$('#txtScheduleDate').datepicker({
+            //    dateFormat: 'dd-M-yy',
+            //    minDate: 0
+            //});
 
-            $("#txtScheduleDate").datepicker("setDate", new Date());
+            //$("#txtScheduleDate").datepicker("setDate", new Date());
 
             const urlParams = new URLSearchParams(window.location.search);
             const prmMeetingId = urlParams.get('mId');
@@ -47,6 +55,7 @@
             //clsCustomerVisitor.nLoginId = $('#strUserId').val();
             clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
             clsCustomerVisitor.MeetingId = $("#strMeetingID").val();
+
             clsCustomerVisitor.vCustomerName = $("#txtCustomerName").val();
             if (clsCustomerVisitor.vCustomerName == "") {
                 clsCustomerVisitor.vErrorMsg = "Customer Name is empty.";
@@ -202,6 +211,7 @@
             clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
             //clsCustomerVisitor.vEmailId = sessionStorage.getItem("vEmailId");
             clsCustomerVisitor.vEmailId = $("#txtEmail").val();
+
             clsCustomerVisitor.vCustomerName = $("#txtCustomerName").val();
             //clsCustomerVisitor.vCustomerName = sessionStorage.getItem("vCustomerName");
             if (clsCustomerVisitor.vEmailId == "" || clsCustomerVisitor.vEmailId == 0) {
@@ -306,13 +316,13 @@
                         if (arr[0].vErrorMsg == "Success") {
                             for (var i = 0; i < arr.length; i++) {
                                 if (arr[i].vProductCategory == "Yarn") {
-                                    imgPath = "/web/Images/yarn/" + arr[i].vMaterialCode + ".jpeg";
+                                    imgPath = "/Images/Yarncatalogue/" + arr[i].vMaterialCode + ".jpeg";
                                 }
                                 if (arr[i].vProductCategory == "Fabric") {
-                                    imgPath = "/web/Images/fabric/" + arr[i].vMaterialCode + ".jpeg";
+                                    imgPath = "/Images/Fabriccatalogue/" + arr[i].vMaterialCode + ".jpeg";
                                 }
                                 if (arr[i].vProductCategory == "Garments") {
-                                    imgPath = "/web/Images/garments/" + arr[i].vMaterialCode + ".jpeg";
+                                    imgPath = "/Images/Garmentscatalogue/" + arr[i].vMaterialCode + ".jpeg";
                                 }
                                 html += "<tr><td>" + arr[i].vProductCategory + "</td>";
                                 html += "<td>" + arr[i].vMaterialCode + "</td>";
@@ -331,7 +341,7 @@
                         swal("", obj.vErrorMsg, "error");
                     }
                     $("img").on("error", function () {
-                        $(this).attr("src", "/Web/Images/placeholder.jpg");
+                        $(this).attr("src", "/Images/placeholder.jpg");
                     });
                 },
                 error: function (err) {
@@ -360,7 +370,9 @@
                 swal("", clsCustomerVisitor.vErrorMsg, "error");
                 return;
             }
-            clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            //clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
+
             clsCustomerVisitor.vCustomerName = $("#txtCustomerName").val();
             if (clsCustomerVisitor.vCustomerName == "") {
                 clsCustomerVisitor.vErrorMsg = "Customer Name is empty.";
@@ -555,7 +567,9 @@
             else {
                 clsCustomerVisitor.vEmailId = $("#txtEmail").val().trim();
             }
-            clsCustomerVisitor.nLoginId = $("#strUserId").val();
+            //clsCustomerVisitor.nLoginId = $("#strUserId").val();
+            clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
+
             $.ajax({
                 type: "POST",
                 url: "/CustomerVisit/Fn_Get_Customer_By_Email",
@@ -605,7 +619,9 @@
         function Fn_Schedule_Customer_Meeting() {
             var clsCustomerVisitor = {};
             clsCustomerVisitor.vErrorMsg = "";
-            clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            //clsCustomerVisitor.nLoginId = $('#strUserId').val();
+            clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
+
             clsCustomerVisitor.vCustomerName = $("#txtCustomerName1").val();
             if (clsCustomerVisitor.vCustomerName == "") {
                 clsCustomerVisitor.vErrorMsg = "Customer Name is empty.";
@@ -932,13 +948,13 @@
                                                                     //}
                                                                     //debugger
                                                                     if (obj.vProductCategory == "Yarn") {
-                                                                        imgPath = "/web/Images/yarn/" + obj.vMaterialCode + ".jpeg";
+                                                                        imgPath = "/Images/Yarncatalogue/" + obj.vMaterialCode + ".jpeg";
                                                                     }
                                                                     if (obj.vProductCategory == "Fabric") {
-                                                                        imgPath = "/web/Images/fabric/" + obj.vMaterialCode + ".jpeg";
+                                                                        imgPath = "/Images/Fabriccatalogue/" + obj.vMaterialCode + ".jpeg";
                                                                     }
                                                                     if (obj.vProductCategory == "Garments") {
-                                                                        imgPath = "/web/Images/garments/" + obj.vMaterialCode + ".jpeg";
+                                                                        imgPath = "/Images/Garmentscatalogue/" + obj.vMaterialCode + ".jpeg";
                                                                     }
                                                                     html += "<tr><td>" + obj.vProductCategory + "</td>";
                                                                     html += "<td>" + obj.vMaterialCode + "</td>";
@@ -956,7 +972,7 @@
                                                                     $('#txtProduct').focus();
                                                                 }
                                                                 $("img").on("error", function () {
-                                                                    $(this).attr("src", "/Web/Images/placeholder.jpg");
+                                                                    $(this).attr("src", "/Images/placeholder.jpg");
                                                                 });
                                                             },
                                                             error: function (err) {
@@ -1010,7 +1026,7 @@
 
     <div class="container-fluid" id="loader" style="display: none;">
         <div class="section-title text-center" style="margin-top: 15%;">
-            <img src="~/Web/Images/loading.gif?timestamp(~/Web/Images/loading.gif)" width="8%" />
+            <img src="~/Images/loading.gif?timestamp(~/Images/loading.gif)" width="8%" />
         </div>
     </div>
 

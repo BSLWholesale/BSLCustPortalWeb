@@ -7,6 +7,7 @@
     <script>
 
         $(document).ready(function () {
+
             Fn_Get_Meeting_List();
             const urlParams = new URLSearchParams(window.location.search);
             const prmMeetingId = urlParams.get('MeetingId');
@@ -27,10 +28,10 @@
             var s = currdate.getSeconds();
             s = (s < 10) ? ("0" + s) : s;
 
-            $('#dtpReschedule').datepicker({
-                dateFormat: 'dd-mm-yy' + "' " + h + ":" + m + ":" + s + "'" + " '" + tzone + "'",
-                minDate: 0
-            });
+            //$('#dtpReschedule').datepicker({
+            //    dateFormat: 'dd-mm-yy' + "' " + h + ":" + m + ":" + s + "'" + " '" + tzone + "'",
+            //    minDate: 0
+            //});
 
         });
 
@@ -40,13 +41,14 @@
         }
 
         function Fn_Get_Meeting_List() {
+            
             const urlParams = new URLSearchParams(window.location.search);
             const prmMeetingId = urlParams.get('MeetingId');
             var clsCustomerVisitor = {};
             //clsCustomerVisitor.nLoginId = $("#strUserId").val();
             clsCustomerVisitor.nLoginId = sessionStorage.getItem("CustId");
             clsCustomerVisitor.MeetingId = prmMeetingId;
-
+            
             $.ajax({
                 type: "POST",
                 url: "/CustomerVisit/Fn_Get_Meeting_List",
@@ -85,7 +87,7 @@
                         $("#vCompanyName").html(obj.vCompanyName);
                         var _row = ''; var Remk = '';
                         $("#tbodyFollowUp_tbody").html('');
-
+                        
                         _row += "<tr><td><span style='color: #007bff; cursor: pointer;' onclick='Fn_ShowList(" + obj.MeetingId + ");'>" + obj.MeetingId + "</span></td>";
                         _row += "<td>" + obj.vMeetingVenue + "</td>";
                         _row += "<td>" + obj.vMeetingDate + "</td>";
@@ -119,13 +121,13 @@
                                 else {
 
                                     if (arr[i].vProductCategory == "Yarn") {
-                                        imgPath = "/web/Images/yarn/" + arr[i].vMaterialCode + ".jpeg";
+                                        imgPath = "/Images/Yarncatalogue/" + arr[i].vMaterialCode + ".jpeg";
                                     }
                                     if (arr[i].vProductCategory == "Fabric") {
-                                        imgPath = "/web/Images/fabric/" + arr[i].vMaterialCode + ".jpeg";
+                                        imgPath = "/Images/Fabriccatalogue/" + arr[i].vMaterialCode + ".jpeg";
                                     }
                                     if (arr[i].vProductCategory == "Garments") {
-                                        imgPath = "/web/Images/garments/" + arr[i].vMaterialCode + ".jpeg";
+                                        imgPath = "/Images/Garmentscatalogue/" + arr[i].vMaterialCode + ".jpeg";
                                     }
 
                                     htmlList += "<tr class='cls_" + obj.MeetingId + " cls_Row'><td>" + arr[i].vProductCategory + "</td>";
@@ -151,7 +153,7 @@
                         swal("", obj.vErrorMsg, "error");
                     }
                     $("img").on("error", function () {
-                        $(this).attr("src", "/Web/Images/placeholder.jpg");
+                        $(this).attr("src", "/Images/placeholder.jpg");
                     });
                 },
                 error: function (err) {
@@ -199,13 +201,13 @@
                                 }
                                 else {
                                     if (arr[k].vProductCategory == "Yarn") {
-                                        imgPath = "/web/Images/yarn/" + arr[k].vMaterialCode + ".jpeg";
+                                        imgPath = "/Images/Yarncatalogue/" + arr[k].vMaterialCode + ".jpeg";
                                     }
                                     if (arr[k].vProductCategory == "Fabric") {
-                                        imgPath = "/web/Images/fabric/" + arr[k].vMaterialCode + ".jpeg";
+                                        imgPath = "/Images/Fabriccatalogue/" + arr[k].vMaterialCode + ".jpeg";
                                     }
                                     if (arr[k].vProductCategory == "Garments") {
-                                        imgPath = "/web/Images/garments/" + arr[k].vMaterialCode + ".jpeg";
+                                        imgPath = "/Images/Garmentscatalogue/" + arr[k].vMaterialCode + ".jpeg";
                                     }
 
                                     html_FollowUp += "<tr class='cls_" + obj[i].MeetingId + " cls_Row'><td>" + arr[k].vProductCategory + "</td>";
